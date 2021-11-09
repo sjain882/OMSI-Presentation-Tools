@@ -167,6 +167,10 @@ void __stdcall PluginStart(void* aOwner)
     ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
     std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
 
+    FreeConsole();
+
+    CloseHandle(hProcess);
+
 }
 
 
