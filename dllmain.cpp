@@ -143,14 +143,14 @@ void __stdcall PluginStart(void* aOwner)
     uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
     std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
 
-    //Get Handle to Process
+    // Get handle to Process
     HANDLE hProcess = 0;
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
 
     // Calculate F4 FOV Initialisation value - NEEDS REWORKING
-//    uintptr_t f4FovInitAddr = moduleBase + 0x002E634A;
-    uintptr_t f4FovInitAddr = 0x006E634A;
-//    std::cout << "f4FovInitAddr = " << "0x" << std::hex << f4FovInitAddr << std::endl;
+    uintptr_t f4FovInitAddr = moduleBase + 0x002E634A;
+//    uintptr_t f4FovInitAddr = 0x006E634A;
+    std::cout << "f4FovInitAddr = " << "0x" << std::hex << f4FovInitAddr << std::endl;
 
     // Read fov value
     int f4FOVInitValue = 45;
