@@ -17,6 +17,7 @@
 #include "windows.h"
 #include <TlHelp32.h>
 #include <memoryapi.h>
+#include <winuser.h>
 
 
 
@@ -41,6 +42,9 @@ extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 float* f4fovptr;
 FILE* fDummy;
 HANDLE mhStdOutput;
+DWORD procId;
+HANDLE hProcess;
+bool hasPatternScanned;
 
 
 
@@ -93,6 +97,29 @@ DWORD GetProcId(const wchar_t* procName)
 }
 
 
+auto GetModuleBase(DWORD proc_id, const wchar_t* modName)
+{
+    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, proc_id);
+    if (hSnap != INVALID_HANDLE_VALUE)
+    {
+        MODULEENTRY32 modEntry;
+        modEntry.dwSize = sizeof(modEntry);
+        if (Module32First(hSnap, &modEntry))
+        {
+            do
+            {
+                if (!_wcsicmp(modEntry.szModule, modName))
+                {
+                    CloseHandle(hSnap);
+                    return modEntry;
+                }
+            } while (Module32Next(hSnap, &modEntry));
+        }
+    }
+    return MODULEENTRY32();
+}
+
+
 uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 {
     uintptr_t modBaseAddr = 0;
@@ -118,6 +145,139 @@ uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 }
 
 
+void Parse(char* combo, char* pattern, char* mask)
+{
+    char lastChar = ' ';
+    unsigned int j = 0;
+
+    for (unsigned int i = 0; i < strlen(combo); i++)
+    {
+        if ((combo[i] == '?' || combo[i] == '*') && (lastChar != '?' && lastChar != '*'))
+        {
+            pattern[j] = mask[j] = '?';
+            j++;
+        }
+
+        else if (isspace(lastChar))
+        {
+            pattern[j] = lastChar = (char)strtol(&combo[i], 0, 16);
+            mask[j] = 'x';
+            j++;
+        }
+        lastChar = combo[i];
+    }
+    pattern[j] = mask[j] = '\0';
+}
+
+
+char* ScanBasic(char* pattern, char* mask, char* begin, intptr_t size)
+{
+    intptr_t patternLen = strlen(mask);
+
+    for (int i = 0; i < size; i++)
+    {
+        bool found = true;
+        for (int j = 0; j < patternLen; j++)
+        {
+            if (mask[j] != '?' && pattern[j] != *(char*)((intptr_t)begin + i + j))
+            {
+                found = false;
+                break;
+            }
+        }
+        if (found)
+        {
+            return (begin + i);
+        }
+    }
+    return nullptr;
+}
+
+
+char* ScanEx(char* pattern, char* mask, char* begin, intptr_t size, HANDLE hProc)
+{
+    char* match{ nullptr };
+    SIZE_T bytesRead;
+    DWORD oldprotect;
+    char* buffer{ nullptr };
+    MEMORY_BASIC_INFORMATION mbi;
+    mbi.RegionSize = 0x1000;//
+
+    VirtualQueryEx(hProc, (LPCVOID)begin, &mbi, sizeof(mbi));
+
+    for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
+    {
+        if (!VirtualQueryEx(hProc, curr, &mbi, sizeof(mbi))) continue;
+        if (mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
+
+        delete[] buffer;
+        buffer = new char[mbi.RegionSize];
+
+        if (VirtualProtectEx(hProc, mbi.BaseAddress, mbi.RegionSize, PAGE_EXECUTE_READWRITE, &oldprotect))
+        {
+            ReadProcessMemory(hProc, mbi.BaseAddress, buffer, mbi.RegionSize, &bytesRead);
+            VirtualProtectEx(hProc, mbi.BaseAddress, mbi.RegionSize, oldprotect, &oldprotect);
+
+            char* internalAddr = ScanBasic(pattern, mask, buffer, (intptr_t)bytesRead);
+
+            if (internalAddr != nullptr)
+            {
+                //calculate from internal to external
+                match = curr + (internalAddr - buffer);
+                break;
+            }
+        }
+    }
+    delete[] buffer;
+    return match;
+}
+
+
+char* ScanModEx(char* pattern, char* mask, MODULEENTRY32& modEntry, HANDLE hProc)
+{
+    return ScanEx(pattern, mask, (char*)modEntry.modBaseAddr, modEntry.modBaseSize, hProc);
+}
+
+
+
+
+void PatternScanForF4()
+{
+    //    char idaSig = (char)"90 E8 ?? 05 78 CA 7E 00 0C 72 ?? 05 39 8E E3 3F CD CC CC 3D 00 50 C3 47 00 00 00 00 00 00 00 00";
+
+    char sig = (char)"\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00";
+
+    char mask = (char)"xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx";
+
+    char sig2 = (char)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
+    char mask2 = (char)"xxxxxxx";
+
+    // Get module base
+    auto moduleBaseActual = GetModuleBase(procId, L"Omsi.exe");
+
+//    char* F4_TCamera_struct_addy = ScanModEx(&sig, &mask, moduleBaseActual, hProcess);
+
+//    char* F4_TCamera_struct_addy = ScanModEx(const_cast<char*>("\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00"), const_cast<char*>("xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx"), moduleBaseActual, hProcess);
+
+    char* F4_TCamera_struct_addy = ScanModEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), moduleBaseActual, hProcess);
+
+
+    uintptr_t* F4_TCamera_struct_addyCasted = (uintptr_t*)F4_TCamera_struct_addy;
+
+//    Convert::ToInt32(F4_TCamera_struct_addyCasted).ToString("X")); // I RECEIVE F8C400000101
+
+    std::cout << F4_TCamera_struct_addyCasted;
+
+    //    std::cout << "moduleBase = " << "0x" << std::hex << F4_TCamera_struct_addy << std::endl;
+
+    hasPatternScanned = true;
+
+}
+
+
+
+
+
 void __stdcall PluginStart(void* aOwner)
 {
 //	Sleep(5000);
@@ -131,12 +291,13 @@ void __stdcall PluginStart(void* aOwner)
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
     SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
 
+    hasPatternScanned = false;
 
     std::cout << "Waiting for 10 seconds..." << std::endl;
     Sleep(10000);
 
     // Get process ID
-	DWORD procId = GetProcId(L"Omsi.exe");
+	procId = GetProcId(L"Omsi.exe");
     std::cout << "procId = " << procId << std::endl;
 
     // Get module base address
@@ -144,7 +305,7 @@ void __stdcall PluginStart(void* aOwner)
     std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
 
     // Get handle to Process
-    HANDLE hProcess = 0;
+    hProcess = 0;
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
 
     // Calculate F4 FOV Initialisation value - NEEDS REWORKING
@@ -160,22 +321,21 @@ void __stdcall PluginStart(void* aOwner)
     Sleep(5000);
 
     // Write to it
-    float newf4FovInitValue = 19;
+    float newf4FovInitValue = 14.235;
     WriteProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &newf4FovInitValue, sizeof(newf4FovInitValue), nullptr);
 
     // Read fov value
     ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
     std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
 
-    FreeConsole();
-
-    CloseHandle(hProcess);
-
 }
 
 
 void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write)
 {
+    if (!hasPatternScanned) {
+        PatternScanForF4();
+    }
 }
 
 void __stdcall AccessStringVariable(unsigned short varindex, wchar_t* value, bool* write)
@@ -194,6 +354,9 @@ void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool*
 
 void __stdcall PluginFinalize()
 {
+    std::cout << "Patching done, closing console & process handle";
+    FreeConsole();
+    CloseHandle(hProcess);
 }
 
 
