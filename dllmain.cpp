@@ -264,7 +264,7 @@ void PatternScanForF4()
 
 //    char* F4_TCamera_struct_addy = ScanModEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), moduleBaseActual, hProcess);
 
-    auto memoryRegion = VirtualAlloc(NULL, 0x02000000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+    auto memoryRegion = VirtualAlloc(NULL, 0x00200000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 
     MEMORY_BASIC_INFORMATION mbi;
 
@@ -313,7 +313,8 @@ void __stdcall PluginStart(void* aOwner)
     std::cout << "procId = " << procId << std::endl;
 
     // Get module base address
-
+    // OMSI Prefers 0x00400000
+    // cout will show 0x400000
     uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
     std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
     moduleBaseChar = (char*)moduleBase;
