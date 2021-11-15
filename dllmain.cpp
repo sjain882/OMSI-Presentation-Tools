@@ -45,6 +45,7 @@ HANDLE mhStdOutput;
 DWORD procId;
 HANDLE hProcess;
 bool hasPatternScanned;
+char* moduleBaseChar;
 
 
 // DLL Entrypoint
@@ -242,6 +243,9 @@ char* ScanModEx(char* pattern, char* mask, MODULEENTRY32& modEntry, HANDLE hProc
 
 void PatternScanForF4()
 {
+
+    uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
+
     //    char idaSig = (char)"90 E8 ?? 05 78 CA 7E 00 0C 72 ?? 05 39 8E E3 3F CD CC CC 3D 00 50 C3 47 00 00 00 00 00 00 00 00";
 
     char sig = (char)"\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00";
@@ -266,17 +270,17 @@ void PatternScanForF4()
 
     VirtualQuery(memoryRegion, &mbi, sizeof(mbi));
 
-//    char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), (char*)moduleBase, mbi.RegionSize, hProcess);
+    char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), moduleBaseChar, mbi.RegionSize, hProcess);
 
-    //---char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00"), const_cast<char*>("xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx"), (char*)moduleBase, mbi.RegionSize, hProcess);
+//    char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00"), const_cast<char*>("xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx"), moduleBaseChar, mbi.RegionSize, hProcess);
 
-    //---uintptr_t* F4_TCamera_struct_addyCasted = (uintptr_t*)F4_TCamera_struct_addy;
+    uintptr_t* F4_TCamera_struct_addyCasted = (uintptr_t*)F4_TCamera_struct_addy;
 
 //    Convert::ToInt32(F4_TCamera_struct_addyCasted).ToString("X")); // I RECEIVE F8C400000101
 
-    //---std::cout << F4_TCamera_struct_addyCasted;
+    std::cout << F4_TCamera_struct_addyCasted;
 
-    //    std::cout << "moduleBase = " << "0x" << std::hex << F4_TCamera_struct_addy << std::endl;
+    // std::cout << "moduleBase = " << "0x" << std::hex << F4_TCamera_struct_addy << std::endl;
 
     hasPatternScanned = true;
 
@@ -312,6 +316,7 @@ void __stdcall PluginStart(void* aOwner)
 
     uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
     std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
+    moduleBaseChar = (char*)moduleBase;
 
     // Get handle to Process
     hProcess = 0;
@@ -343,7 +348,7 @@ void __stdcall PluginStart(void* aOwner)
 void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write)
 {
     if (!hasPatternScanned) {
-        //PatternScanForF4();
+        PatternScanForF4();
     }
 }
 
