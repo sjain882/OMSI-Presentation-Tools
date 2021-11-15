@@ -18,6 +18,7 @@
 #include <TlHelp32.h>
 #include <memoryapi.h>
 #include <winuser.h>
+#include "AOBScanner.h"
 
 
 
@@ -65,6 +66,41 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	}
 	return TRUE;
 }
+
+struct TimedExecution
+{
+
+    DWORD ms, s, m, h, startTick, endTick;
+    float elapsedTime;
+
+    void startTiming()
+    {
+        DWORD ticks = startTick = GetTickCount();
+        ms = ticks % 1000;
+        ticks /= 1000;
+        s = ticks % 60;
+        ticks /= 60;
+        m = ticks % 60;
+        ticks /= 60;
+        h = ticks;
+        printf("Started at: %d:%02d:%02d.%03d\n", h, m, s, ms);
+    }
+
+    void endTiming()
+    {
+        DWORD ticks = endTick = GetTickCount();
+        ms = (ticks % 1000);
+        ticks /= 1000;
+        s = (ticks % 60);
+        ticks /= 60;
+        m = (ticks % 60);
+        ticks /= 60;
+        h = ticks;
+        elapsedTime = (float)(endTick - startTick) / 1000.0f;
+        printf("Finished at: %d:%02d:%02d.%03d\n", h, m, s, ms);
+    }
+
+};
 
 
 
@@ -246,41 +282,34 @@ void PatternScanForF4()
 
     uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
 
-    //    char idaSig = (char)"90 E8 ?? 05 78 CA 7E 00 0C 72 ?? 05 39 8E E3 3F CD CC CC 3D 00 50 C3 47 00 00 00 00 00 00 00 00";
-
-    char sig = (char)"\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00";
-
-    char mask = (char)"xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx";
-
-    char sig2 = (char)"\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
-    char mask2 = (char)"xxxxxxx";
-
-    // Get module base
-    auto moduleBaseActual = GetModuleBase(procId, L"Omsi.exe");
-
-//    char* F4_TCamera_struct_addy = ScanModEx(&sig, &mask, moduleBaseActual, hProcess);
-
-//    char* F4_TCamera_struct_addy = ScanModEx(const_cast<char*>("\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00"), const_cast<char*>("xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx"), moduleBaseActual, hProcess);
-
-//    char* F4_TCamera_struct_addy = ScanModEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), moduleBaseActual, hProcess);
-
-    auto memoryRegion = VirtualAlloc(NULL, 0x00200000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-
-    MEMORY_BASIC_INFORMATION mbi;
-
-    VirtualQuery(memoryRegion, &mbi, sizeof(mbi));
-
-    char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\xFF\xFF\xFF\xFF\xFF\xFF\xFF"), const_cast<char*>("xxxxxxx"), moduleBaseChar, mbi.RegionSize, hProcess);
-
-//    char* F4_TCamera_struct_addy = ScanEx(const_cast<char*>("\x90\xE8\xAA\x05\x78\xCA\x7E\x00\x0C\x72\xB4\x05\x39\x8E\xE3\x3F\xCD\xCC\xCC\x3D\x00\x50\xC3\x47\x00\x00\x00\x00\x00\x00\x00\x00"), const_cast<char*>("xx?xxxxxxx?xxxxxxxxxxxxxxxxxxxxx"), moduleBaseChar, mbi.RegionSize, hProcess);
-
-    uintptr_t* F4_TCamera_struct_addyCasted = (uintptr_t*)F4_TCamera_struct_addy;
-
-//    Convert::ToInt32(F4_TCamera_struct_addyCasted).ToString("X")); // I RECEIVE F8C400000101
-
-    std::cout << F4_TCamera_struct_addyCasted;
-
-    // std::cout << "moduleBase = " << "0x" << std::hex << F4_TCamera_struct_addy << std::endl;
+    BYTE* findme = (BYTE*)malloc(100);
+    findme[0] = 0x31;
+    findme[1] = rand() % 0xff;
+    findme[2] = 0x33;
+    findme[3] = 0x33;
+    findme[4] = 0x37;
+    findme[5] = rand() % 0xff;
+    findme[6] = 0xab;
+    findme[7] = 0xca;
+    printf("FindMe address: %p\n", findme);
+    TimedExecution t;
+    AOBScanner scanner(0x00401000, 0xFFFFFFFF);
+    t.startTiming();
+    BYTE* foundAddress = scanner.Scan("05 78 CA 7E 00 0C"); //Will be found! :)
+    //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
+    t.endTiming();
+    if (foundAddress == findme)
+    {
+        printf("Found FindMe address from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
+    }
+    else if (foundAddress)
+    {
+        printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
+    }
+    else
+    {
+        printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
+    }
 
     hasPatternScanned = true;
 
