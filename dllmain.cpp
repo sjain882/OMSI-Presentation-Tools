@@ -49,6 +49,7 @@ bool hasPatternScanned;
 char* moduleBaseChar;
 
 
+
 // DLL Entrypoint
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -66,6 +67,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	}
 	return TRUE;
 }
+
+
+
+// TimedExecution Struct by rev_eng_e
 
 struct TimedExecution
 {
@@ -133,6 +138,9 @@ DWORD GetProcId(const wchar_t* procName)
 }
 
 
+
+// Get ModuleBase struct
+
 auto GetModuleBase(DWORD proc_id, const wchar_t* modName)
 {
     HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, proc_id);
@@ -155,6 +163,9 @@ auto GetModuleBase(DWORD proc_id, const wchar_t* modName)
     return MODULEENTRY32();
 }
 
+
+
+// Get address of ModuleBase struct
 
 uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 {
@@ -181,101 +192,8 @@ uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 }
 
 
-void Parse(char* combo, char* pattern, char* mask)
-{
-    char lastChar = ' ';
-    unsigned int j = 0;
 
-    for (unsigned int i = 0; i < strlen(combo); i++)
-    {
-        if ((combo[i] == '?' || combo[i] == '*') && (lastChar != '?' && lastChar != '*'))
-        {
-            pattern[j] = mask[j] = '?';
-            j++;
-        }
-
-        else if (isspace(lastChar))
-        {
-            pattern[j] = lastChar = (char)strtol(&combo[i], 0, 16);
-            mask[j] = 'x';
-            j++;
-        }
-        lastChar = combo[i];
-    }
-    pattern[j] = mask[j] = '\0';
-}
-
-
-char* ScanBasic(char* pattern, char* mask, char* begin, intptr_t size)
-{
-    intptr_t patternLen = strlen(mask);
-
-    for (int i = 0; i < size; i++)
-    {
-        bool found = true;
-        for (int j = 0; j < patternLen; j++)
-        {
-            if (mask[j] != '?' && pattern[j] != *(char*)((intptr_t)begin + i + j))
-            {
-                found = false;
-                break;
-            }
-        }
-        if (found)
-        {
-            return (begin + i);
-        }
-    }
-    return nullptr;
-}
-
-
-char* ScanEx(char* pattern, char* mask, char* begin, intptr_t size, HANDLE hProc)
-{
-    char* match{ nullptr };
-    SIZE_T bytesRead;
-    DWORD oldprotect;
-    char* buffer{ nullptr };
-    MEMORY_BASIC_INFORMATION mbi;
-    mbi.RegionSize = 0x1000;//
-
-    VirtualQueryEx(hProc, (LPCVOID)begin, &mbi, sizeof(mbi));
-
-    for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
-    {
-        if (!VirtualQueryEx(hProc, curr, &mbi, sizeof(mbi))) continue;
-        if (mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
-
-        delete[] buffer;
-        buffer = new char[mbi.RegionSize];
-
-        if (VirtualProtectEx(hProc, mbi.BaseAddress, mbi.RegionSize, PAGE_EXECUTE_READWRITE, &oldprotect))
-        {
-            ReadProcessMemory(hProc, mbi.BaseAddress, buffer, mbi.RegionSize, &bytesRead);
-            VirtualProtectEx(hProc, mbi.BaseAddress, mbi.RegionSize, oldprotect, &oldprotect);
-
-            char* internalAddr = ScanBasic(pattern, mask, buffer, (intptr_t)bytesRead);
-
-            if (internalAddr != nullptr)
-            {
-                //calculate from internal to external
-                match = curr + (internalAddr - buffer);
-                break;
-            }
-        }
-    }
-    delete[] buffer;
-    return match;
-}
-
-
-char* ScanModEx(char* pattern, char* mask, MODULEENTRY32& modEntry, HANDLE hProc)
-{
-    return ScanEx(pattern, mask, (char*)modEntry.modBaseAddr, modEntry.modBaseSize, hProc);
-}
-
-
-
+// AoB Pattern Scanner by rev_eng_e
 
 void PatternScanForF4()
 {
@@ -295,7 +213,7 @@ void PatternScanForF4()
     TimedExecution t;
     AOBScanner scanner(0x00401000, 0xFFFFFFFF);
     t.startTiming();
-    BYTE* foundAddress = scanner.Scan("05 78 CA 7E 00 0C"); //Will be found! :)
+    BYTE* foundAddress = scanner.Scan("05 78 CA 7E 00 0C"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
     //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
     t.endTiming();
     if (foundAddress == findme)
