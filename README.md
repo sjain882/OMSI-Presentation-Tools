@@ -1,4 +1,4 @@
-# OMSI Telemetry
+# OMSI Presentation Tools
 
 ![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Preview.png?raw=true)
 
@@ -11,7 +11,7 @@
 [![YOUTUBE](https://img.shields.io/badge/%20-Trailer-orange?style=plastic)](https://www.youtube.com/watch?v=pvU8gO66mTs)
 [![DOWNLOAD](https://img.shields.io/badge/%20-Download-orange?style=plastic)](https://github.com/degeneratehyperbola/NEPS/releases/latest)
 
-Assorted tools to aid the creation of screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
+Assorted tools to aid the creation of high-quality screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
 </div>
 
 ‎
