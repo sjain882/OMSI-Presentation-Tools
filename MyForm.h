@@ -128,7 +128,7 @@ namespace OMSIPresToolsCLR {
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
-			this->checkBox1->Location = System::Drawing::Point(108, 81);
+			this->checkBox1->Location = System::Drawing::Point(108, 77);
 			this->checkBox1->Name = L"checkBox1";
 			this->checkBox1->Size = System::Drawing::Size(65, 17);
 			this->checkBox1->TabIndex = 1;
@@ -140,7 +140,7 @@ namespace OMSIPresToolsCLR {
 			// 
 			this->numericUpDown1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->numericUpDown1->DecimalPlaces = 1;
-			this->numericUpDown1->Location = System::Drawing::Point(256, 78);
+			this->numericUpDown1->Location = System::Drawing::Point(256, 74);
 			this->numericUpDown1->Name = L"numericUpDown1";
 			this->numericUpDown1->Size = System::Drawing::Size(60, 20);
 			this->numericUpDown1->TabIndex = 5;
@@ -191,7 +191,7 @@ namespace OMSIPresToolsCLR {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(218, 81);
+			this->label1->Location = System::Drawing::Point(218, 77);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(32, 13);
 			this->label1->TabIndex = 20;
@@ -302,10 +302,10 @@ namespace OMSIPresToolsCLR {
 				static_cast<System::Byte>(0)));
 			this->linkLabel4->Location = System::Drawing::Point(52, 215);
 			this->linkLabel4->Name = L"linkLabel4";
-			this->linkLabel4->Size = System::Drawing::Size(209, 15);
+			this->linkLabel4->Size = System::Drawing::Size(204, 15);
 			this->linkLabel4->TabIndex = 22;
 			this->linkLabel4->TabStop = true;
-			this->linkLabel4->Text = L"YouTube tutorial && usage instructions";
+			this->linkLabel4->Text = L"YouTube tutorial && suggested usage";
 			// 
 			// pictureBox2
 			// 
