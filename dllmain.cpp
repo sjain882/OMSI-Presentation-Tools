@@ -1,5 +1,5 @@
 /* OMSI Presentation Tools
-*  C++20, dear ImGui, SimpleINI
+*  C++17, Windows Forms, SimpleINI
 *  Created by sjain (https://github.com/sjain882)
 *  Issues at https://github.com/sjain882/OMSI-Presentation-Tools/issues
 *  Suggestions at https://github.com/sjain882/OMSI-Presentation-Tools/pulls
@@ -198,7 +198,7 @@ uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 
 
 
-// AoB Pattern Scanner by rev_eng_e
+// AoB Pattern Scanner main method by rev_eng_e
 
 void PatternScanForF4()
 {
@@ -239,8 +239,10 @@ void PatternScanForF4()
 }
 
 
+/* --- OMSI Functions Start --- */
 
 
+// Called on OMSI startup (just before main menu appears)
 
 void __stdcall PluginStart(void* aOwner)
 {
@@ -307,6 +309,20 @@ void __stdcall PluginStart(void* aOwner)
 }
 
 
+/* Each Access*() is called by OMSI EVERY FRAME, for EACH variable/trigger
+*  listed in the OPL, provided the user has currently selected a bus.
+*  ! Keep the code of these routines optimised !
+*  (Note that this means this function could be called multiple times per frame -
+*   lets say we have 15 local variables listed in the OPL - then, this function will
+*   be called 15 times every frame of the game. This can be resource intensive!)
+*  So, can be used like a loop where varindex/trigger is the incrementing value
+*  (index of the variable/trigger being passed in the current call from the OPL list).
+*  The easiest way to understand what variable is currently being called is to ingest all
+*  variables/triggers into a list with listName[varindex] = (float)*value; and then
+*  reference values from the list with the same index as listed in the OPL, e.g.,
+*  listName[0] is the first variable/trigger listed in the OPL file.
+*/
+
 void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write)
 {
     if (!hasPatternScanned) {
@@ -328,6 +344,9 @@ void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool*
 {
 }
 
+
+// Called on OMSI quit (when the user clicks "Yes" on the confirmation)
+
 void __stdcall PluginFinalize()
 {
     std::cout << "Patching done, closing console & process handle";
@@ -336,3 +355,4 @@ void __stdcall PluginFinalize()
 }
 
 
+/* --- OMSI Functions End --- */

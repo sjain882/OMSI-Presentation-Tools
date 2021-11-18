@@ -97,8 +97,10 @@ Currently in very early stages.
 ‎
 ## Thanks to:
 
-- **[rev_eng_e](https://github.com/rev-eng-e)** - Array of Byte (AoB) pattern scanner code
+- **[rev_eng_e](https://github.com/rev-eng-e)** - Array of Byte (AoB) pattern scanner & execution timer code
 
 - **[win32kbase / Wolfie](https://github.com/win32kbase)** - assistance with reverse engineering of OMSI executable
 
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
+
+- The **[SimpleINI](https://github.com/brofield/simpleini)** project for a simple initialisation file library
