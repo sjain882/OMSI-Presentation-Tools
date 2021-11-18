@@ -290,9 +290,9 @@ namespace OMSIPresToolsCLR {
 				static_cast<System::Byte>(0)));
 			this->label10->Location = System::Drawing::Point(26, 243);
 			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(359, 15);
+			this->label10->Size = System::Drawing::Size(369, 15);
 			this->label10->TabIndex = 21;
-			this->label10->Text = L"Please keep other games closed while OMSI && OPT are running!";
+			this->label10->Text = L"Please keep other games closed while OMSI 2 && OPT are running!";
 			this->label10->Click += gcnew System::EventHandler(this, &MyForm::label10_Click);
 			// 
 			// linkLabel4
