@@ -1,6 +1,6 @@
 # OMSI Telemetry
 
-![SCREENSHOT](https://raw.githubusercontent.com/sjain882/OMSI-Presentation-Tools/main/Preview.png)
+![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Preview.png?raw=true)
 
 <div align="center">
 
@@ -84,7 +84,7 @@ Assorted tools to aid the creation of screenshots & videos for [OMSI 2](https://
 ‎
 ## Changelog of updates:
 
-###### `v0.1.0 alpha`:
+###### v0.1.0 alpha:
 
 - Initial release
 
