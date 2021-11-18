@@ -19,16 +19,16 @@ Currently in very early stages.
 ‎
 ## Features:
 
-- Ability to change the FOV (Field-of-View) of the Free Map (F4) Camera (1.0-150.0°)
+- Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera (1.0-150.0°)
 
 ‎
 ## Planned features (hopefully):
 
-- Ability to change the FOV, angles, roll & positioning of all cameras in the game scene
+- Ability to toggle overriding of the FOV, angles, roll & positioning of all cameras present in the game scene
 - Ability to save modified camera attributes to `*.bus` & `*.ovh` files
 - Ability to use the F4 camera as a free-roam/look camera via D3D9 Matrix manipulation
 - Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
-- Ability to toggle override of bus presentation variables such as dirt, wetness, etc
+- Ability to toggle overriding of bus presentation variables such as dirt, wetness, etc
 - Ability to spawn several morphable & movable chromakeys & toggle between red, blue & green colours
 - (Likely never) TrackIR integration for any free roam camera, if achieved
 - (Likely never) move all UI into a fully compatible ImGui overlay directly in OMSI 2
@@ -36,7 +36,7 @@ Currently in very early stages.
 ‎
 ## Important!
 
-- Due to the nature of this app, it is possible some game anti-cheats will flag this software. 
+- Due to the nature of this tool, it is possible some game anti-cheats will flag this software. 
 
 - Thus, **please ensure you keep all other games closed while running OMSI 2 with OMSI Presentation Tools, especially if they have an anti-cheat.** 
 
@@ -82,13 +82,6 @@ Currently in very early stages.
 
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
-
-‎
-## Changelog of updates:
-
-###### v0.1.0 alpha:
-
-- Initial release
 
 ‎
 ## Thanks to:
