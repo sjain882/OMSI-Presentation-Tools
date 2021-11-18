@@ -66,7 +66,7 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::Label^ label10;
 	private: System::Windows::Forms::LinkLabel^ linkLabel4;
 	private: System::Windows::Forms::PictureBox^ pictureBox2;
-	private: System::Windows::Forms::Label^ label11;
+
 	private: System::Windows::Forms::PictureBox^ pictureBox3;
 	private: System::Windows::Forms::LinkLabel^ linkLabel5;
 
@@ -107,7 +107,6 @@ namespace OMSIPresToolsCLR {
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->linkLabel4 = (gcnew System::Windows::Forms::LinkLabel());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->label11 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->linkLabel5 = (gcnew System::Windows::Forms::LinkLabel());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
@@ -119,7 +118,7 @@ namespace OMSIPresToolsCLR {
 			// 
 			// trackBar1
 			// 
-			this->trackBar1->Location = System::Drawing::Point(16, 130);
+			this->trackBar1->Location = System::Drawing::Point(23, 127);
 			this->trackBar1->Maximum = 50;
 			this->trackBar1->Name = L"trackBar1";
 			this->trackBar1->Size = System::Drawing::Size(385, 45);
@@ -128,7 +127,7 @@ namespace OMSIPresToolsCLR {
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
-			this->checkBox1->Location = System::Drawing::Point(108, 77);
+			this->checkBox1->Location = System::Drawing::Point(108, 73);
 			this->checkBox1->Name = L"checkBox1";
 			this->checkBox1->Size = System::Drawing::Size(65, 17);
 			this->checkBox1->TabIndex = 1;
@@ -140,12 +139,13 @@ namespace OMSIPresToolsCLR {
 			// 
 			this->numericUpDown1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->numericUpDown1->DecimalPlaces = 1;
-			this->numericUpDown1->Location = System::Drawing::Point(256, 74);
+			this->numericUpDown1->Location = System::Drawing::Point(256, 70);
 			this->numericUpDown1->Name = L"numericUpDown1";
 			this->numericUpDown1->Size = System::Drawing::Size(60, 20);
 			this->numericUpDown1->TabIndex = 5;
 			this->numericUpDown1->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4500, 0, 0, 131072 });
+			this->numericUpDown1->ValueChanged += gcnew System::EventHandler(this, &MyForm::numericUpDown1_ValueChanged);
 			// 
 			// label2
 			// 
@@ -171,7 +171,7 @@ namespace OMSIPresToolsCLR {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(20, 162);
+			this->label3->Location = System::Drawing::Point(26, 159);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(22, 13);
 			this->label3->TabIndex = 10;
@@ -181,7 +181,7 @@ namespace OMSIPresToolsCLR {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(371, 162);
+			this->label5->Location = System::Drawing::Point(379, 159);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(34, 13);
 			this->label5->TabIndex = 11;
@@ -191,7 +191,7 @@ namespace OMSIPresToolsCLR {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(218, 77);
+			this->label1->Location = System::Drawing::Point(218, 73);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(32, 13);
 			this->label1->TabIndex = 20;
@@ -201,7 +201,7 @@ namespace OMSIPresToolsCLR {
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(169, 406);
+			this->label9->Location = System::Drawing::Point(169, 381);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(58, 13);
 			this->label9->TabIndex = 18;
@@ -211,7 +211,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel3
 			// 
 			this->linkLabel3->AutoSize = true;
-			this->linkLabel3->Location = System::Drawing::Point(223, 406);
+			this->linkLabel3->Location = System::Drawing::Point(223, 381);
 			this->linkLabel3->Name = L"linkLabel3";
 			this->linkLabel3->Size = System::Drawing::Size(159, 13);
 			this->linkLabel3->TabIndex = 19;
@@ -222,7 +222,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel2
 			// 
 			this->linkLabel2->AutoSize = true;
-			this->linkLabel2->Location = System::Drawing::Point(225, 382);
+			this->linkLabel2->Location = System::Drawing::Point(225, 357);
 			this->linkLabel2->Name = L"linkLabel2";
 			this->linkLabel2->Size = System::Drawing::Size(28, 13);
 			this->linkLabel2->TabIndex = 17;
@@ -233,7 +233,7 @@ namespace OMSIPresToolsCLR {
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(171, 382);
+			this->label8->Location = System::Drawing::Point(171, 357);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(58, 13);
 			this->label8->TabIndex = 16;
@@ -243,7 +243,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel1
 			// 
 			this->linkLabel1->AutoSize = true;
-			this->linkLabel1->Location = System::Drawing::Point(243, 358);
+			this->linkLabel1->Location = System::Drawing::Point(243, 333);
 			this->linkLabel1->Name = L"linkLabel1";
 			this->linkLabel1->Size = System::Drawing::Size(38, 13);
 			this->linkLabel1->TabIndex = 12;
@@ -253,7 +253,7 @@ namespace OMSIPresToolsCLR {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(171, 358);
+			this->label7->Location = System::Drawing::Point(171, 333);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(78, 13);
 			this->label7->TabIndex = 14;
@@ -265,7 +265,7 @@ namespace OMSIPresToolsCLR {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(169, 328);
+			this->label6->Location = System::Drawing::Point(169, 303);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(186, 20);
 			this->label6->TabIndex = 13;
@@ -275,7 +275,7 @@ namespace OMSIPresToolsCLR {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(37, 328);
+			this->pictureBox1->Location = System::Drawing::Point(37, 303);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(101, 90);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -288,7 +288,7 @@ namespace OMSIPresToolsCLR {
 			this->label10->AutoSize = true;
 			this->label10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label10->Location = System::Drawing::Point(26, 243);
+			this->label10->Location = System::Drawing::Point(30, 239);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(369, 15);
 			this->label10->TabIndex = 21;
@@ -300,7 +300,7 @@ namespace OMSIPresToolsCLR {
 			this->linkLabel4->AutoSize = true;
 			this->linkLabel4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->linkLabel4->Location = System::Drawing::Point(52, 215);
+			this->linkLabel4->Location = System::Drawing::Point(56, 211);
 			this->linkLabel4->Name = L"linkLabel4";
 			this->linkLabel4->Size = System::Drawing::Size(204, 15);
 			this->linkLabel4->TabIndex = 22;
@@ -310,29 +310,17 @@ namespace OMSIPresToolsCLR {
 			// pictureBox2
 			// 
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(27, 212);
+			this->pictureBox2->Location = System::Drawing::Point(31, 208);
 			this->pictureBox2->Name = L"pictureBox2";
 			this->pictureBox2->Size = System::Drawing::Size(24, 23);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureBox2->TabIndex = 23;
 			this->pictureBox2->TabStop = false;
 			// 
-			// label11
-			// 
-			this->label11->AutoSize = true;
-			this->label11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label11->Location = System::Drawing::Point(26, 268);
-			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(383, 15);
-			this->label11->TabIndex = 24;
-			this->label11->Text = L"Will break if multiple instances of OMSI 2 are running simultaneously.";
-			this->label11->Click += gcnew System::EventHandler(this, &MyForm::label11_Click);
-			// 
 			// pictureBox3
 			// 
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(270, 214);
+			this->pictureBox3->Location = System::Drawing::Point(281, 210);
 			this->pictureBox3->Name = L"pictureBox3";
 			this->pictureBox3->Size = System::Drawing::Size(20, 18);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -344,7 +332,7 @@ namespace OMSIPresToolsCLR {
 			this->linkLabel5->AutoSize = true;
 			this->linkLabel5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->linkLabel5->Location = System::Drawing::Point(291, 215);
+			this->linkLabel5->Location = System::Drawing::Point(302, 211);
 			this->linkLabel5->Name = L"linkLabel5";
 			this->linkLabel5->Size = System::Drawing::Size(94, 15);
 			this->linkLabel5->TabIndex = 26;
@@ -355,10 +343,9 @@ namespace OMSIPresToolsCLR {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(431, 455);
+			this->ClientSize = System::Drawing::Size(431, 426);
 			this->Controls->Add(this->linkLabel5);
 			this->Controls->Add(this->pictureBox3);
-			this->Controls->Add(this->label11);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->linkLabel4);
 			this->Controls->Add(this->label10);
@@ -429,6 +416,8 @@ private: System::Void label10_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void label11_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void label12_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void numericUpDown1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
