@@ -37,8 +37,8 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::TrackBar^ trackBar1;
 	protected:
 	private: System::Windows::Forms::CheckBox^ checkBox1;
-	private: System::Windows::Forms::RadioButton^ radioButton1;
-	private: System::Windows::Forms::RadioButton^ radioButton2;
+
+
 	private: System::Windows::Forms::NumericUpDown^ numericUpDown1;
 
 	private: System::Windows::Forms::Label^ label2;
@@ -63,6 +63,10 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::LinkLabel^ linkLabel4;
+	private: System::Windows::Forms::PictureBox^ pictureBox2;
+
 
 
 	private:
@@ -81,8 +85,6 @@ namespace OMSIPresToolsCLR {
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
 			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
 			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
@@ -97,14 +99,18 @@ namespace OMSIPresToolsCLR {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->linkLabel4 = (gcnew System::Windows::Forms::LinkLabel());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// trackBar1
 			// 
-			this->trackBar1->Location = System::Drawing::Point(16, 127);
+			this->trackBar1->Location = System::Drawing::Point(16, 130);
 			this->trackBar1->Maximum = 50;
 			this->trackBar1->Name = L"trackBar1";
 			this->trackBar1->Size = System::Drawing::Size(385, 45);
@@ -113,7 +119,7 @@ namespace OMSIPresToolsCLR {
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
-			this->checkBox1->Location = System::Drawing::Point(23, 79);
+			this->checkBox1->Location = System::Drawing::Point(108, 81);
 			this->checkBox1->Name = L"checkBox1";
 			this->checkBox1->Size = System::Drawing::Size(65, 17);
 			this->checkBox1->TabIndex = 1;
@@ -121,34 +127,11 @@ namespace OMSIPresToolsCLR {
 			this->checkBox1->UseVisualStyleBackColor = true;
 			this->checkBox1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox1_CheckedChanged);
 			// 
-			// radioButton1
-			// 
-			this->radioButton1->AutoSize = true;
-			this->radioButton1->Location = System::Drawing::Point(151, 65);
-			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(81, 17);
-			this->radioButton1->TabIndex = 3;
-			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"Slider Mode";
-			this->radioButton1->UseVisualStyleBackColor = true;
-			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged);
-			// 
-			// radioButton2
-			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(151, 88);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(107, 17);
-			this->radioButton2->TabIndex = 4;
-			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Raw Value Mode";
-			this->radioButton2->UseVisualStyleBackColor = true;
-			// 
 			// numericUpDown1
 			// 
 			this->numericUpDown1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->numericUpDown1->DecimalPlaces = 1;
-			this->numericUpDown1->Location = System::Drawing::Point(341, 76);
+			this->numericUpDown1->Location = System::Drawing::Point(256, 78);
 			this->numericUpDown1->Name = L"numericUpDown1";
 			this->numericUpDown1->Size = System::Drawing::Size(60, 20);
 			this->numericUpDown1->TabIndex = 5;
@@ -179,17 +162,17 @@ namespace OMSIPresToolsCLR {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(20, 160);
+			this->label3->Location = System::Drawing::Point(20, 162);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(22, 13);
 			this->label3->TabIndex = 10;
-			this->label3->Text = L"0.1";
+			this->label3->Text = L"1.0";
 			this->label3->Click += gcnew System::EventHandler(this, &MyForm::label3_Click);
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(371, 159);
+			this->label5->Location = System::Drawing::Point(371, 162);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(34, 13);
 			this->label5->TabIndex = 11;
@@ -199,7 +182,7 @@ namespace OMSIPresToolsCLR {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(303, 79);
+			this->label1->Location = System::Drawing::Point(218, 81);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(32, 13);
 			this->label1->TabIndex = 20;
@@ -209,7 +192,7 @@ namespace OMSIPresToolsCLR {
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(178, 288);
+			this->label9->Location = System::Drawing::Point(169, 374);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(58, 13);
 			this->label9->TabIndex = 18;
@@ -219,7 +202,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel3
 			// 
 			this->linkLabel3->AutoSize = true;
-			this->linkLabel3->Location = System::Drawing::Point(232, 288);
+			this->linkLabel3->Location = System::Drawing::Point(223, 374);
 			this->linkLabel3->Name = L"linkLabel3";
 			this->linkLabel3->Size = System::Drawing::Size(159, 13);
 			this->linkLabel3->TabIndex = 19;
@@ -230,7 +213,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel2
 			// 
 			this->linkLabel2->AutoSize = true;
-			this->linkLabel2->Location = System::Drawing::Point(234, 264);
+			this->linkLabel2->Location = System::Drawing::Point(225, 350);
 			this->linkLabel2->Name = L"linkLabel2";
 			this->linkLabel2->Size = System::Drawing::Size(46, 13);
 			this->linkLabel2->TabIndex = 17;
@@ -241,7 +224,7 @@ namespace OMSIPresToolsCLR {
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(180, 264);
+			this->label8->Location = System::Drawing::Point(171, 350);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(58, 13);
 			this->label8->TabIndex = 16;
@@ -251,7 +234,7 @@ namespace OMSIPresToolsCLR {
 			// linkLabel1
 			// 
 			this->linkLabel1->AutoSize = true;
-			this->linkLabel1->Location = System::Drawing::Point(243, 240);
+			this->linkLabel1->Location = System::Drawing::Point(243, 326);
 			this->linkLabel1->Name = L"linkLabel1";
 			this->linkLabel1->Size = System::Drawing::Size(38, 13);
 			this->linkLabel1->TabIndex = 12;
@@ -261,11 +244,11 @@ namespace OMSIPresToolsCLR {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(180, 240);
+			this->label7->Location = System::Drawing::Point(171, 326);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(69, 13);
+			this->label7->Size = System::Drawing::Size(78, 13);
 			this->label7->TabIndex = 14;
-			this->label7->Text = L"v0.1 alpha • ";
+			this->label7->Text = L"v0.1.0 alpha • ";
 			this->label7->Click += gcnew System::EventHandler(this, &MyForm::label7_Click);
 			// 
 			// label6
@@ -273,7 +256,7 @@ namespace OMSIPresToolsCLR {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(178, 210);
+			this->label6->Location = System::Drawing::Point(169, 296);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(186, 20);
 			this->label6->TabIndex = 13;
@@ -283,7 +266,7 @@ namespace OMSIPresToolsCLR {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(46, 211);
+			this->pictureBox1->Location = System::Drawing::Point(37, 296);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(101, 90);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -291,11 +274,48 @@ namespace OMSIPresToolsCLR {
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
 			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label10->Location = System::Drawing::Point(34, 237);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(359, 15);
+			this->label10->TabIndex = 21;
+			this->label10->Text = L"Please keep other games closed while OMSI && OPT are running!";
+			this->label10->Click += gcnew System::EventHandler(this, &MyForm::label10_Click);
+			// 
+			// linkLabel4
+			// 
+			this->linkLabel4->AutoSize = true;
+			this->linkLabel4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->linkLabel4->Location = System::Drawing::Point(62, 210);
+			this->linkLabel4->Name = L"linkLabel4";
+			this->linkLabel4->Size = System::Drawing::Size(209, 15);
+			this->linkLabel4->TabIndex = 22;
+			this->linkLabel4->TabStop = true;
+			this->linkLabel4->Text = L"YouTube tutorial && usage instructions";
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
+			this->pictureBox2->Location = System::Drawing::Point(37, 207);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(24, 23);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox2->TabIndex = 23;
+			this->pictureBox2->TabStop = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(431, 332);
+			this->ClientSize = System::Drawing::Size(431, 419);
+			this->Controls->Add(this->pictureBox2);
+			this->Controls->Add(this->linkLabel4);
+			this->Controls->Add(this->label10);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->linkLabel3);
 			this->Controls->Add(this->label9);
@@ -310,8 +330,6 @@ namespace OMSIPresToolsCLR {
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->numericUpDown1);
-			this->Controls->Add(this->radioButton2);
-			this->Controls->Add(this->radioButton1);
 			this->Controls->Add(this->checkBox1);
 			this->Controls->Add(this->trackBar1);
 			this->Name = L"MyForm";
@@ -320,6 +338,7 @@ namespace OMSIPresToolsCLR {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -357,5 +376,8 @@ private: System::Void linkLabel3_LinkClicked(System::Object^ sender, System::Win
 }
 private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
 }
+private: System::Void label10_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+
 };
 }
