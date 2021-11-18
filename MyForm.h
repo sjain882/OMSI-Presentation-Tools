@@ -156,7 +156,7 @@ namespace OMSIPresToolsCLR {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(211, 15);
 			this->label2->TabIndex = 7;
-			this->label2->Text = L"Free Map Camera (F4) FOV Value (°):";
+			this->label2->Text = L"Free Map (F4) Camera FOV Value (°):";
 			this->label2->Click += gcnew System::EventHandler(this, &MyForm::label2_Click);
 			// 
 			// label4
