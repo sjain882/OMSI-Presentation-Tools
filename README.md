@@ -87,6 +87,7 @@ Currently in very early stages.
 ## FAQ:
 
 **Q:** Why didn't you put the GUI in an overlay for OMSI 2 instead of having an extra window floating around?
+
 **A:** OMSI 2 is already a pretty unstable game. A host of compatibility issues with game overlays (NVIDIA Share, Discord, Steam) need to be considered when adding your own overlay. As well as this, users may be using either the stock DX9 game, DX12PY (DX12) or DXVK (Vulkan), and may be using SweetFX, ENB or ReShade combined with either of those. This is simply too many combinations to consider and is not a valuable use of my time.
 
 ‎
