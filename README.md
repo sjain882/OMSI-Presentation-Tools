@@ -44,36 +44,40 @@ Currently in very early stages.
 
 - Although all of these cases are extremely unlikely, if not impossible, please note that **I cannot be held personally responsible (directly or indirectly)** if usage of this tool results in an anti-cheat ban in other games, the breaking of your OMSI install or other software, or loss of data.
 
+- Users will be reminded of all this information via a pop-up message box upon first launch of the tool (only).
+
 ‎
 ## Installation & usage:
 
-1. Click **[here](https://github.com/sjain882/OMSI-Telemetry/releases/latest)** to download the archive with the required files.
+1. If you don't already have them, please install the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)** (instructions are provided there). They are required by this tool.
 
-2. Open the downloaded archive with File Explorer / Windows Explorer.
+2. Click **[here](https://github.com/sjain882/OMSI-Telemetry/releases/latest)** to download the archive with the required files.
 
-3. Ensure OMSI 2 is **not running**.
+3. Open the downloaded archive with File Explorer / Windows Explorer.
 
-4. Open the **_OMSI 2_** folder.
+4. Ensure OMSI 2 is **not running**.
 
-5. Copy the contents inside.
+5. Open the **_OMSI 2_** folder.
 
-6. Open Steam.
+6. Copy the contents inside.
 
-7. Hover your cursor over the **_Library_** tab in the top left, then click on **_Home_**.
+7. Open Steam.
 
-8. Right click on the **_OMSI 2_** entry in the games list on the left.
+8. Hover your cursor over the **_Library_** tab in the top left, then click on **_Home_**.
 
-9. Click on **_Properties..._**.
+9. Right click on the **_OMSI 2_** entry in the games list on the left.
 
-10. Click on the **_Local Files_** option on the left.
+10. Click on **_Properties..._**.
 
-11. Click on _**Browse...**_. A File Explorer / Windows Explorer window will appear.
+11. Click on the **_Local Files_** option on the left.
 
-12. Paste the contents into this location and click **_Replace the files in the destination_** (or similar) if prompted.
+12. Click on _**Browse...**_. A File Explorer / Windows Explorer window will appear.
 
-13. Close any other games you have running, especially if they use anti-cheat software.
+13. Paste the contents into this location and click **_Replace the files in the destination_** (or similar) if prompted.
 
-14. Launch OMSI 2. OMSI Presentation Tools will automatically initialise once OMSI's loading screen appears.
+14. Close any other games you have running, especially if they use anti-cheat software.
+
+15. Launch OMSI 2. OMSI Presentation Tools will automatically initialise once OMSI's loading screen appears.
 
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
 
@@ -98,9 +102,3 @@ Currently in very early stages.
 - **[win32kbase / Wolfie](https://github.com/win32kbase)** - assistance with reverse engineering of OMSI executable
 
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
-
-***
-
-<div align="center">
-Written with ♥️ in C++.
-</div>
