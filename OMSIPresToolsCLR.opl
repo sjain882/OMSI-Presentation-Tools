@@ -1,0 +1,9 @@
+[dll]
+OMSIPresToolsCLR.dll
+
+[varlist]
+1
+Colorscheme
+
+[OPTSettings]
+isFirstLaunch=true

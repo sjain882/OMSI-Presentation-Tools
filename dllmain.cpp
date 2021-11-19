@@ -18,9 +18,11 @@
 #include <TlHelp32.h>
 #include <memoryapi.h>
 #include <winuser.h>
-#include "AOBScanner.h"
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
+#include "lib/AOBScanner.h"
+#include "lib/SimpleIni.h"
+#include "lib/ConvertUTF.h"
 
 
 using namespace System;
@@ -255,6 +257,7 @@ void __stdcall PluginStart(void* aOwner)
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
     OMSIPresToolsCLR::MyForm form;
+    form.MaximizeBox = false;
     Application::Run(% form);
     
 

@@ -27,8 +27,14 @@
     <ClInclude Include="MyForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AOBScanner.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="lib\AOBScanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ConvertUTF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\SimpleIni.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +47,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AOBScanner.cpp">
+    <ClCompile Include="lib\AOBScanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ConvertUTF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
