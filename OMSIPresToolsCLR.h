@@ -1,10 +1,19 @@
 #pragma once
 
-using namespace System;
+//using namespace System;
 
-namespace OMSIPresToolsCLR {
-	public ref class Class1
-	{
-		// TODO: Add your methods for this class here.
-	};
-}
+int f4FovUI;
+float f4FovActValue;
+float f4FovHoldValue;
+bool justEnabledFOVApplication;
+
+
+
+void toggleF4FovEnabled();
+
+//namespace OMSIPresToolsCLR {
+//	public ref class Class1
+//	{
+//		
+//	};
+//}

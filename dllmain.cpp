@@ -5,8 +5,6 @@
 *  Suggestions at https://github.com/sjain882/OMSI-Presentation-Tools/pulls
 */
 
-
-
 // Imports
 
 #include <iostream>
@@ -55,6 +53,9 @@ HANDLE hProcess;
 bool hasPatternScanned;
 char* moduleBaseChar;
 
+// UI
+
+bool isF4FovEnabled;
 
 
 // DLL Entrypoint
@@ -114,6 +115,12 @@ struct TimedExecution
 
 };
 
+
+// UI
+
+void toggleF4FovEnabled() {
+    isF4FovEnabled = !isF4FovEnabled;
+}
 
 
 // GetProcessID
@@ -252,7 +259,11 @@ void __stdcall PluginStart(void* aOwner)
     //	f4fovptr = (float*)0x006E6349;
     //	*(float*)f4fovptr = 19.00;
 
-
+    isF4FovEnabled = false;
+    f4FovUI = 450;
+    f4FovActValue = (float)45.0;
+    f4FovHoldValue = (float)45.0;
+    justEnabledFOVApplication = false;
 
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);

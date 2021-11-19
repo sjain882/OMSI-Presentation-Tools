@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OMSIPresToolsCLR.h"
+
 namespace OMSIPresToolsCLR {
 
 	using namespace System;
@@ -84,15 +86,19 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::LinkLabel^ labelYouTube;
 	private: System::Windows::Forms::PictureBox^ pictureYouTubeIcon;
 	private: System::Windows::Forms::PictureBox^ pictureGitHubIcon;
+	private: System::Windows::Forms::LinkLabel^ labelSteamGuide;
 
 
 
 
 
 
-	private: System::Windows::Forms::LinkLabel^ labelGitHubReadme;
+
 
 	private: System::Windows::Forms::LinkLabel^ labelAboutAuthor;
+	private: System::Windows::Forms::LinkLabel^ labelAboutThanksTo2;
+	private: System::Windows::Forms::Label^ f4fovvaluetmp2;
+
 
 
 
@@ -102,7 +108,7 @@ namespace OMSIPresToolsCLR {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -128,8 +134,10 @@ namespace OMSIPresToolsCLR {
 			this->labelYouTube = (gcnew System::Windows::Forms::LinkLabel());
 			this->pictureYouTubeIcon = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureGitHubIcon = (gcnew System::Windows::Forms::PictureBox());
-			this->labelGitHubReadme = (gcnew System::Windows::Forms::LinkLabel());
+			this->labelSteamGuide = (gcnew System::Windows::Forms::LinkLabel());
 			this->labelAboutAuthor = (gcnew System::Windows::Forms::LinkLabel());
+			this->labelAboutThanksTo2 = (gcnew System::Windows::Forms::LinkLabel());
+			this->f4fovvaluetmp2 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovTrackbar))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovNumericUpDown))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureAboutIcon))->BeginInit();
@@ -139,11 +147,17 @@ namespace OMSIPresToolsCLR {
 			// 
 			// f4FovTrackbar
 			// 
+			this->f4FovTrackbar->AutoSize = false;
+			this->f4FovTrackbar->Enabled = false;
 			this->f4FovTrackbar->Location = System::Drawing::Point(23, 127);
-			this->f4FovTrackbar->Maximum = 50;
+			this->f4FovTrackbar->Maximum = 1500;
+			this->f4FovTrackbar->Minimum = 10;
 			this->f4FovTrackbar->Name = L"f4FovTrackbar";
 			this->f4FovTrackbar->Size = System::Drawing::Size(385, 45);
 			this->f4FovTrackbar->TabIndex = 0;
+			this->f4FovTrackbar->TickFrequency = 30;
+			this->f4FovTrackbar->Value = 450;
+			this->f4FovTrackbar->Scroll += gcnew System::EventHandler(this, &MyForm::f4FovTrackbar_Scroll);
 			// 
 			// f4FovToggle
 			// 
@@ -154,17 +168,24 @@ namespace OMSIPresToolsCLR {
 			this->f4FovToggle->TabIndex = 1;
 			this->f4FovToggle->Text = L"Enabled";
 			this->f4FovToggle->UseVisualStyleBackColor = true;
+			this->f4FovToggle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::f4FovToggle_CheckedChanged);
 			// 
 			// f4FovNumericUpDown
 			// 
 			this->f4FovNumericUpDown->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->f4FovNumericUpDown->DecimalPlaces = 1;
+			this->f4FovNumericUpDown->Enabled = false;
 			this->f4FovNumericUpDown->Location = System::Drawing::Point(256, 70);
+			this->f4FovNumericUpDown->Maximum = System::Decimal(150.0);
+			this->f4FovNumericUpDown->Minimum = System::Decimal(0.9);
 			this->f4FovNumericUpDown->Name = L"f4FovNumericUpDown";
 			this->f4FovNumericUpDown->Size = System::Drawing::Size(60, 20);
 			this->f4FovNumericUpDown->TabIndex = 5;
 			this->f4FovNumericUpDown->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4500, 0, 0, 131072 });
+			//this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4500, 0, 0, 131072 });
+			this->f4FovNumericUpDown->Value = System::Decimal(45.0);
+			this->f4FovNumericUpDown->ValueChanged += gcnew System::EventHandler(this, &MyForm::f4FovNumericUpDown_ValueChanged);
+
 			// 
 			// f4FovTitle
 			// 
@@ -190,7 +211,6 @@ namespace OMSIPresToolsCLR {
 			// 
 			this->f4FovMinLabel->AutoSize = true;
 			this->f4FovMinLabel->Location = System::Drawing::Point(26, 159);
-			//this->f4FovMinLabel->Location = this->f4FovTrackbar->Location.Subtract(System::Drawing::Point(26, 159),System::Drawing::Size(1,1));
 			this->f4FovMinLabel->Name = L"f4FovMinLabel";
 			this->f4FovMinLabel->Size = System::Drawing::Size(22, 13);
 			this->f4FovMinLabel->TabIndex = 10;
@@ -217,16 +237,17 @@ namespace OMSIPresToolsCLR {
 			// labelAboutThanksTo
 			// 
 			this->labelAboutThanksTo->AutoSize = true;
-			this->labelAboutThanksTo->LinkArea = System::Windows::Forms::LinkArea(11, 30);
+			this->labelAboutThanksTo->LinkArea = System::Windows::Forms::LinkArea(11, 9);
 			this->labelAboutThanksTo->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
 			this->labelAboutThanksTo->Location = System::Drawing::Point(172, 381);
 			this->labelAboutThanksTo->Name = L"labelAboutThanksTo";
-			this->labelAboutThanksTo->Size = System::Drawing::Size(218, 17);
+			this->labelAboutThanksTo->Size = System::Drawing::Size(117, 17);
 			this->labelAboutThanksTo->TabIndex = 19;
 			this->labelAboutThanksTo->TabStop = true;
-			this->labelAboutThanksTo->Text = L"Thanks to: rev_eng_e, win32kbase / wolfie";
+			this->labelAboutThanksTo->Text = L"Thanks to: rev_eng_e,";
 			this->labelAboutThanksTo->UseCompatibleTextRendering = true;
 			this->labelAboutThanksTo->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelAboutThanksTo->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutThanksTo_LinkClicked);
 			// 
 			// labelAboutVersionGithub
 			// 
@@ -241,6 +262,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
 			this->labelAboutVersionGithub->UseCompatibleTextRendering = true;
 			this->labelAboutVersionGithub->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelAboutVersionGithub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutVersionGithub_LinkClicked);
 			// 
 			// labelAboutTitle
 			// 
@@ -301,26 +323,27 @@ namespace OMSIPresToolsCLR {
 			// pictureGitHubIcon
 			// 
 			this->pictureGitHubIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureGitHubIcon.Image")));
-			this->pictureGitHubIcon->Location = System::Drawing::Point(281, 210);
+			this->pictureGitHubIcon->Location = System::Drawing::Point(281, 207);
 			this->pictureGitHubIcon->Name = L"pictureGitHubIcon";
-			this->pictureGitHubIcon->Size = System::Drawing::Size(20, 18);
+			this->pictureGitHubIcon->Size = System::Drawing::Size(20, 27);
 			this->pictureGitHubIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureGitHubIcon->TabIndex = 25;
 			this->pictureGitHubIcon->TabStop = false;
 			// 
-			// labelGitHubReadme
+			// labelSteamGuide
 			// 
-			this->labelGitHubReadme->AutoSize = true;
-			this->labelGitHubReadme->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->labelSteamGuide->AutoSize = true;
+			this->labelSteamGuide->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->labelGitHubReadme->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelGitHubReadme->Location = System::Drawing::Point(302, 211);
-			this->labelGitHubReadme->Name = L"labelGitHubReadme";
-			this->labelGitHubReadme->Size = System::Drawing::Size(94, 15);
-			this->labelGitHubReadme->TabIndex = 26;
-			this->labelGitHubReadme->TabStop = true;
-			this->labelGitHubReadme->Text = L"Github Readme";
-			this->labelGitHubReadme->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelSteamGuide->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
+			this->labelSteamGuide->Location = System::Drawing::Point(302, 212);
+			this->labelSteamGuide->Name = L"labelSteamGuide";
+			this->labelSteamGuide->Size = System::Drawing::Size(77, 15);
+			this->labelSteamGuide->TabIndex = 26;
+			this->labelSteamGuide->TabStop = true;
+			this->labelSteamGuide->Text = L"Steam guide";
+			this->labelSteamGuide->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelSteamGuide->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelSteamGuide_LinkClicked);
 			// 
 			// labelAboutAuthor
 			// 
@@ -335,13 +358,40 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutAuthor->Text = L"Created by sjain";
 			this->labelAboutAuthor->UseCompatibleTextRendering = true;
 			this->labelAboutAuthor->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelAboutAuthor->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutAuthor_LinkClicked);
+			// 
+			// labelAboutThanksTo2
+			// 
+			this->labelAboutThanksTo2->AutoSize = true;
+			this->labelAboutThanksTo2->LinkArea = System::Windows::Forms::LinkArea(0, 19);
+			this->labelAboutThanksTo2->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
+			this->labelAboutThanksTo2->Location = System::Drawing::Point(283, 381);
+			this->labelAboutThanksTo2->Name = L"labelAboutThanksTo2";
+			this->labelAboutThanksTo2->Size = System::Drawing::Size(102, 13);
+			this->labelAboutThanksTo2->TabIndex = 27;
+			this->labelAboutThanksTo2->TabStop = true;
+			this->labelAboutThanksTo2->Text = L"win32kbase / wolfie";
+			this->labelAboutThanksTo2->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelAboutThanksTo2->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutThanksTo2_LinkClicked);
+			// 
+			// f4fovvaluetmp2
+			// 
+			this->f4fovvaluetmp2->AutoSize = true;
+			this->f4fovvaluetmp2->Location = System::Drawing::Point(333, 74);
+			this->f4fovvaluetmp2->Name = L"f4fovvaluetmp2";
+			this->f4fovvaluetmp2->Size = System::Drawing::Size(80, 13);
+			this->f4fovvaluetmp2->TabIndex = 28;
+			//this->f4fovvaluetmp2->Text = f4FovUI.ToString();
+			this->f4fovvaluetmp2->Text = "";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(431, 426);
-			this->Controls->Add(this->labelGitHubReadme);
+			this->Controls->Add(this->f4fovvaluetmp2);
+			this->Controls->Add(this->labelAboutThanksTo2);
+			this->Controls->Add(this->labelSteamGuide);
 			this->Controls->Add(this->pictureGitHubIcon);
 			this->Controls->Add(this->pictureYouTubeIcon);
 			this->Controls->Add(this->labelYouTube);
@@ -374,7 +424,69 @@ namespace OMSIPresToolsCLR {
 
 		}
 #pragma endregion
-private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
-}
-};
+	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void labelAboutThanksTo2_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
+		System::Diagnostics::Process::Start("https://github.com/win32kbase");
+	}
+	private: System::Void labelAboutThanksTo_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
+		System::Diagnostics::Process::Start("https://github.com/rev-eng-e");
+
+	}
+	private: System::Void labelAboutAuthor_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
+		System::Diagnostics::Process::Start("https://github.com/sjain882");
+	}
+	private: System::Void labelAboutVersionGithub_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
+		System::Diagnostics::Process::Start("https://github.com/sjain882/OMSI-Presentation-Tools");
+	}
+	private: System::Void labelSteamGuide_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
+		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456");
+
+	}
+	private: System::Void f4FovToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+
+		toggleF4FovEnabled();
+		this->f4FovTrackbar->Enabled = !this->f4FovTrackbar->Enabled;
+		this->f4FovNumericUpDown->Enabled = !this->f4FovNumericUpDown->Enabled;
+
+		if ((this->f4FovTrackbar->Enabled == false) && (this->f4FovNumericUpDown->Enabled == false)) {
+			// Just disabled FOV application
+			justEnabledFOVApplication = false;
+			this->f4FovTrackbar->Value = 450;
+			this->f4FovNumericUpDown->Value = (System::Decimal)45.0;
+			f4FovHoldValue = f4FovActValue;
+			f4FovActValue = 45.0;
+			//MessageBox::Show("1");
+		} else {
+			// Just enabled FOV application
+			justEnabledFOVApplication = true;
+			this->f4FovTrackbar->Value = (int)f4FovHoldValue * 10;
+			this->f4FovNumericUpDown->Value = (System::Decimal)f4FovHoldValue;
+			f4FovActValue = f4FovHoldValue;
+			//MessageBox::Show("2");
+
+		}
+	}
+
+	private: System::Void f4FovTrackbar_Scroll(System::Object^ sender, System::EventArgs^ e) {
+		f4FovActValue = (float)this->f4FovTrackbar->Value / 10;
+		//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+		this->f4FovNumericUpDown->Value = (System::Decimal)this->f4FovTrackbar->Value / 10;
+	}
+
+	private: System::Void f4FovNumericUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (justEnabledFOVApplication) {
+			//MessageBox::Show("3");
+			f4FovActValue = (float)this->f4FovNumericUpDown->Value;
+			//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+			this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10;
+		}
+	}
+
+	};
 }
