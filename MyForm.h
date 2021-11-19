@@ -154,8 +154,8 @@ namespace OMSIPresToolsCLR {
 			this->f4FovTrackbar->Minimum = 10;
 			this->f4FovTrackbar->Name = L"f4FovTrackbar";
 			this->f4FovTrackbar->Size = System::Drawing::Size(385, 45);
-			this->f4FovTrackbar->TabIndex = 0;
-			this->f4FovTrackbar->TickFrequency = 30;
+			this->f4FovTrackbar->TabIndex = 2;
+			this->f4FovTrackbar->TickFrequency = 1500;
 			this->f4FovTrackbar->Value = 450;
 			this->f4FovTrackbar->Scroll += gcnew System::EventHandler(this, &MyForm::f4FovTrackbar_Scroll);
 			// 
@@ -165,7 +165,7 @@ namespace OMSIPresToolsCLR {
 			this->f4FovToggle->Location = System::Drawing::Point(108, 73);
 			this->f4FovToggle->Name = L"f4FovToggle";
 			this->f4FovToggle->Size = System::Drawing::Size(65, 17);
-			this->f4FovToggle->TabIndex = 1;
+			this->f4FovToggle->TabIndex = 0;
 			this->f4FovToggle->Text = L"Enabled";
 			this->f4FovToggle->UseVisualStyleBackColor = true;
 			this->f4FovToggle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::f4FovToggle_CheckedChanged);
@@ -176,16 +176,14 @@ namespace OMSIPresToolsCLR {
 			this->f4FovNumericUpDown->DecimalPlaces = 1;
 			this->f4FovNumericUpDown->Enabled = false;
 			this->f4FovNumericUpDown->Location = System::Drawing::Point(256, 70);
-			this->f4FovNumericUpDown->Maximum = System::Decimal(150.0);
-			this->f4FovNumericUpDown->Minimum = System::Decimal(0.9);
+			this->f4FovNumericUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 150, 0, 0, 0 });
+			this->f4FovNumericUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 9, 0, 0, 65536 });
 			this->f4FovNumericUpDown->Name = L"f4FovNumericUpDown";
 			this->f4FovNumericUpDown->Size = System::Drawing::Size(60, 20);
-			this->f4FovNumericUpDown->TabIndex = 5;
+			this->f4FovNumericUpDown->TabIndex = 1;
 			this->f4FovNumericUpDown->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			//this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4500, 0, 0, 131072 });
-			this->f4FovNumericUpDown->Value = System::Decimal(45.0);
+			this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 45, 0, 0, 0 });
 			this->f4FovNumericUpDown->ValueChanged += gcnew System::EventHandler(this, &MyForm::f4FovNumericUpDown_ValueChanged);
-
 			// 
 			// f4FovTitle
 			// 
@@ -242,7 +240,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo->Location = System::Drawing::Point(172, 381);
 			this->labelAboutThanksTo->Name = L"labelAboutThanksTo";
 			this->labelAboutThanksTo->Size = System::Drawing::Size(117, 17);
-			this->labelAboutThanksTo->TabIndex = 19;
+			this->labelAboutThanksTo->TabIndex = 7;
 			this->labelAboutThanksTo->TabStop = true;
 			this->labelAboutThanksTo->Text = L"Thanks to: rev_eng_e,";
 			this->labelAboutThanksTo->UseCompatibleTextRendering = true;
@@ -257,7 +255,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->Location = System::Drawing::Point(172, 334);
 			this->labelAboutVersionGithub->Name = L"labelAboutVersionGithub";
 			this->labelAboutVersionGithub->Size = System::Drawing::Size(109, 17);
-			this->labelAboutVersionGithub->TabIndex = 12;
+			this->labelAboutVersionGithub->TabIndex = 5;
 			this->labelAboutVersionGithub->TabStop = true;
 			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
 			this->labelAboutVersionGithub->UseCompatibleTextRendering = true;
@@ -302,18 +300,19 @@ namespace OMSIPresToolsCLR {
 			this->labelYouTube->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->labelYouTube->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelYouTube->Location = System::Drawing::Point(56, 211);
+			this->labelYouTube->Location = System::Drawing::Point(54, 215);
 			this->labelYouTube->Name = L"labelYouTube";
 			this->labelYouTube->Size = System::Drawing::Size(204, 15);
-			this->labelYouTube->TabIndex = 22;
+			this->labelYouTube->TabIndex = 3;
 			this->labelYouTube->TabStop = true;
 			this->labelYouTube->Text = L"YouTube tutorial && suggested usage";
 			this->labelYouTube->VisitedLinkColor = System::Drawing::Color::Blue;
+			this->labelYouTube->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelYouTube_LinkClicked);
 			// 
 			// pictureYouTubeIcon
 			// 
 			this->pictureYouTubeIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureYouTubeIcon.Image")));
-			this->pictureYouTubeIcon->Location = System::Drawing::Point(31, 208);
+			this->pictureYouTubeIcon->Location = System::Drawing::Point(29, 212);
 			this->pictureYouTubeIcon->Name = L"pictureYouTubeIcon";
 			this->pictureYouTubeIcon->Size = System::Drawing::Size(24, 23);
 			this->pictureYouTubeIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -323,7 +322,7 @@ namespace OMSIPresToolsCLR {
 			// pictureGitHubIcon
 			// 
 			this->pictureGitHubIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureGitHubIcon.Image")));
-			this->pictureGitHubIcon->Location = System::Drawing::Point(281, 207);
+			this->pictureGitHubIcon->Location = System::Drawing::Point(299, 211);
 			this->pictureGitHubIcon->Name = L"pictureGitHubIcon";
 			this->pictureGitHubIcon->Size = System::Drawing::Size(20, 27);
 			this->pictureGitHubIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -336,10 +335,10 @@ namespace OMSIPresToolsCLR {
 			this->labelSteamGuide->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->labelSteamGuide->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelSteamGuide->Location = System::Drawing::Point(302, 212);
+			this->labelSteamGuide->Location = System::Drawing::Point(320, 216);
 			this->labelSteamGuide->Name = L"labelSteamGuide";
 			this->labelSteamGuide->Size = System::Drawing::Size(77, 15);
-			this->labelSteamGuide->TabIndex = 26;
+			this->labelSteamGuide->TabIndex = 4;
 			this->labelSteamGuide->TabStop = true;
 			this->labelSteamGuide->Text = L"Steam guide";
 			this->labelSteamGuide->VisitedLinkColor = System::Drawing::Color::Blue;
@@ -353,7 +352,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutAuthor->Location = System::Drawing::Point(172, 358);
 			this->labelAboutAuthor->Name = L"labelAboutAuthor";
 			this->labelAboutAuthor->Size = System::Drawing::Size(86, 17);
-			this->labelAboutAuthor->TabIndex = 17;
+			this->labelAboutAuthor->TabIndex = 6;
 			this->labelAboutAuthor->TabStop = true;
 			this->labelAboutAuthor->Text = L"Created by sjain";
 			this->labelAboutAuthor->UseCompatibleTextRendering = true;
@@ -368,7 +367,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo2->Location = System::Drawing::Point(283, 381);
 			this->labelAboutThanksTo2->Name = L"labelAboutThanksTo2";
 			this->labelAboutThanksTo2->Size = System::Drawing::Size(102, 13);
-			this->labelAboutThanksTo2->TabIndex = 27;
+			this->labelAboutThanksTo2->TabIndex = 8;
 			this->labelAboutThanksTo2->TabStop = true;
 			this->labelAboutThanksTo2->Text = L"win32kbase / wolfie";
 			this->labelAboutThanksTo2->VisitedLinkColor = System::Drawing::Color::Blue;
@@ -379,10 +378,8 @@ namespace OMSIPresToolsCLR {
 			this->f4fovvaluetmp2->AutoSize = true;
 			this->f4fovvaluetmp2->Location = System::Drawing::Point(333, 74);
 			this->f4fovvaluetmp2->Name = L"f4fovvaluetmp2";
-			this->f4fovvaluetmp2->Size = System::Drawing::Size(80, 13);
+			this->f4fovvaluetmp2->Size = System::Drawing::Size(0, 13);
 			this->f4fovvaluetmp2->TabIndex = 28;
-			//this->f4fovvaluetmp2->Text = f4FovUI.ToString();
-			this->f4fovvaluetmp2->Text = "";
 			// 
 			// MyForm
 			// 
@@ -448,6 +445,11 @@ namespace OMSIPresToolsCLR {
 		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456");
 
 	}
+
+	private: System::Void labelYouTube_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=pvU8gO66mTs");
+	}
+
 	private: System::Void f4FovToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 
 		toggleF4FovEnabled();
@@ -465,7 +467,7 @@ namespace OMSIPresToolsCLR {
 		} else {
 			// Just enabled FOV application
 			justEnabledFOVApplication = true;
-			this->f4FovTrackbar->Value = (int)f4FovHoldValue * 10;
+			this->f4FovTrackbar->Value = (int)f4FovHoldValue * 10.0;
 			this->f4FovNumericUpDown->Value = (System::Decimal)f4FovHoldValue;
 			f4FovActValue = f4FovHoldValue;
 			//MessageBox::Show("2");
@@ -474,19 +476,25 @@ namespace OMSIPresToolsCLR {
 	}
 
 	private: System::Void f4FovTrackbar_Scroll(System::Object^ sender, System::EventArgs^ e) {
-		f4FovActValue = (float)this->f4FovTrackbar->Value / 10;
+		justScrolled = true;
+		f4FovActValue = (float)this->f4FovTrackbar->Value / 10.0;
 		//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
-		this->f4FovNumericUpDown->Value = (System::Decimal)this->f4FovTrackbar->Value / 10;
+		this->f4FovNumericUpDown->Value = (System::Decimal)this->f4FovTrackbar->Value / (System::Decimal)10.0;
+		this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+		//MessageBox::Show("3");
+		justScrolled = false;
 	}
 
 	private: System::Void f4FovNumericUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		if (justEnabledFOVApplication) {
-			//MessageBox::Show("3");
-			f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-			//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
-			this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10;
+			if (!justScrolled) {
+				f4FovActValue = (float)this->f4FovNumericUpDown->Value;
+				//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+				this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
+				this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+				//MessageBox::Show("4");
+			}
 		}
 	}
-
-	};
+};
 }

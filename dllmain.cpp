@@ -264,6 +264,7 @@ void __stdcall PluginStart(void* aOwner)
     f4FovActValue = (float)45.0;
     f4FovHoldValue = (float)45.0;
     justEnabledFOVApplication = false;
+    justScrolled = false;
 
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);

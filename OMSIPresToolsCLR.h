@@ -6,6 +6,7 @@ int f4FovUI;
 float f4FovActValue;
 float f4FovHoldValue;
 bool justEnabledFOVApplication;
+bool justScrolled;
 
 
 
