@@ -49,14 +49,18 @@ Currently in very early stages.
 ‎
 ## Installation & usage:
 
+Please refer to the **[full indepth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
+
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
+
+Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave a link to this tool in the description so others can enjoy it too?
 
 ‎
 ## Known issues:
 
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
-- Entire UI has hardcoded coordinates and doesn't DPI scale. The way of using C++ Windows Forms here is a little broken in Visual Studio 2019, some methods just aren't recognised in the assembly... will eventually move from C++ WinForms to a simple C++ plugin that calls C# WPF or Windows Forms.
+- Entire UI has hardcoded coordinates and doesn't DPI scale. The way of using C++ Windows Forms here is a little broken in Visual Studio 2019, some methods just aren't recognised in the assembly... will eventually move to ImGui-docking (or failing that - simple C++ plugin that calls C# WPF or C# Windows Forms).
 
 ‎
 ## FAQ:
@@ -68,7 +72,11 @@ Currently in very early stages.
 ‎
 ## Thanks to:
 
-- **[rev_eng_e](https://github.com/rev-eng-e)** - Array of Byte (AoB) pattern scanner & execution timer code
+- **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
+
+- **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
+
+- **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner & timed execution code
 
 - **[win32kbase / Wolfie](https://github.com/win32kbase)** - assistance with reverse engineering of OMSI executable
 
