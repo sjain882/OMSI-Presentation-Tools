@@ -49,36 +49,6 @@ Currently in very early stages.
 ‎
 ## Installation & usage:
 
-1. If you don't already have them, please install the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)** (instructions are provided there). They are required by this tool.
-
-2. Click **[here](https://github.com/sjain882/OMSI-Telemetry/releases/latest)** to download the archive with the required files.
-
-3. Open the downloaded archive with File Explorer / Windows Explorer.
-
-4. Ensure OMSI 2 is **not running**.
-
-5. Open the **_OMSI 2_** folder.
-
-6. Copy the contents inside.
-
-7. Open Steam.
-
-8. Hover your cursor over the **_Library_** tab in the top left, then click on **_Home_**.
-
-9. Right click on the **_OMSI 2_** entry in the games list on the left.
-
-10. Click on **_Properties..._**.
-
-11. Click on the **_Local Files_** option on the left.
-
-12. Click on _**Browse...**_. A File Explorer / Windows Explorer window will appear.
-
-13. Paste the contents into this location and click **_Replace the files in the destination_** (or similar) if prompted.
-
-14. Close any other games you have running, especially if they use anti-cheat software.
-
-15. Launch OMSI 2. OMSI Presentation Tools will automatically initialise once OMSI's loading screen appears.
-
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
 
 ‎
