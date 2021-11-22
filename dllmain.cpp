@@ -238,12 +238,7 @@ void PatternScanForF4()
     BYTE* foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
     //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
     t.endTiming();
-    if (foundAddress == findme)
-    {
-        printf("Found FindMe address from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
-        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
-    }
-    else if (foundAddress)
+    if (foundAddress)
     {
         //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
 
