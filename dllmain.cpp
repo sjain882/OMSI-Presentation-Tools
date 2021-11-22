@@ -216,6 +216,7 @@ void PatternScanForF4()
 {
 
     uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
+    uintptr_t moduleBaseJumpNTHeader = (uintptr_t)moduleBase + 0x00001000;
 
     BYTE* findme = (BYTE*)malloc(100);
     findme[0] = 0x31;
@@ -233,7 +234,7 @@ void PatternScanForF4()
     int returnText = 100;
     int bufferSize = 100;
 
-    AOBScanner scanner(0x00401000, 0xFFFFFFFF);
+    AOBScanner scanner(moduleBaseJumpNTHeader, 0xFFFFFFFF);
     t.startTiming();
     BYTE* foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
     //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
