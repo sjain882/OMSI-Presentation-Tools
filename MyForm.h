@@ -502,10 +502,9 @@ namespace OMSIPresToolsCLR {
 	private: System::Void f4FovTrackbar_Scroll(System::Object^ sender, System::EventArgs^ e) {
 		justScrolled = true;
 		f4FovActValue = (float)this->f4FovTrackbar->Value / 10.0;
-		//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+		this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
 		this->f4FovNumericUpDown->Value = (System::Decimal)this->f4FovTrackbar->Value / (System::Decimal)10.0;
 		this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-		//MessageBox::Show("3");
 		justScrolled = false;
 	}
 
@@ -518,11 +517,9 @@ namespace OMSIPresToolsCLR {
 				if (oldFovValue < newFovValue) {
 
 					f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-					//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+					this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
 					this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
 					this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-					MessageBox::Show("7");
-					//justFixedLowerBound = false;
 				}
 				else if (oldFovValue > newFovValue) {
 
@@ -531,16 +528,12 @@ namespace OMSIPresToolsCLR {
 						this->f4FovNumericUpDown->Value = (System::Decimal)1.0;
 						this->f4FovTrackbar->Value = 10;
 						this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-						MessageBox::Show("8");
-						//justFixedLowerBound = true;
 					}
 					else {
 						f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-						//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+						this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
 						this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
 						this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-						MessageBox::Show("9");
-						//justFixedLowerBound = false;
 					}
 				}
 
