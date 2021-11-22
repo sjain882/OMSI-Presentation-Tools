@@ -24,6 +24,7 @@ Currently in very early stages.
 ‎
 ## Planned features (hopefully):
 
+- Move from Array of Byte scanner model to constructor function hooking for 100% reliable address snagging
 - Ability to toggle overriding of the FOV, angles, roll & positioning of all cameras present in the game scene
 - Ability to save modified camera attributes to `*.bus` & `*.ovh` files
 - Ability to use the F4 camera as a free-roam/look camera via D3D9 Matrix manipulation

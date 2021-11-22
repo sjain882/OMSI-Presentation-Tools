@@ -2,6 +2,7 @@
 
 #include "OMSIPresToolsCLR.h"
 
+
 namespace OMSIPresToolsCLR {
 
 	using namespace System;
@@ -10,6 +11,8 @@ namespace OMSIPresToolsCLR {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
+	System::Decimal oldFovValue;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -186,6 +189,7 @@ namespace OMSIPresToolsCLR {
 			this->f4FovNumericUpDown->TabIndex = 1;
 			this->f4FovNumericUpDown->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 45, 0, 0, 0 });
+			oldFovValue = System::Decimal(gcnew cli::array< System::Int32 >(4) { 45, 0, 0, 0 });
 			this->f4FovNumericUpDown->ValueChanged += gcnew System::EventHandler(this, &MyForm::f4FovNumericUpDown_ValueChanged);
 			// 
 			// f4FovTitle
@@ -509,15 +513,38 @@ namespace OMSIPresToolsCLR {
 		if (justEnabledFOVApplication) {
 			if (!justScrolled) {
 
-				System::Decimal newValue = f4FovNumericUpDown->Value;
+				System::Decimal newFovValue = f4FovNumericUpDown->Value;
 
-				f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-				//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
-				if (f4FovActValue < 1.0) {
+				if (oldFovValue < newFovValue) {
+
+					f4FovActValue = (float)this->f4FovNumericUpDown->Value;
+					//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
 					this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
+					this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+					MessageBox::Show("7");
+					//justFixedLowerBound = false;
 				}
-				this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-				//MessageBox::Show("4");
+				else if (oldFovValue > newFovValue) {
+
+					if (newFovValue < (System::Decimal(2.1))) {
+						f4FovActValue = (float)1.0;
+						this->f4FovNumericUpDown->Value = (System::Decimal)1.0;
+						this->f4FovTrackbar->Value = 10;
+						this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+						MessageBox::Show("8");
+						//justFixedLowerBound = true;
+					}
+					else {
+						f4FovActValue = (float)this->f4FovNumericUpDown->Value;
+						//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+						this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
+						this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+						MessageBox::Show("9");
+						//justFixedLowerBound = false;
+					}
+				}
+
+				oldFovValue = newFovValue;
 			}
 		}
 	}
