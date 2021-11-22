@@ -98,6 +98,8 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::LinkLabel^ labelAboutAuthor;
 	private: System::Windows::Forms::LinkLabel^ labelAboutThanksTo2;
 	private: System::Windows::Forms::Label^ f4fovvaluetmp2;
+	private: System::Windows::Forms::Label^ f4FovStatusLabel;
+
 
 
 
@@ -138,6 +140,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutAuthor = (gcnew System::Windows::Forms::LinkLabel());
 			this->labelAboutThanksTo2 = (gcnew System::Windows::Forms::LinkLabel());
 			this->f4fovvaluetmp2 = (gcnew System::Windows::Forms::Label());
+			this->f4FovStatusLabel = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovTrackbar))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovNumericUpDown))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureAboutIcon))->BeginInit();
@@ -369,7 +372,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo2->Size = System::Drawing::Size(102, 13);
 			this->labelAboutThanksTo2->TabIndex = 8;
 			this->labelAboutThanksTo2->TabStop = true;
-			this->labelAboutThanksTo2->Text = L"win32kbase / wolfie";
+			this->labelAboutThanksTo2->Text = "win32kbase / wolfie";
 			this->labelAboutThanksTo2->VisitedLinkColor = System::Drawing::Color::Blue;
 			this->labelAboutThanksTo2->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutThanksTo2_LinkClicked);
 			// 
@@ -381,11 +384,22 @@ namespace OMSIPresToolsCLR {
 			this->f4fovvaluetmp2->Size = System::Drawing::Size(0, 13);
 			this->f4fovvaluetmp2->TabIndex = 28;
 			// 
+			// f4FovStatusLabel
+			// 
+			this->f4FovStatusLabel->AutoSize = true;
+			this->f4FovStatusLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->f4FovStatusLabel->Location = System::Drawing::Point(212, 263);
+			this->f4FovStatusLabel->Name = L"f4FovStatusLabel";
+			this->f4FovStatusLabel->Size = System::Drawing::Size(0, 13);
+			this->f4FovStatusLabel->TabIndex = 29;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(431, 426);
+			this->Controls->Add(this->f4FovStatusLabel);
 			this->Controls->Add(this->f4fovvaluetmp2);
 			this->Controls->Add(this->labelAboutThanksTo2);
 			this->Controls->Add(this->labelSteamGuide);
@@ -410,7 +424,6 @@ namespace OMSIPresToolsCLR {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"MyForm";
 			this->Text = L"OMSI Presentation Tools";
-			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovTrackbar))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->f4FovNumericUpDown))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureAboutIcon))->EndInit();
@@ -421,8 +434,15 @@ namespace OMSIPresToolsCLR {
 
 		}
 #pragma endregion
-	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+
+
+	void changeLabelText(System::Windows::Forms::Label^ label, std::string newText)
+	{
+		label->Text = gcnew System::String(newText.c_str());
 	}
+
+
+
 	private: System::Void labelAboutThanksTo2_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://github.com/win32kbase");
@@ -488,9 +508,14 @@ namespace OMSIPresToolsCLR {
 	private: System::Void f4FovNumericUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		if (justEnabledFOVApplication) {
 			if (!justScrolled) {
+
+				System::Decimal newValue = f4FovNumericUpDown->Value;
+
 				f4FovActValue = (float)this->f4FovNumericUpDown->Value;
 				//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
-				this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
+				if (f4FovActValue < 1.0) {
+					this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
+				}
 				this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
 				//MessageBox::Show("4");
 			}

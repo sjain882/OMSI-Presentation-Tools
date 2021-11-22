@@ -49,7 +49,7 @@ Currently in very early stages.
 ‎
 ## Installation & usage:
 
-Please refer to the **[full indepth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
+Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
 
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
 

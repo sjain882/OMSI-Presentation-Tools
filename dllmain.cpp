@@ -27,6 +27,7 @@ using namespace System;
 using namespace System::Windows::Forms;
 
 
+
 /* Export standard OMSI functions so OMSI can call them.
 *  This prevents the linker from obfustucating function names.
 *  Also via Project Properties > All Configurations > Linker
@@ -52,6 +53,8 @@ DWORD procId;
 HANDLE hProcess;
 bool hasPatternScanned;
 char* moduleBaseChar;
+
+
 
 // UI
 
@@ -225,21 +228,32 @@ void PatternScanForF4()
     findme[7] = 0xca;
     printf("FindMe address: %p\n", findme);
     TimedExecution t;
+    
+    char buffer [100];
+    int returnText = 100;
+    int bufferSize = 100;
+
     AOBScanner scanner(0x00401000, 0xFFFFFFFF);
     t.startTiming();
-    BYTE* foundAddress = scanner.Scan("05 78 CA 7E 00 0C"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
+    BYTE* foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
     //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
     t.endTiming();
     if (foundAddress == findme)
     {
         printf("Found FindMe address from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
+        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
     }
     else if (foundAddress)
     {
+        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
+
         printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
+        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV again at %p in %.2fs", foundAddress, t.elapsedTime);
+        //returnText = snprintf(buffer, bufferSize, "Found it again!");
     }
     else
     {
+        //returnText = snprintf(buffer, bufferSize, "Didn't find F4 FOV in %.2fs", scanner.RegionEnd, t.elapsedTime);
         printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
     }
 
