@@ -12,7 +12,7 @@ namespace OMSIPresToolsCLR {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	System::Decimal oldFovValue;
+	System::Decimal oldFovValue = (System::Decimal)45.0;
 
 	/// <summary>
 	/// Summary for MyForm

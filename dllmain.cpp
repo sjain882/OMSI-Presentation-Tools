@@ -52,13 +52,15 @@ DWORD procId;
 HANDLE hProcess;
 bool hasPatternScanned;
 char* moduleBaseChar;
-
-
-
-// UI
-
 bool isF4FovEnabled;
+uintptr_t f4FovAddress;
+float newf4FovValue;
 
+
+// SHIT
+
+FILE* fDummy;
+HANDLE mhStdOutput;
 
 // DLL Entrypoint
 
@@ -228,26 +230,29 @@ void PatternScanForF4()
     findme[7] = 0xca;
     printf("FindMe address: %p\n", findme);
     TimedExecution t;
-    
-    char buffer [100];
+    BYTE* foundAddress;
+    char buffer[100];
     int returnText = 100;
     int bufferSize = 100;
 
     AOBScanner scanner(moduleBaseJumpNTHeader, 0xFFFFFFFF);
     t.startTiming();
-    BYTE* foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
+    foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
     //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
     t.endTiming();
     if (foundAddress)
     {
         //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
-
+        hasFoundAddress = true;
         printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
         //returnText = snprintf(buffer, bufferSize, "Found F4 FOV again at %p in %.2fs", foundAddress, t.elapsedTime);
         //returnText = snprintf(buffer, bufferSize, "Found it again!");
+        f4FovAddress = (uintptr_t)foundAddress + 60;
     }
     else
     {
+        //MessageBox::Show("no");
+        hasFoundAddress = false;
         //returnText = snprintf(buffer, bufferSize, "Didn't find F4 FOV in %.2fs", scanner.RegionEnd, t.elapsedTime);
         printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
     }
@@ -272,9 +277,6 @@ void initialiseForm() {
 
 void __stdcall PluginStart(void* aOwner)
 {
-    //	Sleep(5000);
-    //	f4fovptr = (float*)0x006E6349;
-    //	*(float*)f4fovptr = 19.00;
 
     isF4FovEnabled = false;
     f4FovUI = 450;
@@ -283,10 +285,57 @@ void __stdcall PluginStart(void* aOwner)
     justEnabledFOVApplication = false;
     justScrolled = false;
 
-    std::thread initFormThread (initialiseForm);
-    initFormThread.detach();
-
     hasPatternScanned = false;
+    hasFoundAddress = false;
+
+
+    AllocConsole();
+    mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    freopen_s(&fDummy, "CONIN$", "r", stdin);
+    freopen_s(&fDummy, "CONOUT$", "w", stderr);
+    freopen_s(&fDummy, "CONOUT$", "w", stdout);
+    SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
+
+    std::cout << "Waiting for 2 seconds..." << std::endl;
+    Sleep(2000);
+
+    // Get process ID
+    procId = GetProcId(L"Omsi.exe");
+    std::cout << "procId = " << procId << std::endl;
+
+    // Get module base address
+    // OMSI Prefers 0x00400000
+    // cout will show 0x400000
+    uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
+    std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
+    moduleBaseChar = (char*)moduleBase;
+
+    // Get handle to Process
+    hProcess = 0;
+    hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
+
+    // Calculate F4 FOV Initialisation value - NEEDS REWORKING
+    uintptr_t f4FovInitAddr = moduleBase + 0x002E634A;
+    //    uintptr_t f4FovInitAddr = 0x006E634A;
+    std::cout << "f4FovInitAddr = " << "0x" << std::hex << f4FovInitAddr << std::endl;
+
+    // Read fov value
+    int f4FOVInitValue = 45;
+    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
+    std::cout << "f4FovInitValue = " << f4FOVInitValue << std::endl;
+
+    Sleep(5000);
+
+    // Write to it
+    float newf4FovInitValue = 14.235;
+    WriteProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &newf4FovInitValue, sizeof(newf4FovInitValue), nullptr);
+
+    // Read fov value
+    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
+    std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
+
+    std::thread initFormThread(initialiseForm);
+    initFormThread.detach();
 
 }
 
@@ -309,6 +358,11 @@ void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write
 {
     if (!hasPatternScanned) {
         PatternScanForF4();
+;    }
+
+    if (isF4FovEnabled) {
+        newf4FovValue = (float)f4FovActValue;
+        WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &newf4FovValue, sizeof(newf4FovValue), nullptr);
     }
 }
 
