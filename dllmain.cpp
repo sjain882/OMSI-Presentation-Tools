@@ -21,6 +21,7 @@
 #include "lib/AOBScanner.h"
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
+#include <thread>
 
 
 using namespace System;
@@ -47,8 +48,6 @@ extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 
 // Internal
 float* f4fovptr;
-FILE* fDummy;
-HANDLE mhStdOutput;
 DWORD procId;
 HANDLE hProcess;
 bool hasPatternScanned;
@@ -258,6 +257,14 @@ void PatternScanForF4()
 }
 
 
+void initialiseForm() {
+    Application::EnableVisualStyles();
+    Application::SetCompatibleTextRenderingDefault(false);
+    OMSIPresToolsCLR::MyForm form;
+    form.MaximizeBox = false;
+    Application::Run(% form);
+}
+
 /* --- OMSI Functions Start --- */
 
 
@@ -276,60 +283,10 @@ void __stdcall PluginStart(void* aOwner)
     justEnabledFOVApplication = false;
     justScrolled = false;
 
-    Application::EnableVisualStyles();
-    Application::SetCompatibleTextRenderingDefault(false);
-    OMSIPresToolsCLR::MyForm form;
-    form.MaximizeBox = false;
-    Application::Run(% form);
-    
-
-
-    AllocConsole();
-    mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    freopen_s(&fDummy, "CONIN$", "r", stdin);
-    freopen_s(&fDummy, "CONOUT$", "w", stderr);
-    freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
+    std::thread initFormThread (initialiseForm);
+    initFormThread.detach();
 
     hasPatternScanned = false;
-
-    std::cout << "Waiting for 10 seconds..." << std::endl;
-    Sleep(10000);
-
-    // Get process ID
-    procId = GetProcId(L"Omsi.exe");
-    std::cout << "procId = " << procId << std::endl;
-
-    // Get module base address
-    // OMSI Prefers 0x00400000
-    // cout will show 0x400000
-    uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
-    std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
-    moduleBaseChar = (char*)moduleBase;
-
-    // Get handle to Process
-    hProcess = 0;
-    hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
-
-    // Calculate F4 FOV Initialisation value - NEEDS REWORKING
-    uintptr_t f4FovInitAddr = moduleBase + 0x002E634A;
-    //    uintptr_t f4FovInitAddr = 0x006E634A;
-    std::cout << "f4FovInitAddr = " << "0x" << std::hex << f4FovInitAddr << std::endl;
-
-    // Read fov value
-    int f4FOVInitValue = 45;
-    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
-    std::cout << "f4FovInitValue = " << f4FOVInitValue << std::endl;
-
-    Sleep(5000);
-
-    // Write to it
-    float newf4FovInitValue = 14.235;
-    WriteProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &newf4FovInitValue, sizeof(newf4FovInitValue), nullptr);
-
-    // Read fov value
-    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
-    std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
 
 }
 
@@ -375,7 +332,6 @@ void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool*
 void __stdcall PluginFinalize()
 {
     std::cout << "Patching done, closing console & process handle";
-    FreeConsole();
     CloseHandle(hProcess);
 }
 
