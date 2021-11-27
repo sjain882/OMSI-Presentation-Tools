@@ -296,8 +296,8 @@ void __stdcall PluginStart(void* aOwner)
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
     SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
 
-    std::cout << "Waiting for 2 seconds..." << std::endl;
-    Sleep(2000);
+    //std::cout << "Waiting for 2 seconds..." << std::endl;
+    //Sleep(2000);
 
     // Get process ID
     procId = GetProcId(L"Omsi.exe");
@@ -324,7 +324,7 @@ void __stdcall PluginStart(void* aOwner)
     ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
     std::cout << "f4FovInitValue = " << f4FOVInitValue << std::endl;
 
-    Sleep(5000);
+    //Sleep(5000);
 
     // Write to it
     float newf4FovInitValue = 14.235;
@@ -364,7 +364,8 @@ void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write
         newf4FovValue = (float)f4FovActValue;
         WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &newf4FovValue, sizeof(newf4FovValue), nullptr);
     }
-    else {
+    else if (!isF4FovEnabled) {
+        std::cout << "NOT ON";
         float defaultF4FovValue = (float)45.0;
         WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &defaultF4FovValue, sizeof(defaultF4FovValue), nullptr);
     }
@@ -389,7 +390,7 @@ void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool*
 
 void __stdcall PluginFinalize()
 {
-    std::cout << "Patching done, closing console & process handle";
+    std::cout << std::endl << "Patching done, closing console & process handle";
     CloseHandle(hProcess);
 }
 
