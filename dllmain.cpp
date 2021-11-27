@@ -364,6 +364,10 @@ void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write
         newf4FovValue = (float)f4FovActValue;
         WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &newf4FovValue, sizeof(newf4FovValue), nullptr);
     }
+    else {
+        float defaultF4FovValue = (float)45.0;
+        WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &defaultF4FovValue, sizeof(defaultF4FovValue), nullptr);
+    }
 }
 
 void __stdcall AccessStringVariable(unsigned short varindex, wchar_t* value, bool* write)
