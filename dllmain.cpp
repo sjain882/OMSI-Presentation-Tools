@@ -336,7 +336,7 @@ void __stdcall PluginStart(void* aOwner)
 
     std::thread initFormThread(initialiseForm);
     initFormThread.detach();
-
+    
 }
 
 
@@ -358,14 +358,14 @@ void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write
 {
     if (!hasPatternScanned) {
         PatternScanForF4();
-;    }
+        ;
+    }
 
     if (isF4FovEnabled) {
         newf4FovValue = (float)f4FovActValue;
         WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &newf4FovValue, sizeof(newf4FovValue), nullptr);
     }
     else if (!isF4FovEnabled) {
-        std::cout << "NOT ON";
         float defaultF4FovValue = (float)45.0;
         WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &defaultF4FovValue, sizeof(defaultF4FovValue), nullptr);
     }

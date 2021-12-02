@@ -61,7 +61,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
-- Entire UI has hardcoded coordinates and doesn't DPI scale. The way of using C++ Windows Forms here is a little broken in Visual Studio 2019, some methods just aren't recognised in the assembly... will eventually move to ImGui-docking (or failing that - simple C++ plugin that calls C# WPF or C# Windows Forms).
+- Entire UI has hardcoded coordinates and doesn't DPI scale. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
 - v0.1.x alpha: If you set the slider to 1.0 (minimum F4 FOV), then click the down button twice on the raw value box, it will go down to 0.9... I've tried many possible ways of fixing this but none worked, assuming its a WinForms thing. Not going to bother fixing due to (hopefully) moving to ImGui soon.
 
 ‎

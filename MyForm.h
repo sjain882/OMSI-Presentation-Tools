@@ -102,6 +102,7 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::LinkLabel^ labelAboutThanksTo2;
 
 	private: System::Windows::Forms::Label^ f4FovStatusLabel;
+
 	private: System::Windows::Forms::CheckBox^ f4FovToggle;
 	private: System::Windows::Forms::NumericUpDown^ f4FovNumericUpDown;
 	private: System::Windows::Forms::Label^ f4FovTitle;
@@ -339,7 +340,7 @@ namespace OMSIPresToolsCLR {
 			this->f4FovStatusLabel->Name = L"f4FovStatusLabel";
 			this->f4FovStatusLabel->Size = System::Drawing::Size(272, 15);
 			this->f4FovStatusLabel->TabIndex = 29;
-			this->f4FovStatusLabel->Text = L"Controls will be unavailable until you load a map.";
+			this->f4FovStatusLabel->Text = L"Controls will be unavailable until a map is loaded.";
 			// 
 			// f4FovToggle
 			// 
@@ -479,6 +480,7 @@ namespace OMSIPresToolsCLR {
 	private: System::Void labelYouTube_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=pvU8gO66mTs");
 	}
+
 
 	private: System::Void f4FovToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 
