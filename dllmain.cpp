@@ -32,11 +32,15 @@
 #define OMSI_22032_HOOK_RELADDR 0x002E6279
 #define OMSI_23004_HOOK_RELADDR 0x002E6392
 #define OMSI_NEWSITUATION_SIG \x55\x8B\xEC\x51\xB9\x56\x00\x00\x00
-// Starts at 2.2.032, ends at 2.3.004, total range 256 bytes
+// Starts at 2.2.032, ends at 2.3.004, total range 312 bytes
 #define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
 #define OMSI_VERSIONCHECK_END_ADDR 0x0072E118
 #define OMSI_VERSIONCHECK_START_ADDR 0x0032DFE0
 #define OMSI_VERSIONCHECK_END_ADDR 0x0032E118
+#define OMSI_22032_ANSI "32 00 2E 00 32 00 2E 00 30 00 33 00 32"
+#define OMSI_23004_ANSI "32 00 2E 00 33 00 2E 00 30 00 30 00 34"
+#define OMSI_22032_ANSI_HEX "\x32\x00\x2E\x00\x32\x00\x2E\x00\x30\x00\x33\x00\x32"
+#define OMSI_23004_ANSI_HEX "\x32\x00\x2E\x00\x33\x00\x2E\x00\x30\x00\x30\x00\x34"
 
 
 
@@ -114,20 +118,22 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 DWORD WINAPI MainThread(LPVOID param) {
 
+    int gameVersion = DetermineGameVersion();
+
     hookAddress = 0x006E6392;
 
     // We are overwriting 006E6392 and 006E6395
     int hookLength = 5;
 
     /* Where we jump back to at the end of the function we detour to.
-    *  This is the address of the original function we hooked at, plus the length of the jmp instruction.
-    */
+    *  This is the address of the original function we hooked at, plus the length of the jmp instruction. */
     jumpBackAddress = hookAddress + hookLength;
 
-
+    // Perform the hook
     Hook((void*)hookAddress, localFunc, hookLength);
 
-    //FreeLibraryAndExitThread((HMODULE)param, 0);
+    // Not exiting here as this destroys the code to be jumped to
+    // FreeLibraryAndExitThread((HMODULE)param, 0);
 
     return 0;
 
@@ -313,13 +319,82 @@ uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 
 
 
-void initialiseForm() {
+void InitialiseForm() {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
     OMSIPresToolsCLR::MyForm form;
     form.MaximizeBox = false;
     Application::Run(% form);
 }
+
+
+int DetermineGameVersion() {
+
+    // AoB scan the region for 2.2.032 or 2.3.004
+
+    // Return 0 if 22032 or 1 if 23004
+
+    return 0;
+
+}
+
+
+
+
+
+
+void PatternScanForF4()
+{
+
+    uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
+    uintptr_t moduleBaseJumpNTHeader = (uintptr_t)moduleBase + 0x00001000;
+
+    BYTE* findme = (BYTE*)malloc(100);
+    findme[0] = 0x31;
+    findme[1] = rand() % 0xff;
+    findme[2] = 0x33;
+    findme[3] = 0x33;
+    findme[4] = 0x37;
+    findme[5] = rand() % 0xff;
+    findme[6] = 0xab;
+    findme[7] = 0xca;
+    printf("FindMe address: %p\n", findme);
+    TimedExecution t;
+    BYTE* foundAddress;
+    char buffer[100];
+    int returnText = 100;
+    int bufferSize = 100;
+
+    AOBScanner scanner(moduleBaseJumpNTHeader, 0xFFFFFFFF);
+    t.startTiming();
+    foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
+    //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
+    t.endTiming();
+    if (foundAddress)
+    {
+        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
+        hasFoundAddress = true;
+        printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
+        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV again at %p in %.2fs", foundAddress, t.elapsedTime);
+        //returnText = snprintf(buffer, bufferSize, "Found it again!");
+        f4FovAddress = (uintptr_t)foundAddress + 60;
+    }
+    else
+    {
+        //MessageBox::Show("no");
+        hasFoundAddress = false;
+        //returnText = snprintf(buffer, bufferSize, "Didn't find F4 FOV in %.2fs", scanner.RegionEnd, t.elapsedTime);
+        printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
+    }
+
+
+}
+
+
+
+
+
+
 
 
 
@@ -517,7 +592,7 @@ void __stdcall PluginStart(void* aOwner)
     ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
     std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
 
-    std::thread initFormThread(initialiseForm);
+    std::thread initFormThread(InitialiseForm);
     initFormThread.detach();
     
 }

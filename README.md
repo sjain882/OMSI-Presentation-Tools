@@ -19,7 +19,7 @@ Currently in very early stages.
 ‎
 ## Features:
 
-- Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch), latest version v2.3.004 and (theoretically) any future updates
+- Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch) and latest version v2.3.004
 - Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 
 ‎
