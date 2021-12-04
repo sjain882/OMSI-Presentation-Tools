@@ -1,5 +1,5 @@
 /* OMSI Presentation Tools
-*  C++17, Windows Forms, SimpleINI
+*  C++17, Windows Forms
 *  Created by sjain (https://github.com/sjain882)
 *  Issues at https://github.com/sjain882/OMSI-Presentation-Tools/issues
 *  Suggestions at https://github.com/sjain882/OMSI-Presentation-Tools/pulls
@@ -12,17 +12,22 @@
 #include <vector>
 #include <math.h>
 #include <intrin.h>
-#include "windows.h"
+#include <windows.h>
 #include <TlHelp32.h>
 #include <memoryapi.h>
 #include <winuser.h>
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
-#include "lib/AOBScanner.h"
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
 #include <thread>
 #include "lib/ntdll.h"
+
+
+/* Pragma lib includes */
+
+#pragma comment(lib,"user32.lib")
+
 
 
 /* Definitions for TProgMan.NewSituation and game version checks */
@@ -60,11 +65,11 @@ extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 
 
 
-// Foward declaration of hooks
+/* Foward declarations */
 
-void __declspec(naked) localFunc();
 DWORD WINAPI MainThread(LPVOID param);
 bool Hook(void* toHook, void* localFunc, int length);
+int GetGameVersion();
 
 
 
@@ -78,6 +83,7 @@ char* moduleBaseChar;
 bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
+uintptr_t moduleBaseAddress;
 
 
 // Hooking
@@ -116,11 +122,49 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 
 
+
+/* Detoured function */
+
+void __declspec(naked) localFunc() {
+
+    __asm {
+        mov edx, [esi + 0x14]
+        mov f4TCameraStructAddress, edx
+        mov[eax], edx
+        jmp[jumpBackAddress]
+    }
+
+}
+
+
+
 DWORD WINAPI MainThread(LPVOID param) {
 
-    int gameVersion = DetermineGameVersion();
+    // Get OMSI's module base address internally
+    moduleBaseAddress = (uintptr_t)GetModuleHandleA("Omsi.exe");
 
-    hookAddress = 0x006E6392;
+    int gameVersion = GetGameVersion();
+
+    switch (gameVersion)
+    {
+
+        // Failed
+        case 0:
+            MessageBoxA(0, "Falied to determine game version.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+            break;
+
+        // OMSI 2 v2.2.032
+        case 1:
+            hookAddress = moduleBaseAddress + OMSI_22032_HOOK_RELADDR;
+
+        // OMSI 2 v2.3.004
+        case 2:
+            hookAddress = moduleBaseAddress + OMSI_23004_HOOK_RELADDR;
+
+        default:
+            break;
+    }
+
 
     // We are overwriting 006E6392 and 006E6395
     int hookLength = 5;
@@ -140,16 +184,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 }
 
 
-void __declspec(naked) localFunc() {
 
-    __asm {
-        mov edx, [esi + 0x14]
-        mov f4TCameraStructAddress, edx
-        mov[eax], edx
-        jmp[jumpBackAddress]
-    }
-
-}
 
 
 
@@ -182,47 +217,6 @@ bool Hook(void* toHook, void* localFunc, int length) {
     return true;
 
 }
-
-
-
-
-
-// TimedExecution Struct by rev_eng_e
-
-struct TimedExecution
-{
-
-    DWORD ms, s, m, h, startTick, endTick;
-    float elapsedTime;
-
-    void startTiming()
-    {
-        DWORD ticks = startTick = GetTickCount();
-        ms = ticks % 1000;
-        ticks /= 1000;
-        s = ticks % 60;
-        ticks /= 60;
-        m = ticks % 60;
-        ticks /= 60;
-        h = ticks;
-        printf("Started at: %d:%02d:%02d.%03d\n", h, m, s, ms);
-    }
-
-    void endTiming()
-    {
-        DWORD ticks = endTick = GetTickCount();
-        ms = (ticks % 1000);
-        ticks /= 1000;
-        s = (ticks % 60);
-        ticks /= 60;
-        m = (ticks % 60);
-        ticks /= 60;
-        h = ticks;
-        elapsedTime = (float)(endTick - startTick) / 1000.0f;
-        printf("Finished at: %d:%02d:%02d.%03d\n", h, m, s, ms);
-    }
-
-};
 
 
 // UI
@@ -325,10 +319,12 @@ void InitialiseForm() {
     OMSIPresToolsCLR::MyForm form;
     form.MaximizeBox = false;
     Application::Run(% form);
+
+
 }
 
 
-int DetermineGameVersion() {
+int GetGameVersion() {
 
     // AoB scan the region for 2.2.032 or 2.3.004
 
@@ -341,66 +337,9 @@ int DetermineGameVersion() {
 
 
 
-
-
-void PatternScanForF4()
-{
-
-    uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
-    uintptr_t moduleBaseJumpNTHeader = (uintptr_t)moduleBase + 0x00001000;
-
-    BYTE* findme = (BYTE*)malloc(100);
-    findme[0] = 0x31;
-    findme[1] = rand() % 0xff;
-    findme[2] = 0x33;
-    findme[3] = 0x33;
-    findme[4] = 0x37;
-    findme[5] = rand() % 0xff;
-    findme[6] = 0xab;
-    findme[7] = 0xca;
-    printf("FindMe address: %p\n", findme);
-    TimedExecution t;
-    BYTE* foundAddress;
-    char buffer[100];
-    int returnText = 100;
-    int bufferSize = 100;
-
-    AOBScanner scanner(moduleBaseJumpNTHeader, 0xFFFFFFFF);
-    t.startTiming();
-    foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
-    //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
-    t.endTiming();
-    if (foundAddress)
-    {
-        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
-        hasFoundAddress = true;
-        printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
-        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV again at %p in %.2fs", foundAddress, t.elapsedTime);
-        //returnText = snprintf(buffer, bufferSize, "Found it again!");
-        f4FovAddress = (uintptr_t)foundAddress + 60;
-    }
-    else
-    {
-        //MessageBox::Show("no");
-        hasFoundAddress = false;
-        //returnText = snprintf(buffer, bufferSize, "Didn't find F4 FOV in %.2fs", scanner.RegionEnd, t.elapsedTime);
-        printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
-    }
-
-
-}
-
-
-
-
-
-
-
-
-
 /* Pattern scanner */
 
-char* ScanBasic(char* pattern, char* mask, char* begin, intptr_t size)
+char* BasicScan(char* pattern, char* mask, char* begin, intptr_t size)
 {
     intptr_t patternLen = strlen(mask);
 
@@ -424,101 +363,30 @@ char* ScanBasic(char* pattern, char* mask, char* begin, intptr_t size)
 }
 
 
-/* Internal pattern scan wrapper */
+/* Internal pattern scan wrapper which only reports success */
 
-char* ScanInternal(char* pattern, char* mask, char* begin, intptr_t size)
+bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t size)
 {
     char* match{ nullptr };
+    bool found = false;
     MEMORY_BASIC_INFORMATION mbi{};
 
     for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
     {
         if (!VirtualQuery(curr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
 
-        match = ScanBasic(pattern, mask, curr, mbi.RegionSize);
+        match = BasicScan(pattern, mask, curr, mbi.RegionSize);
 
         if (match != nullptr)
         {
+            found = true;
             break;
         }
     }
-    return match;
+    return found;
 }
 
 
-
-/* Convert wchar_t to C style string */
-
-char* TO_CHAR(wchar_t* string)
-{
-    size_t len = wcslen(string) + 1;
-    char* c_string = new char[len];
-    size_t numCharsRead;
-    wcstombs_s(&numCharsRead, c_string, len, string, _TRUNCATE);
-    return c_string;
-}
-
-
-
-/* Get PEB */
-
-PEB* GetPEB()
-{
-#ifdef _WIN64
-    PEB* peb = (PEB*)__readgsqword(0x60);
-
-#else
-    PEB* peb = (PEB*)__readfsdword(0x30);
-#endif
-
-    return peb;
-}
-
-
-/* Get LDREntry */
-
-LDR_DATA_TABLE_ENTRY* GetLDREntry(std::string name)
-{
-    LDR_DATA_TABLE_ENTRY* ldr = nullptr;
-
-    PEB* peb = GetPEB();
-
-    LIST_ENTRY head = peb->Ldr->InMemoryOrderModuleList;
-
-    LIST_ENTRY curr = head;
-
-    while (curr.Flink != head.Blink)
-    {
-        LDR_DATA_TABLE_ENTRY* mod = (LDR_DATA_TABLE_ENTRY*)CONTAINING_RECORD(curr.Flink, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
-
-        if (mod->FullDllName.Buffer)
-        {
-            char* cName = TO_CHAR(mod->BaseDllName.Buffer);
-
-            if (_stricmp(cName, name.c_str()) == 0)
-            {
-                ldr = mod;
-                break;
-            }
-            delete[] cName;
-        }
-        curr = *curr.Flink;
-    }
-    return ldr;
-}
-
-
-
-/* Internal module pattern scan wrapper */
-
-char* ScanModIn(char* pattern, char* mask, std::string modName)
-{
-    LDR_DATA_TABLE_ENTRY* ldr = GetLDREntry(modName);
-
-    char* match = ScanInternal(pattern, mask, (char*)ldr->DllBase, ldr->SizeOfImage);
-
-    return match;
-}
 
 
 
