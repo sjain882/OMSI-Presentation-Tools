@@ -1,9 +1,5 @@
-LIBRARY OMSITelemetry.dll
+LIBRARY OMSIPresToolsCLR.dll
 
 EXPORTS
 PluginStart
-AccessVariable
-AccessStringVariable
-AccessTrigger
-AccessSystemVariable
 PluginFinalize

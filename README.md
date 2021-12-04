@@ -7,8 +7,8 @@
 [![ISSUES](https://img.shields.io/github/issues/degeneratehyperbola/NEPS?color=orange&label=Issues&style=plastic)](https://github.com/degeneratehyperbola/NEPS/issues)
 [![VERSION](https://img.shields.io/github/v/release/degeneratehyperbola/NEPS?color=orange&label=Version&style=plastic)](https://github.com/degeneratehyperbola/NEPS/releases/latest)
 [![LICENSE](https://img.shields.io/badge/License-BSD%203--Clause%20Modified-orange?style=plastic)](https://github.com/degeneratehyperbola/NEPS/blob/master/LICENSE.md)
-[![STAR](https://img.shields.io/badge/%20-Star%20this%20project!-orange?style=plastic)](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png)
 [![YOUTUBE](https://img.shields.io/badge/%20-Trailer-orange?style=plastic)](https://www.youtube.com/watch?v=pvU8gO66mTs)
+[![STEAM](https://img.shields.io/badge/%20-Trailer-orange?style=plastic)](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)
 [![DOWNLOAD](https://img.shields.io/badge/%20-Download-orange?style=plastic)](https://github.com/degeneratehyperbola/NEPS/releases/latest)
 
 Assorted tools to aid the creation of high-quality screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
@@ -19,20 +19,19 @@ Currently in very early stages.
 ‎
 ## Features:
 
-- Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera (1.0-150.0°)
+- Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch), latest version v2.3.004 and (theoretically) any future updates
+- Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 
 ‎
 ## Planned features (hopefully):
 
-- Move from Array of Byte scanner model to constructor function hooking for 100% reliable address snagging
 - Ability to toggle overriding of the FOV, angles, roll & positioning of all cameras present in the game scene
 - Ability to save modified camera attributes to `*.bus` & `*.ovh` files
 - Ability to use the F4 camera as a free-roam/look camera via D3D9 Matrix manipulation
 - Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
-- Ability to toggle overriding of bus presentation variables such as dirt, wetness, etc
+- Ability to toggle overriding of bus presentation variables such as dirt, wetness, physics/roll etc
 - Ability to spawn several morphable & movable chromakeys & toggle between red, blue & green colours
 - (Likely never) TrackIR integration for any free roam camera, if achieved
-- (Likely never) move all UI into a fully compatible ImGui overlay directly in OMSI 2
 
 ‎
 ## Important!
@@ -62,7 +61,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
 - Entire UI has hardcoded coordinates and doesn't DPI scale. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
-- v0.1.x alpha: If you set the slider to 1.0 (minimum F4 FOV), then click the down button twice on the raw value box, it will go down to 0.9... I've tried many possible ways of fixing this but none worked, assuming its a WinForms thing. Not going to bother fixing due to (hopefully) moving to ImGui soon.
+- v0.1.x alpha: If you set the slider to 1.0 (minimum F4 FOV), then click the down button twice on the raw value box, it will go down to 0.9... I've tried many possible ways of fixing this but none worked, assuming its a WinForms thing. Not going to bother fixing due to (hopefully) moving to new UI soon.
 
 ‎
 ## FAQ:
@@ -77,6 +76,8 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 - **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
 
 - **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
+
+- The **[x64dbg](https://github.com/x64dbg)** project for the **[`ntdll.h`](https://github.com/x64dbg/x64dbg/blob/development/src/dbg/ntdll/ntdll.h)** header file
 
 - **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner & timed execution code
 

@@ -22,6 +22,27 @@
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
 #include <thread>
+#include "lib/ntdll.h"
+
+
+/* Definitions for TProgMan.NewSituation */
+
+#define OMSI_22032_HOOK_ADDR 0x006E6279
+#define OMSI_23004_HOOK_ADDR 0x006E6392
+
+#define OMSI_22032_HOOK_RELADDR 0x002E6279
+#define OMSI_23004_HOOK_RELADDR 0x002E6392
+
+#define OMSI_NEWSITUATION_SIG \x55\x8B\xEC\x51\xB9\x56\x00\x00\x00
+
+// Starts at 2.2.032, ends at 2.3.004
+#define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
+#define OMSI_VERSIONCHECK_END_ADDR 0x0072E0E0
+
+
+#define OMSI_VERSIONCHECK_START_ADDR 0x0032DFE0
+#define OMSI_VERSIONCHECK_END_ADDR 0x0032E0E0
+
 
 
 using namespace System;
@@ -36,25 +57,35 @@ using namespace System::Windows::Forms;
 */
 
 extern "C" __declspec(dllexport)void __stdcall PluginStart(void* aOwner);
-extern "C" __declspec(dllexport)void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write);
-extern "C" __declspec(dllexport)void __stdcall AccessStringVariable(unsigned short varindex, wchar_t* value, bool* write);
-extern "C" __declspec(dllexport)void __stdcall AccessTrigger(unsigned short triggerindex, bool* active);
-extern "C" __declspec(dllexport)void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool* write);
 extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 
 
 
-// Instantiate variables
+// Foward declaration of hooks
+
+void __declspec(naked) localFunc();
+DWORD WINAPI MainThread(LPVOID param);
+bool Hook(void* toHook, void* localFunc, int length);
+
+
+
+/* Instantiate variables */
 
 // Internal
 float* f4fovptr;
 DWORD procId;
 HANDLE hProcess;
-bool hasPatternScanned;
 char* moduleBaseChar;
 bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
+
+
+// Hooking
+
+DWORD f4TCameraStructAddress;
+DWORD hookAddress;
+DWORD jumpBackAddress;
 
 
 // SHIT
@@ -62,7 +93,10 @@ float newf4FovValue;
 FILE* fDummy;
 HANDLE mhStdOutput;
 
-// DLL Entrypoint
+
+/* DLL Entrypoint - OMSI will use LoadLibrary to attach
+ * .dll plugins so we can take advantageo of that, skipping PluginStart() 
+ * avoiding any linkage to OMSI's plugin system (potential instability) */
 
 BOOL APIENTRY DllMain(HMODULE hModule,
     DWORD  ul_reason_for_call,
@@ -72,6 +106,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+        CreateThread(0, 0, MainThread, hModule, 0, 0);
+        break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
@@ -79,6 +115,74 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     }
     return TRUE;
 }
+
+
+DWORD WINAPI MainThread(LPVOID param) {
+
+    hookAddress = 0x006E6392;
+
+    // We are overwriting 006E6392 and 006E6395
+    int hookLength = 5;
+
+    /* Where we jump back to at the end of the function we detour to.
+    *  This is the address of the original function we hooked at, plus the length of the jmp instruction.
+    */
+    jumpBackAddress = hookAddress + hookLength;
+
+
+    Hook((void*)hookAddress, localFunc, hookLength);
+
+    //FreeLibraryAndExitThread((HMODULE)param, 0);
+
+    return 0;
+
+}
+
+
+void __declspec(naked) localFunc() {
+
+    __asm {
+        mov edx, [esi + 0x14]
+        mov f4TCameraStructAddress, edx
+        mov[eax], edx
+        jmp[jumpBackAddress]
+    }
+
+}
+
+
+
+bool Hook(void* toHook, void* localFunc, int length) {
+
+    // Stop if there isn't enough space for a jmp to be written
+    if (length < 5) return false;
+
+    // Set memory permissions
+    DWORD oldProtection;
+    VirtualProtect(toHook, length, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+    // Populate the memory with nop for a clean start
+    memset(toHook, 0x90, length);
+
+    // Offset from where we write jmp to destination, including the size of the jmp (5)
+    DWORD relativeAddress = ((DWORD)localFunc - (DWORD)toHook) - 5;
+
+    // Convert toHook to byte pointer and dereference
+    // 0xE9: first opcode of a jmp
+    *(BYTE*)toHook = 0xE9;
+
+    // Convert to DWORD pointer and offset by 1 to avoid overwriting 0xE9
+    *(DWORD*)((DWORD)toHook + 1) = relativeAddress;
+
+    // Temporary variable
+    DWORD tmp;
+    VirtualProtect(toHook, length, oldProtection, &tmp);
+
+    return true;
+
+}
+
+
 
 
 
@@ -211,55 +315,7 @@ uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
 
 
 
-// AoB Pattern Scanner main method by rev_eng_e
 
-void PatternScanForF4()
-{
-
-    uintptr_t moduleBase = (uintptr_t)moduleBaseChar;
-    uintptr_t moduleBaseJumpNTHeader = (uintptr_t)moduleBase + 0x00001000;
-
-    BYTE* findme = (BYTE*)malloc(100);
-    findme[0] = 0x31;
-    findme[1] = rand() % 0xff;
-    findme[2] = 0x33;
-    findme[3] = 0x33;
-    findme[4] = 0x37;
-    findme[5] = rand() % 0xff;
-    findme[6] = 0xab;
-    findme[7] = 0xca;
-    printf("FindMe address: %p\n", findme);
-    TimedExecution t;
-    BYTE* foundAddress;
-    char buffer[100];
-    int returnText = 100;
-    int bufferSize = 100;
-
-    AOBScanner scanner(moduleBaseJumpNTHeader, 0xFFFFFFFF);
-    t.startTiming();
-    foundAddress = scanner.Scan("90 E8 ?? ?? 78 CA 7E 00 0C 72"); // OMSI F4 MapCam TCamera Struct "Header" - Will be found! :)
-    //BYTE *foundAddress=scanner.Scan("31 xx 33 33 37 xx ab ca aa aa aa aa"); //Probably wont be found
-    t.endTiming();
-    if (foundAddress)
-    {
-        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV at %p in %.2fs", foundAddress, t.elapsedTime);
-        hasFoundAddress = true;
-        printf("Found other address containing FindMe's bytes from AOB: %p in %.2f seconds", foundAddress, t.elapsedTime);
-        //returnText = snprintf(buffer, bufferSize, "Found F4 FOV again at %p in %.2fs", foundAddress, t.elapsedTime);
-        //returnText = snprintf(buffer, bufferSize, "Found it again!");
-        f4FovAddress = (uintptr_t)foundAddress + 60;
-    }
-    else
-    {
-        //MessageBox::Show("no");
-        hasFoundAddress = false;
-        //returnText = snprintf(buffer, bufferSize, "Didn't find F4 FOV in %.2fs", scanner.RegionEnd, t.elapsedTime);
-        printf("Did not locate address in scan up to: %p and it took: %.2f seconds", scanner.RegionEnd, t.elapsedTime);
-    }
-
-    hasPatternScanned = true;
-
-}
 
 
 void initialiseForm() {
@@ -269,6 +325,140 @@ void initialiseForm() {
     form.MaximizeBox = false;
     Application::Run(% form);
 }
+
+
+
+/* Pattern scanner */
+
+char* ScanBasic(char* pattern, char* mask, char* begin, intptr_t size)
+{
+    intptr_t patternLen = strlen(mask);
+
+    for (int i = 0; i < size; i++)
+    {
+        bool found = true;
+        for (int j = 0; j < patternLen; j++)
+        {
+            if (mask[j] != '?' && pattern[j] != *(char*)((intptr_t)begin + i + j))
+            {
+                found = false;
+                break;
+            }
+        }
+        if (found)
+        {
+            return (begin + i);
+        }
+    }
+    return nullptr;
+}
+
+
+/* Internal pattern scan wrapper */
+
+char* ScanInternal(char* pattern, char* mask, char* begin, intptr_t size)
+{
+    char* match{ nullptr };
+    MEMORY_BASIC_INFORMATION mbi{};
+
+    for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
+    {
+        if (!VirtualQuery(curr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
+
+        match = ScanBasic(pattern, mask, curr, mbi.RegionSize);
+
+        if (match != nullptr)
+        {
+            break;
+        }
+    }
+    return match;
+}
+
+
+
+/* Convert wchar_t to C style string */
+
+char* TO_CHAR(wchar_t* string)
+{
+    size_t len = wcslen(string) + 1;
+    char* c_string = new char[len];
+    size_t numCharsRead;
+    wcstombs_s(&numCharsRead, c_string, len, string, _TRUNCATE);
+    return c_string;
+}
+
+
+
+/* Get PEB */
+
+PEB* GetPEB()
+{
+#ifdef _WIN64
+    PEB* peb = (PEB*)__readgsqword(0x60);
+
+#else
+    PEB* peb = (PEB*)__readfsdword(0x30);
+#endif
+
+    return peb;
+}
+
+
+/* Get LDREntry */
+
+LDR_DATA_TABLE_ENTRY* GetLDREntry(std::string name)
+{
+    LDR_DATA_TABLE_ENTRY* ldr = nullptr;
+
+    PEB* peb = GetPEB();
+
+    LIST_ENTRY head = peb->Ldr->InMemoryOrderModuleList;
+
+    LIST_ENTRY curr = head;
+
+    while (curr.Flink != head.Blink)
+    {
+        LDR_DATA_TABLE_ENTRY* mod = (LDR_DATA_TABLE_ENTRY*)CONTAINING_RECORD(curr.Flink, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
+
+        if (mod->FullDllName.Buffer)
+        {
+            char* cName = TO_CHAR(mod->BaseDllName.Buffer);
+
+            if (_stricmp(cName, name.c_str()) == 0)
+            {
+                ldr = mod;
+                break;
+            }
+            delete[] cName;
+        }
+        curr = *curr.Flink;
+    }
+    return ldr;
+}
+
+
+
+/* Internal module pattern scan wrapper */
+
+char* ScanModIn(char* pattern, char* mask, std::string modName)
+{
+    LDR_DATA_TABLE_ENTRY* ldr = GetLDREntry(modName);
+
+    char* match = ScanInternal(pattern, mask, (char*)ldr->DllBase, ldr->SizeOfImage);
+
+    return match;
+}
+
+
+
+
+
+
+
+
+
+
 
 /* --- OMSI Functions Start --- */
 
@@ -284,8 +474,6 @@ void __stdcall PluginStart(void* aOwner)
     f4FovHoldValue = (float)45.0;
     justEnabledFOVApplication = false;
     justScrolled = false;
-
-    hasPatternScanned = false;
     hasFoundAddress = false;
 
 
@@ -337,52 +525,6 @@ void __stdcall PluginStart(void* aOwner)
     std::thread initFormThread(initialiseForm);
     initFormThread.detach();
     
-}
-
-
-/* Each Access*() is called by OMSI EVERY FRAME, for EACH variable/trigger
-*  listed in the OPL, provided the user has currently selected a bus.
-*  ! Keep the code of these routines optimised !
-*  (Note that this means this function could be called multiple times per frame -
-*   lets say we have 15 local variables listed in the OPL - then, this function will
-*   be called 15 times every frame of the game. This can be resource intensive!)
-*  So, can be used like a loop where varindex/trigger is the incrementing value
-*  (index of the variable/trigger being passed in the current call from the OPL list).
-*  The easiest way to understand what variable is currently being called is to ingest all
-*  variables/triggers into a list with listName[varindex] = (float)*value; and then
-*  reference values from the list with the same index as listed in the OPL, e.g.,
-*  listName[0] is the first variable/trigger listed in the OPL file.
-*/
-
-void __stdcall AccessVariable(unsigned short varindex, float* value, bool* write)
-{
-    if (!hasPatternScanned) {
-        PatternScanForF4();
-        ;
-    }
-
-    if (isF4FovEnabled) {
-        newf4FovValue = (float)f4FovActValue;
-        WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &newf4FovValue, sizeof(newf4FovValue), nullptr);
-    }
-    else if (!isF4FovEnabled) {
-        float defaultF4FovValue = (float)45.0;
-        WriteProcessMemory(hProcess, (BYTE*)f4FovAddress, &defaultF4FovValue, sizeof(defaultF4FovValue), nullptr);
-    }
-}
-
-void __stdcall AccessStringVariable(unsigned short varindex, wchar_t* value, bool* write)
-{
-}
-
-
-void __stdcall AccessTrigger(unsigned short triggerindex, bool* active)
-{
-}
-
-
-void __stdcall AccessSystemVariable(unsigned short varindex, float* value, bool* write)
-{
 }
 
 
