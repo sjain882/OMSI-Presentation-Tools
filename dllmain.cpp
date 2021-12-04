@@ -86,7 +86,6 @@ char* moduleBaseChar;
 bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
-uintptr_t moduleBaseAddress;
 
 
 // Hooking
@@ -94,6 +93,7 @@ uintptr_t moduleBaseAddress;
 DWORD f4TCameraStructAddress;
 DWORD hookAddress;
 DWORD jumpBackAddress;
+DWORD moduleBaseAddress;
 
 
 // SHIT
@@ -164,7 +164,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 
     // Get OMSI's module base address internally
-    moduleBaseAddress = (uintptr_t)GetModuleHandleA("Omsi.exe");
+    moduleBaseAddress = (DWORD)GetModuleHandleA(NULL);
 
     // Get the game version internally
     int gameVersion = GetGameVersion();
@@ -180,11 +180,13 @@ DWORD WINAPI MainThread(LPVOID param) {
 
         // OMSI 2 v2.2.032
         case 1:
-            hookAddress = moduleBaseAddress + OMSI_22032_HOOK_RELADDR;
+            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
+            break;
 
         // OMSI 2 v2.3.004
         case 2:
-            hookAddress = moduleBaseAddress + OMSI_22032_HOOK_RELADDR;
+            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
+            break;
 
         default:
             break;
@@ -199,7 +201,10 @@ DWORD WINAPI MainThread(LPVOID param) {
     jumpBackAddress = hookAddress + hookLength;
 
     // Perform the hook
-    Hook((void*)hookAddress, localFunc, hookLength);
+    //Hook((void*)hookAddress, localFunc, hookLength);
+    printf("%02x", hookAddress);
+    std::cout << std::endl;
+    printf("%02x", (DWORD)moduleBaseAddress);
 
     // Not exiting here as this destroys the code to be jumped to
     // FreeLibraryAndExitThread((HMODULE)param, 0);
@@ -263,7 +268,7 @@ int GetGameVersion() {
     char Tram_22032 = (char)OMSI_22032_ANSI;
     char Latest_23004 = (char)OMSI_23004_ANSI;
     char mask = (char)ANSI_MASK;
-    char versionSearchStart = (char) (moduleBaseAddress + OMSI_VERSIONCHECK_START_RELADDR);
+    char versionSearchStart = (char) ((DWORD)moduleBaseAddress + (DWORD)OMSI_VERSIONCHECK_START_RELADDR);
     intptr_t versionSearchRegionSize = 312;
 
     scanStatus23032 = InternalScanForGameVersion(&Tram_22032, &mask, &versionSearchStart, versionSearchRegionSize);
