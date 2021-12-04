@@ -71,6 +71,8 @@ extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 DWORD WINAPI MainThread(LPVOID param);
 bool Hook(void* toHook, void* localFunc, int length);
 int GetGameVersion();
+bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t size);
+void InitialiseForm();
 
 
 
@@ -164,14 +166,16 @@ DWORD WINAPI MainThread(LPVOID param) {
     // Get OMSI's module base address internally
     moduleBaseAddress = (uintptr_t)GetModuleHandleA("Omsi.exe");
 
+    // Get the game version internally
     int gameVersion = GetGameVersion();
 
+    // Determine where to hook based off this
     switch (gameVersion)
     {
 
         // Failed
         case 0:
-            MessageBoxA(0, "Falied to determine game version.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+            MessageBoxA(0, "Falied to determine game version.\nQuit and restart OMSI.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
             break;
 
         // OMSI 2 v2.2.032
@@ -180,7 +184,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
         // OMSI 2 v2.3.004
         case 2:
-            hookAddress = moduleBaseAddress + OMSI_23004_HOOK_RELADDR;
+            hookAddress = moduleBaseAddress + OMSI_22032_HOOK_RELADDR;
 
         default:
             break;
@@ -244,35 +248,6 @@ bool Hook(void* toHook, void* localFunc, int length) {
 
 void toggleF4FovEnabled() {
     isF4FovEnabled = !isF4FovEnabled;
-}
-
-
-// GetProcessID
-
-DWORD GetProcId(const wchar_t* procName)
-{
-    DWORD procId = 0;
-    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-    if (hSnap != INVALID_HANDLE_VALUE)
-    {
-        PROCESSENTRY32 procEntry;
-        procEntry.dwSize = sizeof(procEntry);
-
-        if (Process32First(hSnap, &procEntry))
-        {
-            do
-            {
-                if (!_wcsicmp(procEntry.szExeFile, procName))
-                {
-                    procId = procEntry.th32ProcessID;
-                    break;
-                }
-            } while (Process32Next(hSnap, &procEntry));
-        }
-    }
-    CloseHandle(hSnap);
-    return procId;
 }
 
 
