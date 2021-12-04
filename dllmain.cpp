@@ -25,23 +25,18 @@
 #include "lib/ntdll.h"
 
 
-/* Definitions for TProgMan.NewSituation */
+/* Definitions for TProgMan.NewSituation and game version checks */
 
 #define OMSI_22032_HOOK_ADDR 0x006E6279
 #define OMSI_23004_HOOK_ADDR 0x006E6392
-
 #define OMSI_22032_HOOK_RELADDR 0x002E6279
 #define OMSI_23004_HOOK_RELADDR 0x002E6392
-
 #define OMSI_NEWSITUATION_SIG \x55\x8B\xEC\x51\xB9\x56\x00\x00\x00
-
-// Starts at 2.2.032, ends at 2.3.004
+// Starts at 2.2.032, ends at 2.3.004, total range 256 bytes
 #define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
-#define OMSI_VERSIONCHECK_END_ADDR 0x0072E0E0
-
-
+#define OMSI_VERSIONCHECK_END_ADDR 0x0072E118
 #define OMSI_VERSIONCHECK_START_ADDR 0x0032DFE0
-#define OMSI_VERSIONCHECK_END_ADDR 0x0032E0E0
+#define OMSI_VERSIONCHECK_END_ADDR 0x0032E118
 
 
 
