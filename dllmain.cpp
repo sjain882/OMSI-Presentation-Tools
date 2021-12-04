@@ -40,10 +40,11 @@
 // Starts at 2.2.032, ends at 2.3.004, total range 312 bytes
 #define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
 #define OMSI_VERSIONCHECK_END_ADDR 0x0072E118
-#define OMSI_VERSIONCHECK_START_ADDR 0x0032DFE0
-#define OMSI_VERSIONCHECK_END_ADDR 0x0032E118
+#define OMSI_VERSIONCHECK_START_RELADDR 0x0032DFE0
+#define OMSI_VERSIONCHECK_END_RELADDR 0x0032E118
 #define OMSI_22032_ANSI "32 00 2E 00 32 00 2E 00 30 00 33 00 32"
 #define OMSI_23004_ANSI "32 00 2E 00 33 00 2E 00 30 00 30 00 34"
+#define ANSI_MASK "xxxxxxxxxxxxx"
 #define OMSI_22032_ANSI_HEX "\x32\x00\x2E\x00\x32\x00\x2E\x00\x30\x00\x33\x00\x32"
 #define OMSI_23004_ANSI_HEX "\x32\x00\x2E\x00\x33\x00\x2E\x00\x30\x00\x30\x00\x34"
 
@@ -139,6 +140,26 @@ void __declspec(naked) localFunc() {
 
 
 DWORD WINAPI MainThread(LPVOID param) {
+
+
+    isF4FovEnabled = false;
+    f4FovUI = 450;
+    f4FovActValue = (float)45.0;
+    f4FovHoldValue = (float)45.0;
+    justEnabledFOVApplication = false;
+    justScrolled = false;
+    hasFoundAddress = false;
+
+    AllocConsole();
+    mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    freopen_s(&fDummy, "CONIN$", "r", stdin);
+    freopen_s(&fDummy, "CONOUT$", "w", stderr);
+    freopen_s(&fDummy, "CONOUT$", "w", stdout);
+    SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
+
+    std::thread initFormThread(InitialiseForm);
+    initFormThread.detach();
+
 
     // Get OMSI's module base address internally
     moduleBaseAddress = (uintptr_t)GetModuleHandleA("Omsi.exe");
@@ -256,81 +277,33 @@ DWORD GetProcId(const wchar_t* procName)
 
 
 
-// Get ModuleBase struct
-
-auto GetModuleBase(DWORD proc_id, const wchar_t* modName)
-{
-    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, proc_id);
-    if (hSnap != INVALID_HANDLE_VALUE)
-    {
-        MODULEENTRY32 modEntry;
-        modEntry.dwSize = sizeof(modEntry);
-        if (Module32First(hSnap, &modEntry))
-        {
-            do
-            {
-                if (!_wcsicmp(modEntry.szModule, modName))
-                {
-                    CloseHandle(hSnap);
-                    return modEntry;
-                }
-            } while (Module32Next(hSnap, &modEntry));
-        }
-    }
-    return MODULEENTRY32();
-}
-
-
-
-// Get address of ModuleBase struct
-
-uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName)
-{
-    uintptr_t modBaseAddr = 0;
-    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
-    if (hSnap != INVALID_HANDLE_VALUE)
-    {
-        MODULEENTRY32 modEntry;
-        modEntry.dwSize = sizeof(modEntry);
-        if (Module32First(hSnap, &modEntry))
-        {
-            do
-            {
-                if (!_wcsicmp(modEntry.szModule, modName))
-                {
-                    modBaseAddr = (uintptr_t)modEntry.modBaseAddr;
-                    break;
-                }
-            } while (Module32Next(hSnap, &modEntry));
-        }
-    }
-    CloseHandle(hSnap);
-    return modBaseAddr;
-}
-
-
-
-
-
-
-void InitialiseForm() {
-    Application::EnableVisualStyles();
-    Application::SetCompatibleTextRenderingDefault(false);
-    OMSIPresToolsCLR::MyForm form;
-    form.MaximizeBox = false;
-    Application::Run(% form);
-
-
-}
 
 
 int GetGameVersion() {
 
-    // AoB scan the region for 2.2.032 or 2.3.004
+    int result = 0;
+    bool scanStatus23032 = false;
+    bool scanStatus23004 = false;
 
-    // Return 0 if 22032 or 1 if 23004
+    char Tram_22032 = (char)OMSI_22032_ANSI;
+    char Latest_23004 = (char)OMSI_23004_ANSI;
+    char mask = (char)ANSI_MASK;
+    char versionSearchStart = (char) (moduleBaseAddress + OMSI_VERSIONCHECK_START_RELADDR);
+    intptr_t versionSearchRegionSize = 312;
 
-    return 0;
+    scanStatus23032 = InternalScanForGameVersion(&Tram_22032, &mask, &versionSearchStart, versionSearchRegionSize);
+
+    if (scanStatus23032) {
+        result = 1;
+    }
+    else {
+        scanStatus23004 = InternalScanForGameVersion(&Latest_23004, &mask, &versionSearchStart, versionSearchRegionSize);
+        if (scanStatus23004) {
+            result = 2;
+        }
+    }
+
+    return result;
 
 }
 
@@ -392,6 +365,14 @@ bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t
 
 
 
+void InitialiseForm() {
+    Application::EnableVisualStyles();
+    Application::SetCompatibleTextRenderingDefault(false);
+    OMSIPresToolsCLR::MyForm form;
+    form.MaximizeBox = false;
+    Application::Run(% form);
+
+}
 
 
 
@@ -404,65 +385,7 @@ bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t
 // Called on OMSI startup (just before main menu appears)
 
 void __stdcall PluginStart(void* aOwner)
-{
-
-    isF4FovEnabled = false;
-    f4FovUI = 450;
-    f4FovActValue = (float)45.0;
-    f4FovHoldValue = (float)45.0;
-    justEnabledFOVApplication = false;
-    justScrolled = false;
-    hasFoundAddress = false;
-
-
-    AllocConsole();
-    mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    freopen_s(&fDummy, "CONIN$", "r", stdin);
-    freopen_s(&fDummy, "CONOUT$", "w", stderr);
-    freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
-
-    //std::cout << "Waiting for 2 seconds..." << std::endl;
-    //Sleep(2000);
-
-    // Get process ID
-    procId = GetProcId(L"Omsi.exe");
-    std::cout << "procId = " << procId << std::endl;
-
-    // Get module base address
-    // OMSI Prefers 0x00400000
-    // cout will show 0x400000
-    uintptr_t moduleBase = GetModuleBaseAddress(procId, L"Omsi.exe");
-    std::cout << "moduleBase = " << "0x" << std::hex << moduleBase << std::endl;
-    moduleBaseChar = (char*)moduleBase;
-
-    // Get handle to Process
-    hProcess = 0;
-    hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
-
-    // Calculate F4 FOV Initialisation value - NEEDS REWORKING
-    uintptr_t f4FovInitAddr = moduleBase + 0x002E634A;
-    //    uintptr_t f4FovInitAddr = 0x006E634A;
-    std::cout << "f4FovInitAddr = " << "0x" << std::hex << f4FovInitAddr << std::endl;
-
-    // Read fov value
-    int f4FOVInitValue = 45;
-    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
-    std::cout << "f4FovInitValue = " << f4FOVInitValue << std::endl;
-
-    //Sleep(5000);
-
-    // Write to it
-    float newf4FovInitValue = 14.235;
-    WriteProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &newf4FovInitValue, sizeof(newf4FovInitValue), nullptr);
-
-    // Read fov value
-    ReadProcessMemory(hProcess, (BYTE*)f4FovInitAddr, &f4FOVInitValue, sizeof(f4FOVInitValue), nullptr);
-    std::cout << "New f4FovInitValue = " << f4FOVInitValue << std::endl;
-
-    std::thread initFormThread(InitialiseForm);
-    initFormThread.detach();
-    
+{    
 }
 
 
