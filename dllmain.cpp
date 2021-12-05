@@ -32,9 +32,9 @@
 
 /* Definitions for TProgMan.NewSituation and game version checks */
 
-#define OMSI_22032_HOOK_ADDR 0x006E6279
+#define OMSI_22032_HOOK_ADDR 0x006E62B8
 #define OMSI_23004_HOOK_ADDR 0x006E6392
-#define OMSI_22032_HOOK_RELADDR 0x002E6279
+#define OMSI_22032_HOOK_RELADDR 0x002E62B8
 #define OMSI_23004_HOOK_RELADDR 0x002E6392
 #define OMSI_NEWSITUATION_SIG \x55\x8B\xEC\x51\xB9\x56\x00\x00\x00
 // Starts at 2.2.032, ends at 2.3.004, total range 312 bytes
@@ -347,7 +347,6 @@ void __stdcall PluginStart(void* aOwner)
 
 void __stdcall PluginFinalize()
 {
-    std::cout << std::endl << "Patching done, closing console & process handle";
     CloseHandle(hProcess);
 }
 
