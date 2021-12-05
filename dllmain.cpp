@@ -18,10 +18,10 @@
 #include <winuser.h>
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
+#include "lib/AOBScanner.h"
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
 #include <thread>
-#include "lib/ntdll.h"
 
 
 /* Pragma lib includes */
@@ -39,9 +39,9 @@
 #define OMSI_NEWSITUATION_SIG \x55\x8B\xEC\x51\xB9\x56\x00\x00\x00
 // Starts at 2.2.032, ends at 2.3.004, total range 312 bytes
 #define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
-#define OMSI_VERSIONCHECK_END_ADDR 0x0072E118
+#define OMSI_VERSIONCHECK_END_ADDR 0x0072E12F
 #define OMSI_VERSIONCHECK_START_RELADDR 0x0032DFE0
-#define OMSI_VERSIONCHECK_END_RELADDR 0x0032E118
+#define OMSI_VERSIONCHECK_END_RELADDR 0x0032E12F
 #define OMSI_22032_ANSI "32 00 2E 00 32 00 2E 00 30 00 33 00 32"
 #define OMSI_23004_ANSI "32 00 2E 00 33 00 2E 00 30 00 30 00 34"
 #define ANSI_MASK "xxxxxxxxxxxxx"
@@ -71,8 +71,8 @@ extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 DWORD WINAPI MainThread(LPVOID param);
 bool Hook(void* toHook, void* localFunc, int length);
 int GetGameVersion();
-bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t size);
 void InitialiseForm();
+bool ScanForGameVersion(const char* searchString);
 
 
 
@@ -94,6 +94,9 @@ DWORD f4TCameraStructAddress;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
+
+DWORD versionSearchStart;
+char* versionSearchStartChar;
 
 
 // SHIT
@@ -167,15 +170,16 @@ DWORD WINAPI MainThread(LPVOID param) {
     moduleBaseAddress = (DWORD)GetModuleHandleA(NULL);
 
     // Get the game version internally
-    int gameVersion = GetGameVersion();
+    int gameVersionStatus = GetGameVersion();
 
     // Determine where to hook based off this
-    switch (gameVersion)
+    switch (gameVersionStatus)
     {
 
         // Failed
         case 0:
             MessageBoxA(0, "Falied to determine game version.\nQuit and restart OMSI.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+            // TODO: Disable controls permanently
             break;
 
         // OMSI 2 v2.2.032
@@ -193,23 +197,26 @@ DWORD WINAPI MainThread(LPVOID param) {
     }
 
 
-    // We are overwriting 006E6392 and 006E6395
-    int hookLength = 5;
+    if (gameVersionStatus > 0) {
 
-    /* Where we jump back to at the end of the function we detour to.
-    *  This is the address of the original function we hooked at, plus the length of the jmp instruction. */
-    jumpBackAddress = hookAddress + hookLength;
+        // We are overwriting 006E6392 and 006E6395
+        int hookLength = 5;
 
-    // Perform the hook
-    //Hook((void*)hookAddress, localFunc, hookLength);
-    printf("%02x", hookAddress);
-    std::cout << std::endl;
-    printf("%02x", (DWORD)moduleBaseAddress);
+        /* Where we jump back to at the end of the function we detour to.
+        *  This is the address of the original function we hooked at, plus the length of the jmp instruction. */
+        jumpBackAddress = hookAddress + hookLength;
 
-    // Not exiting here as this destroys the code to be jumped to
-    // FreeLibraryAndExitThread((HMODULE)param, 0);
+        // Perform the hook
+        Hook((void*)hookAddress, localFunc, hookLength);
 
-    return 0;
+        // Not exiting here as this destroys the code to be jumped to
+        // FreeLibraryAndExitThread((HMODULE)param, 0);
+
+        return 0;
+
+    }
+
+
 
 }
 
@@ -265,19 +272,13 @@ int GetGameVersion() {
     bool scanStatus23032 = false;
     bool scanStatus23004 = false;
 
-    char Tram_22032 = (char)OMSI_22032_ANSI;
-    char Latest_23004 = (char)OMSI_23004_ANSI;
-    char mask = (char)ANSI_MASK;
-    char versionSearchStart = (char) ((DWORD)moduleBaseAddress + (DWORD)OMSI_VERSIONCHECK_START_RELADDR);
-    intptr_t versionSearchRegionSize = 312;
-
-    scanStatus23032 = InternalScanForGameVersion(&Tram_22032, &mask, &versionSearchStart, versionSearchRegionSize);
+    scanStatus23032 = ScanForGameVersion(OMSI_22032_ANSI);
 
     if (scanStatus23032) {
         result = 1;
     }
     else {
-        scanStatus23004 = InternalScanForGameVersion(&Latest_23004, &mask, &versionSearchStart, versionSearchRegionSize);
+        scanStatus23004 = ScanForGameVersion(OMSI_23004_ANSI);
         if (scanStatus23004) {
             result = 2;
         }
@@ -290,56 +291,29 @@ int GetGameVersion() {
 
 
 
-/* Pattern scanner */
-
-char* BasicScan(char* pattern, char* mask, char* begin, intptr_t size)
+bool ScanForGameVersion(const char* searchString)
 {
-    intptr_t patternLen = strlen(mask);
 
-    for (int i = 0; i < size; i++)
+    bool scanSuccess = false;
+    uintptr_t scanStart = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_START_RELADDR;
+    uintptr_t scanEnd = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_END_RELADDR;
+    BYTE* foundAddress;
+    AOBScanner scanner(scanStart, scanEnd);
+    foundAddress = scanner.Scan(searchString);
+
+    if (foundAddress)
     {
-        bool found = true;
-        for (int j = 0; j < patternLen; j++)
-        {
-            if (mask[j] != '?' && pattern[j] != *(char*)((intptr_t)begin + i + j))
-            {
-                found = false;
-                break;
-            }
-        }
-        if (found)
-        {
-            return (begin + i);
-        }
+        printf("Found: %p\n", foundAddress);
+        scanSuccess = true;
     }
-    return nullptr;
-}
-
-
-/* Internal pattern scan wrapper which only reports success */
-
-bool InternalScanForGameVersion(char* pattern, char* mask, char* begin, intptr_t size)
-{
-    char* match{ nullptr };
-    bool found = false;
-    MEMORY_BASIC_INFORMATION mbi{};
-
-    for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
+    else
     {
-        if (!VirtualQuery(curr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
-
-        match = BasicScan(pattern, mask, curr, mbi.RegionSize);
-
-        if (match != nullptr)
-        {
-            found = true;
-            break;
-        }
+        printf("Did not find\n");
     }
-    return found;
+
+    return scanSuccess;
+
 }
-
-
 
 
 
