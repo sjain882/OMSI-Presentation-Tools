@@ -81,20 +81,21 @@ bool ScanForGameVersion(const char* searchString);
 // Internal
 float* f4fovptr;
 DWORD procId;
-HANDLE hProcess;
 char* moduleBaseChar;
 bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
+bool isProcessActive;
 
 
 // Hooking
 
-DWORD f4TCameraStructAddress;
+DWORD *f4Addy;
+float* f4FovPtr;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
-
+bool hookStatus;
 DWORD versionSearchStart;
 char* versionSearchStartChar;
 
@@ -135,9 +136,9 @@ void __declspec(naked) localFunc() {
 
     __asm {
         mov edx, [esi + 0x14]
-        mov f4TCameraStructAddress, edx
-        mov[eax], edx
-        jmp[jumpBackAddress]
+        mov f4Addy, edx
+        mov [eax], edx
+        jmp [jumpBackAddress]
     }
 
 }
@@ -146,7 +147,7 @@ void __declspec(naked) localFunc() {
 
 DWORD WINAPI MainThread(LPVOID param) {
 
-
+    isProcessActive = true;
     isF4FovEnabled = false;
     f4FovUI = 450;
     f4FovActValue = (float)45.0;
@@ -154,6 +155,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     justEnabledFOVApplication = false;
     justScrolled = false;
     hasFoundAddress = false;
+    int floatLength = 4;
 
     AllocConsole();
     mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -199,6 +201,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     if (gameVersionStatus > 0) {
 
+        printf("GVS\n");
+
         // We are overwriting 006E6392 and 006E6395
         int hookLength = 5;
 
@@ -207,16 +211,56 @@ DWORD WINAPI MainThread(LPVOID param) {
         jumpBackAddress = hookAddress + hookLength;
 
         // Perform the hook
-        Hook((void*)hookAddress, localFunc, hookLength);
+        hookStatus = Hook((void*)hookAddress, localFunc, hookLength);
+
+        while (true) {
+            std::cout << f4Addy;
+        }
 
         // Not exiting here as this destroys the code to be jumped to
         // FreeLibraryAndExitThread((HMODULE)param, 0);
 
-        return 0;
+    }
+
+
+    if (false) {
+        std::cout << "HookStatus" << std::endl;
+        // FOV is 52 bytes from the base of the TCamera struct
+        f4FovPtr = (float*)f4Addy;
+        f4FovPtr = f4FovPtr + 52;
+        //f4FovAddress = (uintptr_t)f4Addy + 52;
+        std::cout << f4FovAddress;
+
+        // Set memory permissions
+        DWORD oldProtection;
+        VirtualProtect((void*)f4FovAddress, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
 
     }
 
 
+
+
+    while (false) {
+        std::cout << "While" << std::endl;
+
+        if (isF4FovEnabled) {
+            std::cout << "isF4FovEnabled" << std::endl;
+            newf4FovValue = (float)f4FovActValue;
+            *(float*)f4FovAddress = newf4FovValue;
+        }
+        else if (!isF4FovEnabled) {
+            std::cout << "!isF4FovEnabled" << std::endl;
+            float defaultF4FovValue = (float)45.0;
+            *(float*)f4FovAddress = defaultF4FovValue;
+        }
+
+    }
+
+
+
+    // Restore the old memory permissions
+    //DWORD tmp;
+    //VirtualProtect((void*)f4FovAddress, floatLength, oldProtection, &tmp);
 
 }
 
@@ -247,7 +291,7 @@ bool Hook(void* toHook, void* localFunc, int length) {
     // Convert to DWORD pointer and offset by 1 to avoid overwriting 0xE9
     *(DWORD*)((DWORD)toHook + 1) = relativeAddress;
 
-    // Temporary variable
+    // Restore the old memory permissions
     DWORD tmp;
     VirtualProtect(toHook, length, oldProtection, &tmp);
 
@@ -347,7 +391,7 @@ void __stdcall PluginStart(void* aOwner)
 
 void __stdcall PluginFinalize()
 {
-    CloseHandle(hProcess);
+    isProcessActive = false;
 }
 
 
