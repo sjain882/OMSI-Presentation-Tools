@@ -91,7 +91,7 @@ bool isProcessActive;
 // Hooking
 
 DWORD *f4Addy;
-float* f4FovPtr;
+DWORD* f4FovPtr;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
@@ -213,29 +213,34 @@ DWORD WINAPI MainThread(LPVOID param) {
         // Perform the hook
         hookStatus = Hook((void*)hookAddress, localFunc, hookLength);
 
-        while (true) {
-            std::cout << f4Addy;
-        }
-
         // Not exiting here as this destroys the code to be jumped to
         // FreeLibraryAndExitThread((HMODULE)param, 0);
 
     }
 
 
-    if (false) {
-        std::cout << "HookStatus" << std::endl;
-        // FOV is 52 bytes from the base of the TCamera struct
-        f4FovPtr = (float*)f4Addy;
-        f4FovPtr = f4FovPtr + 52;
-        //f4FovAddress = (uintptr_t)f4Addy + 52;
-        std::cout << f4FovAddress;
+    // If map is loaded
 
-        // Set memory permissions
-        DWORD oldProtection;
-        VirtualProtect((void*)f4FovAddress, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+    while (true) {
+
+
+        if (GetAsyncKeyState(VK_END) & 1) {
+            std::cout << "HookStatus" << std::endl;
+
+            // FOV is 52 bytes from the base of the TCamera struct
+            f4FovPtr = (DWORD*)f4Addy + 52;
+            std::cout << f4FovPtr;
+
+            // Set memory permissions
+            //DWORD oldProtection;
+            //VirtualProtect((void*)f4FovAddress, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+        }
 
     }
+
+
 
 
 
