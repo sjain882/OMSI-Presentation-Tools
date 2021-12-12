@@ -91,7 +91,7 @@ bool isProcessActive;
 // Hooking
 
 DWORD *f4Addy;
-DWORD* f4FovPtr;
+uintptr_t *f4FovPtr;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
@@ -225,16 +225,18 @@ DWORD WINAPI MainThread(LPVOID param) {
     while (true) {
 
 
-        if (GetAsyncKeyState(VK_END) & 1) {
+        if ((GetAsyncKeyState(VK_END) & 1)) {
             std::cout << "HookStatus" << std::endl;
 
             // FOV is 52 bytes from the base of the TCamera struct
-            f4FovPtr = (DWORD*)f4Addy + 52;
-            std::cout << f4FovPtr;
+            (uintptr_t*)f4FovPtr = (uintptr_t*)f4Addy + 0x38;
+            std::cout << f4Addy << std::endl;
+            std::cout << f4FovPtr << std::endl;
 
             // Set memory permissions
             //DWORD oldProtection;
             //VirtualProtect((void*)f4FovAddress, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+
 
         }
 
