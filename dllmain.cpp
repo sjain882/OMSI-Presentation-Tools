@@ -73,6 +73,7 @@ bool Hook(void* toHook, void* localFunc, int length);
 int GetGameVersion();
 void InitialiseForm();
 bool ScanForGameVersion(const char* searchString);
+bool initConfigValues();
 
 
 
@@ -86,6 +87,10 @@ bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
 bool isProcessActive;
+bool isFirstLaunch;
+int isFirstLaunchOPL;
+CSimpleIniA ini;
+SI_Error rc;
 
 
 // Hooking
@@ -166,6 +171,24 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     std::thread initFormThread(InitialiseForm);
     initFormThread.detach();
+
+    bool configStatus = initConfigValues();
+    
+    if (isFirstLaunch && configStatus) {
+
+        MessageBoxA(0, "First launch string", "OMSI Presentation Tools", MB_OK | MB_ICONINFORMATION);
+
+        // change the value of a key
+        rc = ini.SetValue("Settings", "isFirstLaunch", "0");
+
+        if (rc < 0) {
+            MessageBoxA(0, "Failed to load ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);      
+        }
+        else {
+            ini.SaveFile(".\\plugins\\OMSIPresentationTools.ini");
+        }
+
+    }
 
 
     // Get OMSI's module base address internally
@@ -313,6 +336,44 @@ void toggleF4FovEnabled() {
     isF4FovEnabled = !isF4FovEnabled;
 }
 
+
+
+
+bool initConfigValues() {
+
+    bool funcSuccess = false;
+    ini.SetUnicode();
+    rc = ini.LoadFile(".\\plugins\\OMSIPresentationTools.ini");
+
+    if (rc >= 0) {
+
+        isFirstLaunchOPL = atoi(ini.GetValue("Settings", "isFirstLaunch"));
+
+        switch (isFirstLaunchOPL) {
+
+            case 0:
+                isFirstLaunch = false;
+                funcSuccess = true;
+                break;
+
+            case 1:
+                isFirstLaunch = true;
+                funcSuccess = true;
+                break;
+
+            default:
+                isFirstLaunch = false;
+                break;
+
+        }
+    }
+    else {
+        MessageBoxA(0, "Failed to load opl file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+        isFirstLaunch = false;
+    }
+
+    return funcSuccess;
+}
 
 
 

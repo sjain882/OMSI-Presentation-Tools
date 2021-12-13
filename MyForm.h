@@ -575,7 +575,7 @@ namespace OMSIPresToolsCLR {
 	}
 
 private: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-	if (MessageBox::Show("Are you sure you want to quit?\nOMSI 2 will remain running and the F4 FOV will be reset to default.\nYou will not be able to relaunch OPT until you next launch OMSI.", "Warning", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+	if (MessageBox::Show("Are you sure you want to quit?\nOMSI 2 will remain running and the F4 FOV will be reset to default.\nYou will not be able to relaunch OPT until you next launch OMSI.", "OMSI Presentation Tools", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 		
 		// Reset FOV to 45
 		// Detach from process
