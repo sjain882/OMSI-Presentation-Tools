@@ -176,7 +176,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     
     if (isFirstLaunch && configStatus) {
 
-        MessageBoxA(0, "First launch string", "OMSI Presentation Tools", MB_OK | MB_ICONINFORMATION);
+        MessageBoxA(0, "Thank you for using OMSI Presentation Tools!\n\nIf you have any games open that have anti-cheats, please close them immediately!\n\nSee the GitHub Readme or Steam guide for more info.\n\nYou will not be reminded next time!\n\nIf you can't see OMSI Presentation Tools, it may be behind OMSI 2, find it in the ALT+TAB menu.", "First Launch", MB_OK | MB_ICONWARNING | MB_TOPMOST);
 
         // change the value of a key
         rc = ini.SetValue("Settings", "isFirstLaunch", "0");
