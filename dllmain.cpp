@@ -73,7 +73,7 @@ bool Hook(void* toHook, void* localFunc, int length);
 int GetGameVersion();
 void InitialiseForm();
 bool ScanForGameVersion(const char* searchString);
-bool initConfigValues();
+int initConfigValues();
 
 
 
@@ -87,7 +87,6 @@ bool isF4FovEnabled;
 uintptr_t f4FovAddress;
 float newf4FovValue;
 bool isProcessActive;
-bool isFirstLaunch;
 int isFirstLaunchOPL;
 CSimpleIniA ini;
 SI_Error rc;
@@ -172,9 +171,9 @@ DWORD WINAPI MainThread(LPVOID param) {
     std::thread initFormThread(InitialiseForm);
     initFormThread.detach();
 
-    bool configStatus = initConfigValues();
+    int configStatus = initConfigValues();
     
-    if (isFirstLaunch && configStatus) {
+    if (configStatus > 1) {
 
         MessageBoxA(0, "Thank you for using OMSI Presentation Tools!\n\nIf you have any games open that have anti-cheats, please close them immediately!\n\nSee the GitHub Readme or Steam guide for more info.\n\nYou will not be reminded next time!\n\nIf you can't see OMSI Presentation Tools, it may be behind OMSI 2, find it in the ALT+TAB menu.", "First Launch", MB_OK | MB_ICONWARNING | MB_TOPMOST);
 
@@ -182,7 +181,7 @@ DWORD WINAPI MainThread(LPVOID param) {
         rc = ini.SetValue("Settings", "isFirstLaunch", "0");
 
         if (rc < 0) {
-            MessageBoxA(0, "Failed to load ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);      
+            MessageBoxA(0, "Failed to save to ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);      
         }
         else {
             ini.SaveFile(".\\plugins\\OMSIPresentationTools.ini");
@@ -339,9 +338,9 @@ void toggleF4FovEnabled() {
 
 
 
-bool initConfigValues() {
+int initConfigValues() {
 
-    bool funcSuccess = false;
+    int funcStatus = 0;
     ini.SetUnicode();
     rc = ini.LoadFile(".\\plugins\\OMSIPresentationTools.ini");
 
@@ -352,27 +351,24 @@ bool initConfigValues() {
         switch (isFirstLaunchOPL) {
 
             case 0:
-                isFirstLaunch = false;
-                funcSuccess = true;
+                funcStatus = 1;
                 break;
 
             case 1:
-                isFirstLaunch = true;
-                funcSuccess = true;
+                funcStatus = 2;
                 break;
 
             default:
-                isFirstLaunch = false;
                 break;
 
         }
     }
     else {
-        MessageBoxA(0, "Failed to load opl file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
-        isFirstLaunch = false;
+        MessageBoxA(0, "Failed to read from ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+        funcStatus = 3;
     }
 
-    return funcSuccess;
+    return funcStatus;
 }
 
 
