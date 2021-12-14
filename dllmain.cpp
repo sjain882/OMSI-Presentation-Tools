@@ -80,7 +80,8 @@ int initConfigValues();
 /* Instantiate variables */
 
 // Internal
-float* f4fovptr;
+float* f4FovPtr;
+char* f4FovPtrChar;
 DWORD procId;
 char* moduleBaseChar;
 bool isF4FovEnabled;
@@ -95,7 +96,6 @@ SI_Error rc;
 // Hooking
 
 DWORD *f4Addy;
-uintptr_t *f4FovPtr;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
@@ -243,6 +243,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     // If map is loaded
 
+    bool addy = false;
 
     while (true) {
 
@@ -251,14 +252,33 @@ DWORD WINAPI MainThread(LPVOID param) {
             std::cout << "HookStatus" << std::endl;
 
             // FOV is 52 bytes from the base of the TCamera struct
-            (uintptr_t*)f4FovPtr = (uintptr_t*)f4Addy + 0x38;
+            (char*)f4FovPtrChar = (char*)f4Addy + 0x38;
             std::cout << f4Addy << std::endl;
-            std::cout << f4FovPtr << std::endl;
+            std::cout << f4FovPtrChar << std::endl;
+
+            f4FovPtr = (float*)f4FovPtrChar;
 
             // Set memory permissions
-            //DWORD oldProtection;
-            //VirtualProtect((void*)f4FovAddress, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+            DWORD oldProtection;
+            VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
 
+            addy = true;
+
+        }
+
+
+        if (addy) {
+
+            if (isF4FovEnabled) {
+                std::cout << "isF4FovEnabled" << std::endl;
+                newf4FovValue = (float)f4FovActValue;
+                *(float*)f4FovPtr = newf4FovValue;
+            }
+            else if (!isF4FovEnabled) {
+                std::cout << "!isF4FovEnabled" << std::endl;
+                float defaultF4FovValue = (float)45.0;
+                *(float*)f4FovPtr = defaultF4FovValue;
+            }
 
         }
 
@@ -270,17 +290,16 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 
     while (false) {
-        std::cout << "While" << std::endl;
 
         if (isF4FovEnabled) {
             std::cout << "isF4FovEnabled" << std::endl;
             newf4FovValue = (float)f4FovActValue;
-            *(float*)f4FovAddress = newf4FovValue;
+            *(float*)f4FovPtr = newf4FovValue;
         }
         else if (!isF4FovEnabled) {
             std::cout << "!isF4FovEnabled" << std::endl;
             float defaultF4FovValue = (float)45.0;
-            *(float*)f4FovAddress = defaultF4FovValue;
+            *(float*)f4FovPtr = defaultF4FovValue;
         }
 
     }
