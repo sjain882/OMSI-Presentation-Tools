@@ -73,13 +73,18 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 **A:** OMSI 2 is already a pretty unstable game. A host of compatibility issues with game overlays (NVIDIA Share, Discord, Steam) need to be considered when adding your own overlay. As well as this, users may be using either the stock DX9 game, DX12PY (DX12) or DXVK (Vulkan), and may be using SweetFX, ENB or ReShade combined with either of those. This is simply too many combinations to consider and is not a valuable use of my time. No need to add potential instability or unnecessary resource usage for such a simple tool right now.
 
 ‎
+## Building:
+
+There is no specific build process. Simply install Visual Studio 2019 with C++ Desktop and [CLR Workloads](https://www.youtube.com/watch?v=HcxlYkU8aY0) support, clone this repo, open the solution (`*.sln`) file, set the Configuration to Release x86 and run Build > Build solution.
+
+Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 language standard.
+
+‎
 ## Thanks to:
 
 - **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
 
 - **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
-
-- The **[x64dbg](https://github.com/x64dbg)** project for the **[`ntdll.h`](https://github.com/x64dbg/x64dbg/blob/development/src/dbg/ntdll/ntdll.h)** header file
 
 - **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner & timed execution code
 

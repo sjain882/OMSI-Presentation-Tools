@@ -91,6 +91,8 @@ bool isProcessActive;
 int isFirstLaunchOPL;
 CSimpleIniA ini;
 SI_Error rc;
+int floatLength;
+DWORD oldProtection;
 
 
 // Hooking
@@ -159,7 +161,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     justEnabledFOVApplication = false;
     justScrolled = false;
     hasFoundAddress = false;
-    int floatLength = 4;
+    floatLength = 4;
 
     AllocConsole();
     mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -245,7 +247,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     bool addy = false;
 
-    while (true) {
+    while (isProcessActive) {
 
 
         if ((GetAsyncKeyState(VK_END) & 1)) {
@@ -259,7 +261,6 @@ DWORD WINAPI MainThread(LPVOID param) {
             f4FovPtr = (float*)f4FovPtrChar;
 
             // Set memory permissions
-            DWORD oldProtection;
             VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
 
             addy = true;
@@ -270,12 +271,10 @@ DWORD WINAPI MainThread(LPVOID param) {
         if (addy) {
 
             if (isF4FovEnabled) {
-                std::cout << "isF4FovEnabled" << std::endl;
                 newf4FovValue = (float)f4FovActValue;
                 *(float*)f4FovPtr = newf4FovValue;
             }
             else if (!isF4FovEnabled) {
-                std::cout << "!isF4FovEnabled" << std::endl;
                 float defaultF4FovValue = (float)45.0;
                 *(float*)f4FovPtr = defaultF4FovValue;
             }
@@ -283,27 +282,6 @@ DWORD WINAPI MainThread(LPVOID param) {
         }
 
     }
-
-
-
-
-
-
-    while (false) {
-
-        if (isF4FovEnabled) {
-            std::cout << "isF4FovEnabled" << std::endl;
-            newf4FovValue = (float)f4FovActValue;
-            *(float*)f4FovPtr = newf4FovValue;
-        }
-        else if (!isF4FovEnabled) {
-            std::cout << "!isF4FovEnabled" << std::endl;
-            float defaultF4FovValue = (float)45.0;
-            *(float*)f4FovPtr = defaultF4FovValue;
-        }
-
-    }
-
 
 
     // Restore the old memory permissions
@@ -475,6 +453,8 @@ void __stdcall PluginStart(void* aOwner)
 void __stdcall PluginFinalize()
 {
     isProcessActive = false;
+    DWORD tmp;
+    VirtualProtect((void*)f4FovAddress, floatLength, oldProtection, &tmp);
 }
 
 
