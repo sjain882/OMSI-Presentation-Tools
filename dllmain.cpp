@@ -98,7 +98,6 @@ CSimpleIniA ini;
 SI_Error rc;
 int floatLength;
 DWORD oldProtection;
-bool isMapCurrentlyLoaded;
 bool mapJustLoaded;
 bool isFovWritingEnabled;
 bool addy;
@@ -189,14 +188,13 @@ DWORD WINAPI MainThread(LPVOID param) {
     freopen_s(&fDummy, "CONIN$", "r", stdin);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    SetConsoleTitleA("OMSI Presentation Tools (Release, x86) - PreAlpha DO NOT REDISTRIBUTE");
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug");
 
     std::thread initFormThread(InitialiseForm);
     initFormThread.detach();
 
     int configStatus = initConfigValues();
 
-    std::string newStr = "hiiiii";
 
     //setF4FovStatusLabel(newStr);
     
@@ -409,9 +407,6 @@ int initConfigValues() {
     return funcStatus;
 }
 
-
-
-
 int GetGameVersion() {
 
     int result = 0;
@@ -455,8 +450,6 @@ bool ScanForGameVersion(const char* searchString)
     return scanSuccess;
 
 }
-
-
 
 void InitialiseForm() {
     Application::EnableVisualStyles();

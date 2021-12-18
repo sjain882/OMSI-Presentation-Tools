@@ -9,6 +9,6 @@ bool justEnabledFOVApplication;
 bool justScrolled;
 bool hasFoundAddress;
 
-ref class MyForm;
+bool isMapCurrentlyLoaded;
 
 void toggleF4FovEnabled();
