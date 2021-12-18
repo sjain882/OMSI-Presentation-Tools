@@ -22,6 +22,10 @@
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
 #include <thread>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <chrono>
 
 
 /* Pragma lib includes */
@@ -74,6 +78,7 @@ int GetGameVersion();
 void InitialiseForm();
 bool ScanForGameVersion(const char* searchString);
 int initConfigValues();
+bool CalculateFovOffset();
 
 
 
@@ -93,6 +98,10 @@ CSimpleIniA ini;
 SI_Error rc;
 int floatLength;
 DWORD oldProtection;
+bool isMapCurrentlyLoaded;
+bool mapJustLoaded;
+bool isFovWritingEnabled;
+bool addy;
 
 
 // Hooking
@@ -161,7 +170,18 @@ DWORD WINAPI MainThread(LPVOID param) {
     justEnabledFOVApplication = false;
     justScrolled = false;
     hasFoundAddress = false;
+    isMapCurrentlyLoaded = false;
+    mapJustLoaded = false;
+    isFovWritingEnabled = false;
+    float defaultF4FovValue = (float)45.0;
+    addy = false;
     floatLength = 4;
+    std::string logFileStatus_MapCamLoaded = "Information: Map camera loaded";
+    std::string logFileStatus_ClosingMap = "Information: Closing actual map...";
+    std::string log;
+    std::string logFile = "logfile.txt";
+    std::streamoff p = 0;
+    std::ifstream ifs(logFile.c_str());
 
     AllocConsole();
     mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -245,37 +265,48 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     // If map is loaded
 
-    bool addy = false;
-
     while (isProcessActive) {
 
 
-        if ((GetAsyncKeyState(VK_END) & 1)) {
-            std::cout << "HookStatus" << std::endl;
+        ifs.seekg(p);
+        while (getline(ifs, log))
+        {
+            if (log.find(logFileStatus_MapCamLoaded) != std::string::npos) {
+                //MessageBoxA(0, "hh", "hh", MB_OK | MB_ICONERROR);
+                isMapCurrentlyLoaded = true;
+                mapJustLoaded = true;
+            }
 
-            // FOV is 52 bytes from the base of the TCamera struct
-            (char*)f4FovPtrChar = (char*)f4Addy + 0x38;
-            std::cout << f4Addy << std::endl;
-            std::cout << f4FovPtrChar << std::endl;
+            if (log.find(logFileStatus_ClosingMap) != std::string::npos) {
+                //MessageBoxA(0, "hh", "hh", MB_OK | MB_ICONERROR);
+                isMapCurrentlyLoaded = false;
+            }
 
-            f4FovPtr = (float*)f4FovPtrChar;
-
-            // Set memory permissions
-            VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
-
-            addy = true;
-
+            std::cout << log << std::endl << std::endl;
+            if (ifs.tellg() == -1) p = p + log.size();
+            else p = ifs.tellg();
         }
+        ifs.clear();
+    
+
+        if (mapJustLoaded && isMapCurrentlyLoaded) {
+            mapJustLoaded = false;
+            if (CalculateFovOffset()) {
+                isFovWritingEnabled = true;
+            }
+        }     
 
 
-        if (addy) {
+        if (isMapCurrentlyLoaded) {
+
+
+            std::cout << std::endl << std::endl << std::endl << "Writing" << std::endl << std::endl << std::endl << std::endl;
 
             if (isF4FovEnabled) {
                 newf4FovValue = (float)f4FovActValue;
                 *(float*)f4FovPtr = newf4FovValue;
             }
             else if (!isF4FovEnabled) {
-                float defaultF4FovValue = (float)45.0;
                 *(float*)f4FovPtr = defaultF4FovValue;
             }
 
@@ -291,7 +322,20 @@ DWORD WINAPI MainThread(LPVOID param) {
 }
 
 
+bool CalculateFovOffset() {
 
+    (char*)f4FovPtrChar = (char*)f4Addy + 0x38;
+
+    f4FovPtr = (float*)f4FovPtrChar;
+
+    // Set memory permissions
+    VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+    addy = true;
+
+    return true;
+
+}
 
 
 
@@ -422,8 +466,6 @@ bool ScanForGameVersion(const char* searchString)
 
 
 
-
-
 void InitialiseForm() {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
@@ -432,10 +474,6 @@ void InitialiseForm() {
     Application::Run(% form);
 
 }
-
-
-
-
 
 
 /* --- OMSI Functions Start --- */
