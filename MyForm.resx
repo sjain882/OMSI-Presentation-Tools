@@ -24553,6 +24553,15 @@
         jD089PMAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="pinToTopToggle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAMRJREFUOE/V0TEOAUEUxvFR6FQkGhWJmhtQUFJqRImEM3AWJ7DOwBEUzkBDIyri
+        /42dmITsLIXEl/yyM5Ps23lvza+Sw+ix/C4LXDCzuw/Txw5lbDFH6lRxQN3ujCkiWKSLDU44Ywo/Faid
+        tzPp4Yoh8ighA5ca1I5mosG+JIslVvHaRUUmUDsDHSTFFRFXRDdRO5pJqrRwgytSwBGp0oCu2oYKRBhj
+        jWDcy027e7ajwXZ0kBS9vI+fflREfycY/8t/E2PubAMjO0KoklQAAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAIB4AAAEAIACgDwAAFgAAACgAAAAgAAAAPAAAAAEAIAAAAAAAAA8AABMLAAATCwAAAAAAAAAA

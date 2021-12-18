@@ -194,6 +194,10 @@ DWORD WINAPI MainThread(LPVOID param) {
     initFormThread.detach();
 
     int configStatus = initConfigValues();
+
+    std::string newStr = "hiiiii";
+
+    //setF4FovStatusLabel(newStr);
     
     if (configStatus > 1) {
 
@@ -245,7 +249,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     if (gameVersionStatus > 0) {
 
-        printf("GVS\n");
 
         // We are overwriting 006E6392 and 006E6395
         int hookLength = 5;
@@ -282,7 +285,6 @@ DWORD WINAPI MainThread(LPVOID param) {
                 isMapCurrentlyLoaded = false;
             }
 
-            std::cout << log << std::endl << std::endl;
             if (ifs.tellg() == -1) p = p + log.size();
             else p = ifs.tellg();
         }
@@ -300,7 +302,6 @@ DWORD WINAPI MainThread(LPVOID param) {
         if (isMapCurrentlyLoaded) {
 
 
-            std::cout << std::endl << std::endl << std::endl << "Writing" << std::endl << std::endl << std::endl << std::endl;
 
             if (isF4FovEnabled) {
                 newf4FovValue = (float)f4FovActValue;
@@ -313,11 +314,6 @@ DWORD WINAPI MainThread(LPVOID param) {
         }
 
     }
-
-
-    // Restore the old memory permissions
-    //DWORD tmp;
-    //VirtualProtect((void*)f4FovAddress, floatLength, oldProtection, &tmp);
 
 }
 
@@ -452,12 +448,7 @@ bool ScanForGameVersion(const char* searchString)
 
     if (foundAddress)
     {
-        printf("Found: %p\n", foundAddress);
         scanSuccess = true;
-    }
-    else
-    {
-        printf("Did not find\n");
     }
 
     return scanSuccess;
@@ -471,6 +462,7 @@ void InitialiseForm() {
     Application::SetCompatibleTextRenderingDefault(false);
     OMSIPresToolsCLR::MyForm form;
     form.MaximizeBox = false;
+    form.AutoScaleMode = AutoScaleMode::None;
     Application::Run(% form);
 
 }

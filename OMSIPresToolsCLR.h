@@ -9,13 +9,6 @@ bool justEnabledFOVApplication;
 bool justScrolled;
 bool hasFoundAddress;
 
-
+ref class MyForm;
 
 void toggleF4FovEnabled();
-
-//namespace OMSIPresToolsCLR {
-//	public ref class Class1
-//	{
-//		
-//	};
-//}
