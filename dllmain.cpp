@@ -134,6 +134,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
         CreateThread(0, 0, MainThread, hModule, 0, 0);
+        CloseHandle(0);
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:

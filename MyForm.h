@@ -165,12 +165,11 @@ namespace OMSIPresToolsCLR {
 			// 
 			this->f4FovTrackbar->AutoSize = false;
 			this->f4FovTrackbar->Enabled = false;
-			this->f4FovTrackbar->Location = System::Drawing::Point(31, 156);
-			this->f4FovTrackbar->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->f4FovTrackbar->Location = System::Drawing::Point(23, 127);
 			this->f4FovTrackbar->Maximum = 1500;
 			this->f4FovTrackbar->Minimum = 10;
 			this->f4FovTrackbar->Name = L"f4FovTrackbar";
-			this->f4FovTrackbar->Size = System::Drawing::Size(513, 55);
+			this->f4FovTrackbar->Size = System::Drawing::Size(385, 45);
 			this->f4FovTrackbar->TabIndex = 2;
 			this->f4FovTrackbar->TickFrequency = 1500;
 			this->f4FovTrackbar->Value = 450;
@@ -179,8 +178,7 @@ namespace OMSIPresToolsCLR {
 			// label4
 			// 
 			this->label4->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->label4->Location = System::Drawing::Point(21, 247);
-			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label4->Location = System::Drawing::Point(16, 201);
 			this->label4->MaximumSize = System::Drawing::Size(0, 2);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(0, 2);
@@ -189,10 +187,9 @@ namespace OMSIPresToolsCLR {
 			// f4FovMaxLabel
 			// 
 			this->f4FovMaxLabel->AutoSize = true;
-			this->f4FovMaxLabel->Location = System::Drawing::Point(505, 196);
-			this->f4FovMaxLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4FovMaxLabel->Location = System::Drawing::Point(379, 159);
 			this->f4FovMaxLabel->Name = L"f4FovMaxLabel";
-			this->f4FovMaxLabel->Size = System::Drawing::Size(44, 17);
+			this->f4FovMaxLabel->Size = System::Drawing::Size(34, 13);
 			this->f4FovMaxLabel->TabIndex = 11;
 			this->f4FovMaxLabel->Text = L"150.0";
 			// 
@@ -201,10 +198,9 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo->AutoSize = true;
 			this->labelAboutThanksTo->LinkArea = System::Windows::Forms::LinkArea(11, 9);
 			this->labelAboutThanksTo->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelAboutThanksTo->Location = System::Drawing::Point(229, 498);
-			this->labelAboutThanksTo->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelAboutThanksTo->Location = System::Drawing::Point(172, 405);
 			this->labelAboutThanksTo->Name = L"labelAboutThanksTo";
-			this->labelAboutThanksTo->Size = System::Drawing::Size(138, 20);
+			this->labelAboutThanksTo->Size = System::Drawing::Size(117, 17);
 			this->labelAboutThanksTo->TabIndex = 7;
 			this->labelAboutThanksTo->TabStop = true;
 			this->labelAboutThanksTo->Text = L"Thanks to: rev_eng_e,";
@@ -217,10 +213,9 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->AutoSize = true;
 			this->labelAboutVersionGithub->LinkArea = System::Windows::Forms::LinkArea(15, 6);
 			this->labelAboutVersionGithub->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelAboutVersionGithub->Location = System::Drawing::Point(229, 441);
-			this->labelAboutVersionGithub->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelAboutVersionGithub->Location = System::Drawing::Point(172, 358);
 			this->labelAboutVersionGithub->Name = L"labelAboutVersionGithub";
-			this->labelAboutVersionGithub->Size = System::Drawing::Size(129, 20);
+			this->labelAboutVersionGithub->Size = System::Drawing::Size(109, 17);
 			this->labelAboutVersionGithub->TabIndex = 5;
 			this->labelAboutVersionGithub->TabStop = true;
 			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
@@ -233,20 +228,18 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutTitle->AutoSize = true;
 			this->labelAboutTitle->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->labelAboutTitle->Location = System::Drawing::Point(225, 402);
-			this->labelAboutTitle->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelAboutTitle->Location = System::Drawing::Point(169, 327);
 			this->labelAboutTitle->Name = L"labelAboutTitle";
-			this->labelAboutTitle->Size = System::Drawing::Size(232, 25);
+			this->labelAboutTitle->Size = System::Drawing::Size(186, 20);
 			this->labelAboutTitle->TabIndex = 13;
 			this->labelAboutTitle->Text = L"OMSI Presentation Tools";
 			// 
 			// pictureAboutIcon
 			// 
 			this->pictureAboutIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureAboutIcon.Image")));
-			this->pictureAboutIcon->Location = System::Drawing::Point(49, 402);
-			this->pictureAboutIcon->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->pictureAboutIcon->Location = System::Drawing::Point(37, 327);
 			this->pictureAboutIcon->Name = L"pictureAboutIcon";
-			this->pictureAboutIcon->Size = System::Drawing::Size(135, 111);
+			this->pictureAboutIcon->Size = System::Drawing::Size(101, 90);
 			this->pictureAboutIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureAboutIcon->TabIndex = 15;
 			this->pictureAboutIcon->TabStop = false;
@@ -256,10 +249,9 @@ namespace OMSIPresToolsCLR {
 			this->labelWarningGameClosed->AutoSize = true;
 			this->labelWarningGameClosed->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->labelWarningGameClosed->Location = System::Drawing::Point(91, 298);
-			this->labelWarningGameClosed->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelWarningGameClosed->Location = System::Drawing::Point(68, 242);
 			this->labelWarningGameClosed->Name = L"labelWarningGameClosed";
-			this->labelWarningGameClosed->Size = System::Drawing::Size(360, 18);
+			this->labelWarningGameClosed->Size = System::Drawing::Size(299, 15);
 			this->labelWarningGameClosed->TabIndex = 21;
 			this->labelWarningGameClosed->Text = L"Please keep any other games with anti-cheats closed!";
 			// 
@@ -269,10 +261,9 @@ namespace OMSIPresToolsCLR {
 			this->labelYouTube->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->labelYouTube->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelYouTube->Location = System::Drawing::Point(93, 265);
-			this->labelYouTube->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelYouTube->Location = System::Drawing::Point(70, 215);
 			this->labelYouTube->Name = L"labelYouTube";
-			this->labelYouTube->Size = System::Drawing::Size(245, 18);
+			this->labelYouTube->Size = System::Drawing::Size(204, 15);
 			this->labelYouTube->TabIndex = 3;
 			this->labelYouTube->TabStop = true;
 			this->labelYouTube->Text = L"YouTube tutorial && suggested usage";
@@ -282,10 +273,9 @@ namespace OMSIPresToolsCLR {
 			// pictureYouTubeIcon
 			// 
 			this->pictureYouTubeIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureYouTubeIcon.Image")));
-			this->pictureYouTubeIcon->Location = System::Drawing::Point(60, 261);
-			this->pictureYouTubeIcon->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->pictureYouTubeIcon->Location = System::Drawing::Point(45, 212);
 			this->pictureYouTubeIcon->Name = L"pictureYouTubeIcon";
-			this->pictureYouTubeIcon->Size = System::Drawing::Size(32, 28);
+			this->pictureYouTubeIcon->Size = System::Drawing::Size(24, 23);
 			this->pictureYouTubeIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureYouTubeIcon->TabIndex = 23;
 			this->pictureYouTubeIcon->TabStop = false;
@@ -293,10 +283,9 @@ namespace OMSIPresToolsCLR {
 			// pictureGitHubIcon
 			// 
 			this->pictureGitHubIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureGitHubIcon.Image")));
-			this->pictureGitHubIcon->Location = System::Drawing::Point(380, 258);
-			this->pictureGitHubIcon->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->pictureGitHubIcon->Location = System::Drawing::Point(285, 210);
 			this->pictureGitHubIcon->Name = L"pictureGitHubIcon";
-			this->pictureGitHubIcon->Size = System::Drawing::Size(27, 33);
+			this->pictureGitHubIcon->Size = System::Drawing::Size(20, 27);
 			this->pictureGitHubIcon->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureGitHubIcon->TabIndex = 25;
 			this->pictureGitHubIcon->TabStop = false;
@@ -307,10 +296,9 @@ namespace OMSIPresToolsCLR {
 			this->labelSteamGuide->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->labelSteamGuide->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelSteamGuide->Location = System::Drawing::Point(409, 265);
-			this->labelSteamGuide->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelSteamGuide->Location = System::Drawing::Point(307, 215);
 			this->labelSteamGuide->Name = L"labelSteamGuide";
-			this->labelSteamGuide->Size = System::Drawing::Size(90, 18);
+			this->labelSteamGuide->Size = System::Drawing::Size(77, 15);
 			this->labelSteamGuide->TabIndex = 4;
 			this->labelSteamGuide->TabStop = true;
 			this->labelSteamGuide->Text = L"Steam guide";
@@ -322,10 +310,9 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutAuthor->AutoSize = true;
 			this->labelAboutAuthor->LinkArea = System::Windows::Forms::LinkArea(11, 5);
 			this->labelAboutAuthor->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelAboutAuthor->Location = System::Drawing::Point(229, 470);
-			this->labelAboutAuthor->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelAboutAuthor->Location = System::Drawing::Point(172, 382);
 			this->labelAboutAuthor->Name = L"labelAboutAuthor";
-			this->labelAboutAuthor->Size = System::Drawing::Size(101, 20);
+			this->labelAboutAuthor->Size = System::Drawing::Size(86, 17);
 			this->labelAboutAuthor->TabIndex = 6;
 			this->labelAboutAuthor->TabStop = true;
 			this->labelAboutAuthor->Text = L"Created by sjain";
@@ -338,10 +325,9 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo2->AutoSize = true;
 			this->labelAboutThanksTo2->LinkArea = System::Windows::Forms::LinkArea(0, 19);
 			this->labelAboutThanksTo2->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelAboutThanksTo2->Location = System::Drawing::Point(377, 498);
-			this->labelAboutThanksTo2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelAboutThanksTo2->Location = System::Drawing::Point(283, 405);
 			this->labelAboutThanksTo2->Name = L"labelAboutThanksTo2";
-			this->labelAboutThanksTo2->Size = System::Drawing::Size(129, 17);
+			this->labelAboutThanksTo2->Size = System::Drawing::Size(102, 13);
 			this->labelAboutThanksTo2->TabIndex = 8;
 			this->labelAboutThanksTo2->TabStop = true;
 			this->labelAboutThanksTo2->Text = L"win32kbase / wolfie";
@@ -353,20 +339,18 @@ namespace OMSIPresToolsCLR {
 			this->f4FovStatusLabel->AutoSize = true;
 			this->f4FovStatusLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->f4FovStatusLabel->Location = System::Drawing::Point(105, 329);
-			this->f4FovStatusLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4FovStatusLabel->Location = System::Drawing::Point(79, 267);
 			this->f4FovStatusLabel->Name = L"f4FovStatusLabel";
-			this->f4FovStatusLabel->Size = System::Drawing::Size(327, 18);
+			this->f4FovStatusLabel->Size = System::Drawing::Size(276, 15);
 			this->f4FovStatusLabel->TabIndex = 29;
 			this->f4FovStatusLabel->Text = L"Controls will be unavailable until a map is loaded.";
 			// 
 			// f4FovToggle
 			// 
 			this->f4FovToggle->AutoSize = true;
-			this->f4FovToggle->Location = System::Drawing::Point(144, 90);
-			this->f4FovToggle->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->f4FovToggle->Location = System::Drawing::Point(108, 73);
 			this->f4FovToggle->Name = L"f4FovToggle";
-			this->f4FovToggle->Size = System::Drawing::Size(82, 21);
+			this->f4FovToggle->Size = System::Drawing::Size(65, 17);
 			this->f4FovToggle->TabIndex = 0;
 			this->f4FovToggle->Text = L"Enabled";
 			this->f4FovToggle->UseVisualStyleBackColor = true;
@@ -377,12 +361,11 @@ namespace OMSIPresToolsCLR {
 			this->f4FovNumericUpDown->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->f4FovNumericUpDown->DecimalPlaces = 1;
 			this->f4FovNumericUpDown->Enabled = false;
-			this->f4FovNumericUpDown->Location = System::Drawing::Point(341, 86);
-			this->f4FovNumericUpDown->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->f4FovNumericUpDown->Location = System::Drawing::Point(256, 70);
 			this->f4FovNumericUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 150, 0, 0, 0 });
 			this->f4FovNumericUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 9, 0, 0, 65536 });
 			this->f4FovNumericUpDown->Name = L"f4FovNumericUpDown";
-			this->f4FovNumericUpDown->Size = System::Drawing::Size(80, 22);
+			this->f4FovNumericUpDown->Size = System::Drawing::Size(60, 20);
 			this->f4FovNumericUpDown->TabIndex = 1;
 			this->f4FovNumericUpDown->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->f4FovNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 45, 0, 0, 0 });
@@ -393,40 +376,36 @@ namespace OMSIPresToolsCLR {
 			this->f4FovTitle->AutoSize = true;
 			this->f4FovTitle->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->f4FovTitle->Location = System::Drawing::Point(140, 27);
-			this->f4FovTitle->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4FovTitle->Location = System::Drawing::Point(105, 22);
 			this->f4FovTitle->Name = L"f4FovTitle";
-			this->f4FovTitle->Size = System::Drawing::Size(257, 18);
+			this->f4FovTitle->Size = System::Drawing::Size(211, 15);
 			this->f4FovTitle->TabIndex = 7;
 			this->f4FovTitle->Text = L"Free Map (F4) Camera FOV Value (°):";
 			// 
 			// f4FovMinLabel
 			// 
 			this->f4FovMinLabel->AutoSize = true;
-			this->f4FovMinLabel->Location = System::Drawing::Point(35, 196);
-			this->f4FovMinLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4FovMinLabel->Location = System::Drawing::Point(26, 159);
 			this->f4FovMinLabel->Name = L"f4FovMinLabel";
-			this->f4FovMinLabel->Size = System::Drawing::Size(28, 17);
+			this->f4FovMinLabel->Size = System::Drawing::Size(22, 13);
 			this->f4FovMinLabel->TabIndex = 10;
 			this->f4FovMinLabel->Text = L"1.0";
 			// 
 			// f4FovRawLabel
 			// 
 			this->f4FovRawLabel->AutoSize = true;
-			this->f4FovRawLabel->Location = System::Drawing::Point(291, 90);
-			this->f4FovRawLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4FovRawLabel->Location = System::Drawing::Point(218, 73);
 			this->f4FovRawLabel->Name = L"f4FovRawLabel";
-			this->f4FovRawLabel->Size = System::Drawing::Size(39, 17);
+			this->f4FovRawLabel->Size = System::Drawing::Size(32, 13);
 			this->f4FovRawLabel->TabIndex = 20;
 			this->f4FovRawLabel->Text = L"Raw:";
 			// 
 			// f4fovvaluetmp2
 			// 
 			this->f4fovvaluetmp2->AutoSize = true;
-			this->f4fovvaluetmp2->Location = System::Drawing::Point(444, 91);
-			this->f4fovvaluetmp2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->f4fovvaluetmp2->Location = System::Drawing::Point(333, 74);
 			this->f4fovvaluetmp2->Name = L"f4fovvaluetmp2";
-			this->f4fovvaluetmp2->Size = System::Drawing::Size(0, 17);
+			this->f4fovvaluetmp2->Size = System::Drawing::Size(0, 13);
 			this->f4fovvaluetmp2->TabIndex = 28;
 			// 
 			// pinToTopToggle
@@ -434,19 +413,18 @@ namespace OMSIPresToolsCLR {
 			this->pinToTopToggle->Appearance = System::Windows::Forms::Appearance::Button;
 			this->pinToTopToggle->AutoSize = true;
 			this->pinToTopToggle->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pinToTopToggle.Image")));
-			this->pinToTopToggle->Location = System::Drawing::Point(16, 15);
-			this->pinToTopToggle->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->pinToTopToggle->Location = System::Drawing::Point(12, 12);
 			this->pinToTopToggle->Name = L"pinToTopToggle";
-			this->pinToTopToggle->Size = System::Drawing::Size(22, 22);
+			this->pinToTopToggle->Size = System::Drawing::Size(30, 30);
 			this->pinToTopToggle->TabIndex = 30;
 			this->pinToTopToggle->UseVisualStyleBackColor = true;
 			this->pinToTopToggle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::pinToTopToggle_CheckedChanged);
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(575, 555);
+			this->ClientSize = System::Drawing::Size(431, 451);
 			this->Controls->Add(this->pinToTopToggle);
 			this->Controls->Add(this->f4FovStatusLabel);
 			this->Controls->Add(this->f4fovvaluetmp2);
@@ -471,7 +449,6 @@ namespace OMSIPresToolsCLR {
 			this->Controls->Add(this->f4FovTrackbar);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->Name = L"MyForm";
 			this->Text = L"OMSI Presentation Tools";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm::MyForm_FormClosing);
@@ -590,10 +567,8 @@ namespace OMSIPresToolsCLR {
 	private: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (MessageBox::Show("Are you sure you want to quit?\nOMSI 2 will remain running and the F4 FOV will be reset to default.\nYou will not be able to relaunch OPT until you next launch OMSI.", "OMSI Presentation Tools", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 
-			f4FovActValue = (float)45.0;
 
-			// Reset FOV to 45
-			// Detach from process
+			f4FovActValue = (float)45.0;
 
 		}
 		else {
