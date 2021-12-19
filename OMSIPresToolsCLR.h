@@ -11,4 +11,4 @@ bool hasFoundAddress;
 
 bool isMapCurrentlyLoaded;
 
-void toggleF4FovEnabled();
+void ToggleF4FovEnabled();
