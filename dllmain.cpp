@@ -93,8 +93,8 @@ CSimpleIniA ini;
 SI_Error rc;
 
 // Console output (disabled)
-FILE* fDummy;
-HANDLE mhStdOutput;
+/* FILE* fDummy;
+HANDLE mhStdOutput; */
 
 
 
@@ -214,7 +214,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     std::string logFileCurrentLine;
 
 
-    /* Console output (disabled) */
+    /* Console output (disabled)
 
     // Initialise the console
     AllocConsole();
@@ -228,7 +228,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
 
     // Set the console window title
-    SetConsoleTitleA("OMSI Presentation Tools Console Debug");
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); */
 
     // Start the GUI in a new thread
     std::thread initFormThread(InitForm);
