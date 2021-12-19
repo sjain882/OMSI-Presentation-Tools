@@ -581,6 +581,8 @@ namespace OMSIPresToolsCLR {
 
 			// Set the actual FoV back to the default (45.0)
 			f4FovActValue = (float)45.0;
+
+			// Stop the main program loop
 			isProcessActive = false;
 
 		// If they cancel (click No)
