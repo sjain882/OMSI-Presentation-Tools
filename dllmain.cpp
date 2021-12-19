@@ -75,7 +75,6 @@ bool Hook(void* toHook, void* localFunc, int length);
 DWORD moduleBaseAddress;
 DWORD oldProtection;
 bool isF4FovEnabled;
-bool isProcessActive;
 bool mapJustLoaded;
 char* f4FovPtrChar;
 float newf4FovValue;
@@ -94,8 +93,8 @@ CSimpleIniA ini;
 SI_Error rc;
 
 // Console output (disabled)
-// FILE* fDummy;
-// HANDLE mhStdOutput;
+FILE* fDummy;
+HANDLE mhStdOutput;
 
 
 
@@ -105,7 +104,7 @@ const float DEFAULT_F4_FOV_VALUE = (float)45.0;
 
 const int FLOAT_BYTE_LENGTH = 4;
 
-const int UI_F4_FOV_INIT_VAL = 450;
+const int GUI_F4_FOV_INIT_VAL = 450;
 
 const char* MSG_GAME_VERSION_FAILED = "Falied to determine game version.\nQuit and restart OMSI.";
 
@@ -153,7 +152,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         // Start the MainThread() main function in a new thread
         CreateThread(0, 0, MainThread, hModule, 0, 0);
 
-        // Detach it from other threads (this does not terminate the thread)
+        // Detach it from the GUI thread (this does not terminate the thread)
         CloseHandle(0);
 
         break;
@@ -202,7 +201,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
     f4FovActValue = DEFAULT_F4_FOV_VALUE;
     f4FovHoldValue = DEFAULT_F4_FOV_VALUE;
-    f4FovUI = UI_F4_FOV_INIT_VAL;
+    f4FovUI = GUI_F4_FOV_INIT_VAL;
     hasFoundAddress = false;
     isF4FovEnabled = false;
     isMapCurrentlyLoaded = false;
@@ -215,9 +214,9 @@ DWORD WINAPI MainThread(LPVOID param) {
     std::string logFileCurrentLine;
 
 
-    /* Console output (disabled)
+    /* Console output (disabled) */
 
-    // Initialise the console to memory
+    // Initialise the console
     AllocConsole();
 
     // Set the stdout handle
@@ -229,7 +228,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
 
     // Set the console window title
-    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); */
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug");
 
     // Start the GUI in a new thread
     std::thread initFormThread(InitForm);
