@@ -143,10 +143,10 @@ const char* MSG_FIRST_LAUNCH = "Thank you for using OMSI Presentation Tools!\n\n
 /* DLL Entrypoint - OMSI will use LoadLibrary to attach .dll plugins
  * so we can take advantage of that, skipping PluginStart() */
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
-{
-    switch (ul_reason_for_call)
-    {
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+
+    switch (ul_reason_for_call) {
+
     case DLL_PROCESS_ATTACH:
 
         // Start the MainThread() main function in a new thread
@@ -253,8 +253,7 @@ DWORD WINAPI MainThread(LPVOID param) {
         // If there was an error saving to the file, display an error message, otherwise write to the file
         if (rc < 0) {
             MessageBoxA(0, MSG_INI_SAVE_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
-        }
-        else {
+        } else {
             ini.SaveFile(INI_FILE_RELATIVE_PATH);
         }
 
@@ -276,8 +275,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     *  Although most users will have plenty of free memory for OMSI
     *  to load into it's preferred base address of 0x00400000, this might not
     *  always be the case so we must base this off the module base address */
-    switch (gameVersionStatus)
-    {
+    switch (gameVersionStatus) {
 
         // Failed to get the game version
     case 0:
@@ -326,8 +324,8 @@ DWORD WINAPI MainThread(LPVOID param) {
         // OMSI 2 Logfile watcher - to determine if a map is currently loaded
 
         inputFileStream.seekg(logFileCursorPos);
-        while (getline(inputFileStream, logFileCurrentLine))
-        {
+        while (getline(inputFileStream, logFileCurrentLine)) {
+
             // "Map camera loaded" event
             if (logFileCurrentLine.find(LOG_FILE_MAP_CAM_LOADED) != std::string::npos) {
                 isMapCurrentlyLoaded = true;
@@ -339,41 +337,43 @@ DWORD WINAPI MainThread(LPVOID param) {
                 isMapCurrentlyLoaded = false;
             }
 
-            if (inputFileStream.tellg() == -1) logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
-            else logFileCursorPos = inputFileStream.tellg();
-        }
-        inputFileStream.clear();
+            if (inputFileStream.tellg() == -1) {
+                logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
+            } else {
+                logFileCursorPos = inputFileStream.tellg();
+            }
+            inputFileStream.clear();
 
 
-        /* If a map just loaded, calculate a pointer to the FoV of the
-        *  F4 camera based off the address we grabbed in the f4Addy variable */
-        if (mapJustLoaded && isMapCurrentlyLoaded) {
-            mapJustLoaded = false;
-            CalculateFovOffset();
-        }
-
-
-        // If a map is currently loaded, write to the F4 Camera's FOV value
-        if (isMapCurrentlyLoaded) {
-
-            // If FOV application is currently enabled in the GUI
-            if (isF4FovEnabled) {
-
-                newf4FovValue = (float)f4FovActValue;
-                *(float*)f4FovPtr = newf4FovValue;
-
-                // *(float*)f4FovPtr: cast the f4FovPtr to a float pointer (4 bytes) then dereference it
+            /* If a map just loaded, calculate a pointer to the FoV of the
+            *  F4 camera based off the address we grabbed in the f4Addy variable */
+            if (mapJustLoaded && isMapCurrentlyLoaded) {
+                mapJustLoaded = false;
+                CalculateFovOffset();
             }
 
-            // If FOV application is currently disabled in the GUI
-            else {
-                *(float*)f4FovPtr = DEFAULT_F4_FOV_VALUE;
+
+            // If a map is currently loaded, write to the F4 Camera's FOV value
+            if (isMapCurrentlyLoaded) {
+
+                // If FOV application is currently enabled in the GUI
+                if (isF4FovEnabled) {
+
+                    newf4FovValue = (float)f4FovActValue;
+                    *(float*)f4FovPtr = newf4FovValue;
+
+                    // *(float*)f4FovPtr: cast the f4FovPtr to a float pointer (4 bytes) then dereference it
+
+                // If FOV application is currently disabled in the GUI
+                } else {
+                    *(float*)f4FovPtr = DEFAULT_F4_FOV_VALUE;
+                }
+
             }
 
         }
 
     }
-
 }
 
 
@@ -425,8 +425,7 @@ int InitConfigValues() {
             break;
 
         }
-    }
-    else {
+    } else {
 
         // If the .ini file could not be loaded, display an error message
         MessageBoxA(0, MSG_INI_LOAD_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
@@ -455,8 +454,7 @@ int GetGameVersion() {
 
         result = 1;
 
-    }
-    else {
+    }  else {
 
         // Only scan for v2.3.004 if we haven't determined v2.3.032 already
         if (ScanForGameVersion(OMSI_23004_ANSI)) {
@@ -487,8 +485,7 @@ bool ScanForGameVersion(const char* searchString)
     AOBScanner scanner(scanStart, scanEnd);
     foundAddress = scanner.Scan(searchString);
 
-    if (foundAddress)
-    {
+    if (foundAddress) {
         scanSuccess = true;
     }
 
@@ -567,24 +564,24 @@ void ToggleF4FovEnabled() {
 /* --- OMSI Functions Start --- */
 
 
-// Called on OMSI startup (just before main menu appears)
+/* Called on OMSI startup (just before main menu appears).
+*  Unused in this program, but still defined and exported to prevent Zugriffs. */
 
-void __stdcall PluginStart(void* aOwner)
-{
-}
+void __stdcall PluginStart(void* aOwner) {}
 
 
 
 // Called on OMSI quit (when the user clicks "Yes" on the confirmation)
 
-void __stdcall PluginFinalize()
-{
+void __stdcall PluginFinalize() {
+
     // Stop the main program loop
     isProcessActive = false;
 
     // Restore original memory permissions on the F4 FoV value
     DWORD tmp;
     VirtualProtect((void*)f4FovPtr, FLOAT_BYTE_LENGTH, oldProtection, &tmp);
+
 }
 
 
