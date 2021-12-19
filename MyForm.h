@@ -1,5 +1,4 @@
 #pragma once
-
 #include "OMSIPresToolsCLR.h"
 
 
@@ -12,7 +11,6 @@ namespace OMSIPresToolsCLR {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-
 	System::Decimal oldFovValue = (System::Decimal)45.0;
 
 	/// <summary>
@@ -24,9 +22,6 @@ namespace OMSIPresToolsCLR {
 		MyForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
@@ -40,70 +35,23 @@ namespace OMSIPresToolsCLR {
 				delete components;
 			}
 		}
+
+
 	private: System::Windows::Forms::TrackBar^ f4FovTrackbar;
-	protected:
-
-
-
-	protected:
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::Label^ label4;
-
 	private: System::Windows::Forms::Label^ f4FovMaxLabel;
-
-
-
-
 	private: System::Windows::Forms::LinkLabel^ labelAboutThanksTo;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::LinkLabel^ labelAboutVersionGithub;
-
-
-
-
 	private: System::Windows::Forms::Label^ labelAboutTitle;
 	private: System::Windows::Forms::PictureBox^ pictureAboutIcon;
-
-
-
 	private: System::Windows::Forms::Label^ labelWarningGameClosed;
 	private: System::Windows::Forms::LinkLabel^ labelYouTube;
 	private: System::Windows::Forms::PictureBox^ pictureYouTubeIcon;
 	private: System::Windows::Forms::PictureBox^ pictureGitHubIcon;
 	private: System::Windows::Forms::LinkLabel^ labelSteamGuide;
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::LinkLabel^ labelAboutAuthor;
 	private: System::Windows::Forms::LinkLabel^ labelAboutThanksTo2;
-
 	private: System::Windows::Forms::Label^ f4FovStatusLabel;
-
 	private: System::Windows::Forms::CheckBox^ f4FovToggle;
 	private: System::Windows::Forms::NumericUpDown^ f4FovNumericUpDown;
 	private: System::Windows::Forms::Label^ f4FovTitle;
@@ -111,22 +59,11 @@ namespace OMSIPresToolsCLR {
 	private: System::Windows::Forms::Label^ f4FovRawLabel;
 	private: System::Windows::Forms::Label^ f4fovvaluetmp2;
 	private: System::Windows::Forms::CheckBox^ pinToTopToggle;
-
-
-
-
-
-
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container^ components;
-
-
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -468,25 +405,30 @@ namespace OMSIPresToolsCLR {
 #pragma endregion
 
 
-
-
 	private: System::Void labelAboutThanksTo2_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://github.com/win32kbase");
+
 	}
+
 	private: System::Void labelAboutThanksTo_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://github.com/rev-eng-e");
 
 	}
+
 	private: System::Void labelAboutAuthor_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://github.com/sjain882");
+
 	}
+
 	private: System::Void labelAboutVersionGithub_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://github.com/sjain882/OMSI-Presentation-Tools");
+
 	}
+
 	private: System::Void labelSteamGuide_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
 		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456");
@@ -494,104 +436,165 @@ namespace OMSIPresToolsCLR {
 	}
 
 	private: System::Void labelYouTube_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
+
 		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=pvU8gO66mTs");
+
 	}
 
 
 
+	// F4 FoV Checkbox toggle
 	private: System::Void f4FovToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 
+		// Only continue if a map is currently loaded, otherwise disable the controls again.
 		if (isMapCurrentlyLoaded) {
 
-
+			// Communicate this change to dllmain.cpp
 			ToggleF4FovEnabled();
+
+			// Invert all relevant enabled status booleans
 			this->f4FovTrackbar->Enabled = !this->f4FovTrackbar->Enabled;
 			this->f4FovNumericUpDown->Enabled = !this->f4FovNumericUpDown->Enabled;
 
+			// If everything is disabled...
 			if ((this->f4FovTrackbar->Enabled == false) && (this->f4FovNumericUpDown->Enabled == false)) {
+
 				// Just disabled FOV application
 				justEnabledFOVApplication = false;
+
+				// Set UI values to 45.0 degrees FoV
 				this->f4FovTrackbar->Value = 450;
 				this->f4FovNumericUpDown->Value = (System::Decimal)45.0;
+
+				// Retain the previous FoV value before disabling
 				f4FovHoldValue = f4FovActValue;
+
+				// Set the actual F4 FoV back to 45
 				f4FovActValue = 45.0;
-				//MessageBox::Show("1");
-			}
-			else {
+
+			} else {
+
 				// Just enabled FOV application
 				justEnabledFOVApplication = true;
+
+				// Restore the UI values to the previous value
 				this->f4FovTrackbar->Value = (int)f4FovHoldValue * 10.0;
 				this->f4FovNumericUpDown->Value = (System::Decimal)f4FovHoldValue;
+
+				// Set the actual FoV back to the previous value
 				f4FovActValue = f4FovHoldValue;
-				//MessageBox::Show("2");
 
 			}
 
-		}
-		else {
+		} else {
 			this->f4FovToggle->Checked = false;
 		}
 	}
+	
 
+
+	/* F4 FoV trackbar (slider) scroll event.
+	*  Trackbar don't support decimal values so throughout the form we will be using the FoV * 10 */
 	private: System::Void f4FovTrackbar_Scroll(System::Object^ sender, System::EventArgs^ e) {
+
+		// The user just scrolled
 		justScrolled = true;
+
+		/* Set the actual FoV to the new value, casting to a float 
+		* and dividing by 10.0 float to prevent precision issues */
 		f4FovActValue = (float)this->f4FovTrackbar->Value / 10.0;
-		//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+
+		// Cast to managed decimal value and set to the Numeric Up Down box too
 		this->f4FovNumericUpDown->Value = (System::Decimal)this->f4FovTrackbar->Value / (System::Decimal)10.0;
-		//this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
+
+		// Scroll event ended
 		justScrolled = false;
 	}
 
 
+
+	// Numeric Up Down box change event
 	private: System::Void f4FovNumericUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+
+		// If the user just enabled the FoV checkbox...
 		if (justEnabledFOVApplication) {
+			
+			//... and hasn't just scrolled the trackbar
 			if (!justScrolled) {
 
+				// Copy the new FoV to a new variable
 				System::Decimal newFovValue = f4FovNumericUpDown->Value;
 
+				// If the user pressed the up button or increased the FoV
 				if (oldFovValue < newFovValue) {
 
+					// Set the actual FoV value to this new value
 					f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-					//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+
+					// Set the trackbar value to this value
 					this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
-					//this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-				}
-				else if (oldFovValue > newFovValue) {
 
+				// If the user pressed the down button or decreased the FoV
+				} else if (oldFovValue > newFovValue) {
+
+					// If it's 2.1, manually floor it to 1.0 to avoid exception due to behaviour of WinForms
 					if (newFovValue < (System::Decimal(2.1))) {
+
+						// Set the actual F4 FoV to 1
 						f4FovActValue = (float)1.0;
+
+						// Set the NumericUpDown value to 1.0
 						this->f4FovNumericUpDown->Value = (System::Decimal)1.0;
+
+						// Set the trackbar to the minimum (10)
 						this->f4FovTrackbar->Value = 10;
-						//this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
-					}
-					else {
+
+					// If its just a normal decrease..
+					} else {
+
+						// Set the actual fov to the new value
 						f4FovActValue = (float)this->f4FovNumericUpDown->Value;
-						//this->f4fovvaluetmp2->Text = f4FovActValue.ToString();
+
+						// Set the trackbar to the new value
 						this->f4FovTrackbar->Value = (int)this->f4FovNumericUpDown->Value * 10.0;
-						//this->f4fovvaluetmp2->Text = this->f4FovTrackbar->Value.ToString();
 					}
 				}
 
+				// Update the old FoV tracker
 				oldFovValue = newFovValue;
 			}
 		}
 	}
+	
 
+
+	// When the user is closing the form
 	private: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		if (MessageBox::Show("Are you sure you want to quit?\nOMSI 2 will remain running and the F4 FOV will be reset to default.\nYou will not be able to relaunch OPT until you next launch OMSI.", "OMSI Presentation Tools", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+
+		// Prompt them and if they confirm (click Yes):
+		if (MessageBox::Show("Are you sure you want to quit?\n"
+							 "OMSI 2 will remain running and the F4 FOV will be reset to default.\n"
+							 "You will not be able to relaunch OPT until you next launch OMSI.",
+							 "OMSI Presentation Tools", MessageBoxButtons::YesNo,
+							 MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 
 
+			// Set the actual FoV back to the default (45.0)
 			f4FovActValue = (float)45.0;
 
-		}
-		else {
+
+		// If they cancel (click No)
+		} else {
 			e->Cancel = true;	// Cancel the close event
 		}
 	}
 
-private: System::Void pinToTopToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-	TopMost = !TopMost;
-}
 
-};
+
+	// Always on top toggle button
+	private: System::Void pinToTopToggle_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		TopMost = !TopMost;
+	}
+
+	};
 }

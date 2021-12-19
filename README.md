@@ -64,6 +64,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 - Potential anti-cheat & anti-virus incompatibilities.
 - Entire UI has hardcoded coordinates and doesn't DPI scale. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
 - v0.1.x alpha: If you set the slider to 1.0 (minimum F4 FOV), then click the down button twice on the raw value box, it will go down to 0.9... I've tried many possible ways of fixing this but none worked, assuming its a WinForms thing. Not going to bother fixing due to (hopefully) moving to new UI soon.
+- v0.1.x alpha: Some features like automatically disabling the UI when a map is unloaded if the user hasn't done it already, updating label text with status isn't possible right now because I can't get the static code to interact with the non-static form in any way. Same reason as above, UI will be replaced soon.
 
 ‎
 ## FAQ:
