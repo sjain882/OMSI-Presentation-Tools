@@ -8,7 +8,6 @@
 
 /* Imports */
 #include <iostream>
-#include <winuser.h>
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
 #include "lib/AOBScanner.h"
