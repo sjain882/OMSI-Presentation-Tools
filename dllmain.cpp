@@ -2,7 +2,7 @@
 *  C++17, Windows Forms
 *  Created by sjain (https://github.com/sjain882)
 *  Issues at https://github.com/sjain882/OMSI-Presentation-Tools/issues
-*  Suggestions at https://github.com/sjain882/OMSI-Presentation-Tools/pulls
+*  Suggestions at https://github.com/sjain882/OMSI-Presentation-Tools/pull
 */
 
 
@@ -23,15 +23,18 @@
 
 
 /* Definitions for TProgMan.NewSituationand game version checks */
+
 #define OMSI_22032_HOOK_RELADDR 0x002E62B8
 #define OMSI_23004_HOOK_RELADDR 0x002E6392
-// Starts at 2.2.032, ends at 2.3.004, total range 312 bytes
+#define OMSI_TCAMERA_FOV_OFFSET 0x38
+// Version scan: starts at 2.2.032, ends at 2.3.004, total range 312 bytes
 #define OMSI_VERSIONCHECK_START_ADDR 0x0072DFE0
 #define OMSI_VERSIONCHECK_END_ADDR 0x0072E12F
 #define OMSI_VERSIONCHECK_START_RELADDR 0x0032DFE0
 #define OMSI_VERSIONCHECK_END_RELADDR 0x0032E12F
 #define OMSI_22032_ANSI "32 00 2E 00 32 00 2E 00 30 00 33 00 32"
 #define OMSI_23004_ANSI "32 00 2E 00 33 00 2E 00 30 00 30 00 34"
+
 
 
 /* Unused definitions, but useful to keep here for reference
@@ -44,17 +47,18 @@ OMSI_VERSION_ANSI_MASK "xxxxxxxxxxxxx" */
 
 
 
-
 /* Export standard OMSI functions so OMSI can call them.
 *  This prevents the linker from obfustucating function names.
 *  Also via Project Properties > All Configurations > Linker
 *  > Input > type "OMSIDLL.def" for external export list. */
+
 extern "C" __declspec(dllexport)void __stdcall PluginStart(void* aOwner);
 extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
 
 
 
 /* Foward declarations */
+
 DWORD WINAPI MainThread(LPVOID param);
 void InitForm();
 int InitConfigValues();
@@ -68,33 +72,26 @@ bool Hook(void* toHook, void* localFunc, int length);
 /* Instantiate variables */
 
 // Internal
-float* f4FovPtr;
-char* f4FovPtrChar;
-DWORD procId;
-char* moduleBaseChar;
-bool isF4FovEnabled;
-uintptr_t f4FovAddress;
-float newf4FovValue;
-bool isProcessActive;
-int isFirstLaunchOPL;
-CSimpleIniA ini;
-SI_Error rc;
-int floatLength;
+DWORD moduleBaseAddress;
 DWORD oldProtection;
+bool isF4FovEnabled;
+bool isProcessActive;
 bool mapJustLoaded;
-bool isFovWritingEnabled;
-
+char* f4FovPtrChar;
+float newf4FovValue;
+float* f4FovPtr;
 
 // Hooking
-
-DWORD* f4Addy;
 DWORD hookAddress;
 DWORD jumpBackAddress;
-DWORD moduleBaseAddress;
-bool hookStatus;
 DWORD versionSearchStart;
+DWORD* f4Addy;
+bool hookStatus;
 char* versionSearchStartChar;
 
+// .ini File
+CSimpleIniA ini;
+SI_Error rc;
 
 // Console output (disabled)
 // FILE* fDummy;
@@ -102,12 +99,13 @@ char* versionSearchStartChar;
 
 
 
+/* Constants */
 
+const float DEFAULT_F4_FOV_VALUE = (float)45.0;
 
+const int FLOAT_BYTE_LENGTH = 4;
 
-const std::string LOG_FILE_MAP_CAM_LOADED = "Information: Map camera loaded";
-const std::string LOG_FILE_CLOSING_MAP = "Information: Closing actual map...";
-
+const int UI_F4_FOV_INIT_VAL = 450;
 
 const char* MSG_GAME_VERSION_FAILED = "Falied to determine game version.\nQuit and restart OMSI.";
 
@@ -129,21 +127,17 @@ const char* MSG_FIRST_LAUNCH_TITLE = "First Launch";
 
 const char* INI_FILE_RELATIVE_PATH = ".\\plugins\\OMSIPresentationTools.ini";
 
+const std::string LOG_FILE_MAP_CAM_LOADED = "Information: Map camera loaded";
+
+const std::string LOG_FILE_CLOSING_MAP = "Information: Closing actual map...";
+
+const std::string LOG_FILE_FILENAME = "logfile.txt";
+
 const char* MSG_FIRST_LAUNCH = "Thank you for using OMSI Presentation Tools!\n\n"
 "If you have any games open that have anti - cheats, please close them immediately!\n\n"
 "See the GitHub Readme or Steam guide for more info.\n\n"
 "You will not be reminded next time!\n\n"
 "If you can't see OMSI Presentation Tools, it may be behind OMSI 2, find it in the ALT+TAB menu.";
-
-
-
-const std::string logFile = "logfile.txt";
-
-
-
-
-
-
 
 
 
@@ -184,7 +178,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 *  Line 3: The instruction right after the patched instruction is repeated here
 *          as the jmp instruction to this detour had to overwrite it due to it's byte length.
 *
-*  Line 4: Jump back to where we detoured / trampoline hooked from to continue execution. */
+*  Line 4: Jump back to where we detoured / trampoline hooked from to continue execution. 
+*
+*  __declspec(naked): Do not add function prologue or epilogue when compiling.
+*  This preserves the register states from the function we are hooking. */
 
 void __declspec(naked) localFunc() {
 
@@ -203,27 +200,19 @@ void __declspec(naked) localFunc() {
 
 DWORD WINAPI MainThread(LPVOID param) {
 
-    isProcessActive = true;
+    f4FovActValue = DEFAULT_F4_FOV_VALUE;
+    f4FovHoldValue = DEFAULT_F4_FOV_VALUE;
+    f4FovUI = UI_F4_FOV_INIT_VAL;
+    hasFoundAddress = false;
     isF4FovEnabled = false;
-    f4FovUI = 450;
-    f4FovActValue = (float)45.0;
-    f4FovHoldValue = (float)45.0;
+    isMapCurrentlyLoaded = false;
+    isProcessActive = true;
     justEnabledFOVApplication = false;
     justScrolled = false;
-    hasFoundAddress = false;
-    isMapCurrentlyLoaded = false;
     mapJustLoaded = false;
-    isFovWritingEnabled = false;
-    float defaultF4FovValue = (float)45.0;
-    floatLength = 4;
-
-
-
-
-
-    std::string log;
-    std::streamoff p = 0;
-    std::ifstream ifs(logFile.c_str());
+    std::ifstream inputFileStream(LOG_FILE_FILENAME.c_str());
+    std::streamoff logFileCursorPos = 0;
+    std::string logFileCurrentLine;
 
 
     /* Console output (disabled)
@@ -311,7 +300,6 @@ DWORD WINAPI MainThread(LPVOID param) {
     }
 
 
-
     // If the game version check was successful, continue with the hook
     if (gameVersionStatus > 0) {
 
@@ -327,46 +315,42 @@ DWORD WINAPI MainThread(LPVOID param) {
         // Perform the hook
         hookStatus = Hook((void*)hookAddress, localFunc, hookLength);
 
-        // Not exiting here as this destroys the code to be jumped to
+        // Not terminating the thread here as this destroys the code to be jumped to
         // FreeLibraryAndExitThread((HMODULE)param, 0);
 
     }
 
 
-
     // If a map is currently loaded, enter the main program loop
-
     while (isProcessActive) {
 
         // OMSI 2 Logfile watcher - to determine if a map is currently loaded
 
-        ifs.seekg(p);
-        while (getline(ifs, log))
+        inputFileStream.seekg(logFileCursorPos);
+        while (getline(inputFileStream, logFileCurrentLine))
         {
             // "Map camera loaded" event
-            if (log.find(LOG_FILE_MAP_CAM_LOADED) != std::string::npos) {
+            if (logFileCurrentLine.find(LOG_FILE_MAP_CAM_LOADED) != std::string::npos) {
                 isMapCurrentlyLoaded = true;
                 mapJustLoaded = true;
             }
 
             // "Map closing" event
-            if (log.find(LOG_FILE_CLOSING_MAP) != std::string::npos) {
+            if (logFileCurrentLine.find(LOG_FILE_CLOSING_MAP) != std::string::npos) {
                 isMapCurrentlyLoaded = false;
             }
 
-            if (ifs.tellg() == -1) p = p + log.size();
-            else p = ifs.tellg();
+            if (inputFileStream.tellg() == -1) logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
+            else logFileCursorPos = inputFileStream.tellg();
         }
-        ifs.clear();
+        inputFileStream.clear();
 
 
         /* If a map just loaded, calculate a pointer to the FoV of the
         *  F4 camera based off the address we grabbed in the f4Addy variable */
         if (mapJustLoaded && isMapCurrentlyLoaded) {
             mapJustLoaded = false;
-            if (CalculateFovOffset()) {
-                isFovWritingEnabled = true;
-            }
+            CalculateFovOffset();
         }
 
 
@@ -384,7 +368,7 @@ DWORD WINAPI MainThread(LPVOID param) {
 
             // If FOV application is currently disabled in the GUI
             else {
-                *(float*)f4FovPtr = defaultF4FovValue;
+                *(float*)f4FovPtr = DEFAULT_F4_FOV_VALUE;
             }
 
         }
@@ -410,10 +394,12 @@ void InitForm() {
 
 
 
-// Gets the initialisation values from the.ini file.
+/* Gets the initialisation values from the .ini file.
+*  Returns a non-zero value indicating the status of the ini values. */
 
 int InitConfigValues() {
 
+    int isFirstLaunchOPL;
     int funcStatus = 0;
     ini.SetUnicode();
     rc = ini.LoadFile(INI_FILE_RELATIVE_PATH);
@@ -421,7 +407,7 @@ int InitConfigValues() {
     // If the .ini file was loaded sucessfully
     if (rc >= 0) {
 
-        // Get the isFirstLaunch as a char and 
+        // Get the isFirstLaunch as a char and convert it to an int
         isFirstLaunchOPL = atoi(ini.GetValue(INI_FIELD_NAME, INI_FIRST_LAUNCH_ENTRY_NAME));
 
         switch (isFirstLaunchOPL) {
@@ -456,7 +442,8 @@ int InitConfigValues() {
 
 
 
-// Determines the game version
+/* Determines the game version by calling a scanner.
+*  Returns 0 if unsuccesful, 1 for OMSI 2 v2.2.032 and 2 for OMSI 2 v2.3.004. */
 
 int GetGameVersion() {
 
@@ -472,6 +459,7 @@ int GetGameVersion() {
     }
     else {
 
+        // Only scan for v2.3.004 if we haven't determined v2.3.032 already
         if (ScanForGameVersion(OMSI_23004_ANSI)) {
             result = 2;
         }
@@ -483,9 +471,10 @@ int GetGameVersion() {
 
 
 
-/* Scans for searchString in a specific region of memory.
+/* Scans for char* searchString in a specific region of memory with an AOBScanner instance.
 *  The region of memory used here contains OMSI's program version indication
-*  strings that are written to the top of map timetable files (.ttp, .ttl, .ttr) */
+*  strings that are written to the top of map timetable files (.ttp, .ttl, .ttr) 
+*  Returns true if successful, false if unsuccessful. */
 
 bool ScanForGameVersion(const char* searchString)
 {
@@ -516,13 +505,13 @@ bool ScanForGameVersion(const char* searchString)
 bool CalculateFovOffset() {
 
     // Cast the pointer to a char pointer to allow for single byte pointer arithmetic
-    (char*)f4FovPtrChar = (char*)f4Addy + 0x38;
+    (char*)f4FovPtrChar = (char*)f4Addy + OMSI_TCAMERA_FOV_OFFSET;
 
     // Cast it back to a float pointer (4 bytes)
     f4FovPtr = (float*)f4FovPtrChar;
 
     // Set memory permissions on the FoV value
-    VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+    VirtualProtect((void*)f4FovPtr, FLOAT_BYTE_LENGTH, PAGE_EXECUTE_READWRITE, &oldProtection);
 
     return true;
 
@@ -531,10 +520,10 @@ bool CalculateFovOffset() {
 
 
 /* Mechanism to detour / trampoline hook into OMSI 2.
-*  Takes the memory address (of an instruction) to hook at,
-*  the memory address of a our function to jump to,
-*  and the length of the instruction to be written to for the hook.
-* */
+*  void* toHook: the memory address (of an instruction) to hook at.
+*  void* localFunc: the memory address of a our function to jump to.
+*  int length: the length of the instruction to be written to for the hook.
+*  Constructs a jmp instruction to localFunc and writes it to toHook. */
 
 bool Hook(void* toHook, void* localFunc, int length) {
 
@@ -545,10 +534,10 @@ bool Hook(void* toHook, void* localFunc, int length) {
     DWORD oldProtection;
     VirtualProtect(toHook, length, PAGE_EXECUTE_READWRITE, &oldProtection);
 
-    // Populate the memory with nop for a clean start
+    // Populate the memory with nop for a clean start, to avoid conflicts if anything is left over
     memset(toHook, 0x90, length);
 
-    // Offset from where we write jmp to destination, including the size of the jmp (5)
+    // Offset from where we write jmp to the destination, including the size of the jmp (5)
     DWORD relativeAddress = ((DWORD)localFunc - (DWORD)toHook) - 5;
 
     // Convert toHook to byte pointer and dereference
@@ -567,18 +556,12 @@ bool Hook(void* toHook, void* localFunc, int length) {
 }
 
 
-// UI
+
+// Called by the UI, inverts the enabled status of the FoV application.
 
 void ToggleF4FovEnabled() {
     isF4FovEnabled = !isF4FovEnabled;
 }
-
-
-
-
-
-
-
 
 
 
@@ -592,6 +575,7 @@ void __stdcall PluginStart(void* aOwner)
 }
 
 
+
 // Called on OMSI quit (when the user clicks "Yes" on the confirmation)
 
 void __stdcall PluginFinalize()
@@ -601,7 +585,7 @@ void __stdcall PluginFinalize()
 
     // Restore original memory permissions on the F4 FoV value
     DWORD tmp;
-    VirtualProtect((void*)f4FovAddress, floatLength, oldProtection, &tmp);
+    VirtualProtect((void*)f4FovPtr, FLOAT_BYTE_LENGTH, oldProtection, &tmp);
 }
 
 
