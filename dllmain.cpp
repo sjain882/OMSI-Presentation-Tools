@@ -8,13 +8,6 @@
 
 /* Imports */
 #include <iostream>
-#include <codecvt>
-#include <vector>
-#include <math.h>
-#include <intrin.h>
-#include <windows.h>
-#include <TlHelp32.h>
-#include <memoryapi.h>
 #include <winuser.h>
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
@@ -23,9 +16,7 @@
 #include "lib/ConvertUTF.h"
 #include <thread>
 #include <iostream>
-#include <string>
 #include <fstream>
-#include <chrono>
 
 
 /* Pragma lib includes */
@@ -93,12 +84,11 @@ int floatLength;
 DWORD oldProtection;
 bool mapJustLoaded;
 bool isFovWritingEnabled;
-bool addy;
 
 
 // Hooking
 
-DWORD *f4Addy;
+DWORD* f4Addy;
 DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD moduleBaseAddress;
@@ -107,10 +97,54 @@ DWORD versionSearchStart;
 char* versionSearchStartChar;
 
 
-// SHIT
+// Console output (disabled)
+// FILE* fDummy;
+// HANDLE mhStdOutput;
 
-FILE* fDummy;
-HANDLE mhStdOutput;
+
+
+
+
+
+const std::string LOG_FILE_MAP_CAM_LOADED = "Information: Map camera loaded";
+const std::string LOG_FILE_CLOSING_MAP = "Information: Closing actual map...";
+
+
+const char* MSG_GAME_VERSION_FAILED = "Falied to determine game version.\nQuit and restart OMSI.";
+
+const char* MSG_DEFAULT_TITLE = "OMSI Presentation Tools";
+
+const char* MSG_INI_SAVE_FAILED = "Failed to save to the ini file.";
+
+const char* INI_FIELD_NAME = "Settings";
+
+const char* INI_FIRST_LAUNCH_ENTRY_NAME = "isFirstLaunch";
+
+const char* INI_FIRST_LAUNCH_FALSE_VAL = "0";
+
+const char* INI_FIRST_LAUNCH_TRUE_VAL = "1";
+
+const char* MSG_INI_LOAD_FAILED = "Failed to load from the ini file.";
+
+const char* MSG_FIRST_LAUNCH_TITLE = "First Launch";
+
+const char* INI_FILE_RELATIVE_PATH = ".\\plugins\\OMSIPresentationTools.ini";
+
+const char* MSG_FIRST_LAUNCH = "Thank you for using OMSI Presentation Tools!\n\n"
+"If you have any games open that have anti - cheats, please close them immediately!\n\n"
+"See the GitHub Readme or Steam guide for more info.\n\n"
+"You will not be reminded next time!\n\n"
+"If you can't see OMSI Presentation Tools, it may be behind OMSI 2, find it in the ALT+TAB menu.";
+
+
+
+const std::string logFile = "logfile.txt";
+
+
+
+
+
+
 
 
 
@@ -142,9 +176,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
 
 /* Detoured function - this is where our hooked code will jump to.
-* 
+*
 *  Line 1: The instruction we overwrote with the jmp instruction to this detour.
-* 
+*
 *  Line 2: Move the memory address of the Free Map Camera (F4)'s TCamera struct
 *          (a DWORD pointer stored in the edx register at this point) into f4Addy.
 *
@@ -158,15 +192,15 @@ void __declspec(naked) localFunc() {
     __asm {
         mov edx, [esi + 0x14]
         mov f4Addy, edx
-        mov [eax], edx
-        jmp [jumpBackAddress]
+        mov[eax], edx
+        jmp[jumpBackAddress]
     }
 
 }
 
 
 
-/* Main function of this code, called when this .dll is attached to a process */
+/* Main function of this program, called when this .dll is attached to a process */
 
 DWORD WINAPI MainThread(LPVOID param) {
 
@@ -182,21 +216,32 @@ DWORD WINAPI MainThread(LPVOID param) {
     mapJustLoaded = false;
     isFovWritingEnabled = false;
     float defaultF4FovValue = (float)45.0;
-    addy = false;
     floatLength = 4;
-    std::string logFileStatus_MapCamLoaded = "Information: Map camera loaded";
-    std::string logFileStatus_ClosingMap = "Information: Closing actual map...";
+
+
+
+
+
     std::string log;
-    std::string logFile = "logfile.txt";
     std::streamoff p = 0;
     std::ifstream ifs(logFile.c_str());
 
+
+    /* Console output (disabled)
+
+    // Initialise the console to memory
     AllocConsole();
+
+    // Set the stdout handle
     mhStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Re-assign handles to this window
     freopen_s(&fDummy, "CONIN$", "r", stdin);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    SetConsoleTitleA("OMSI Presentation Tools Console Debug");
+
+    // Set the console window title
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); */
 
     // Start the GUI in a new thread
     std::thread initFormThread(InitForm);
@@ -213,17 +258,17 @@ DWORD WINAPI MainThread(LPVOID param) {
     if (configStatus > 1) {
 
         // ...display the first launch message and set it to "Always on top" so it can't get hidden behind OMSI
-        MessageBoxA(0, "Thank you for using OMSI Presentation Tools!\n\nIf you have any games open that have anti-cheats, please close them immediately!\n\nSee the GitHub Readme or Steam guide for more info.\n\nYou will not be reminded next time!\n\nIf you can't see OMSI Presentation Tools, it may be behind OMSI 2, find it in the ALT+TAB menu.", "First Launch", MB_OK | MB_ICONWARNING | MB_TOPMOST);
+        MessageBoxA(0, MSG_FIRST_LAUNCH, MSG_FIRST_LAUNCH_TITLE, MB_OK | MB_ICONWARNING | MB_TOPMOST);
 
         // Save the fact that the first launch has passed to the .ini
-        rc = ini.SetValue("Settings", "isFirstLaunch", "0");
+        rc = ini.SetValue(INI_FIELD_NAME, INI_FIRST_LAUNCH_ENTRY_NAME, INI_FIRST_LAUNCH_FALSE_VAL);
 
-        // If there was an error writing to the file, display an error message, otherwise write to the file
+        // If there was an error saving to the file, display an error message, otherwise write to the file
         if (rc < 0) {
-            MessageBoxA(0, "Failed to save to ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);      
+            MessageBoxA(0, MSG_INI_SAVE_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
         }
         else {
-            ini.SaveFile(".\\plugins\\OMSIPresentationTools.ini");
+            ini.SaveFile(INI_FILE_RELATIVE_PATH);
         }
 
     }
@@ -248,22 +293,22 @@ DWORD WINAPI MainThread(LPVOID param) {
     {
 
         // Failed to get the game version
-        case 0:
-            MessageBoxA(0, "Falied to determine game version.\nQuit and restart OMSI.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
-            break;
+    case 0:
+        MessageBoxA(0, MSG_GAME_VERSION_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
+        break;
 
         // Detected OMSI 2 v2.2.032 successfully
-        case 1:
-            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
-            break;
+    case 1:
+        hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
+        break;
 
         // Detected OMSI 2 v2.3.004 successfully
-        case 2:
-            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
-            break;
+    case 2:
+        hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
 
@@ -300,13 +345,13 @@ DWORD WINAPI MainThread(LPVOID param) {
         while (getline(ifs, log))
         {
             // "Map camera loaded" event
-            if (log.find(logFileStatus_MapCamLoaded) != std::string::npos) {
+            if (log.find(LOG_FILE_MAP_CAM_LOADED) != std::string::npos) {
                 isMapCurrentlyLoaded = true;
                 mapJustLoaded = true;
             }
 
             // "Map closing" event
-            if (log.find(logFileStatus_ClosingMap) != std::string::npos) {
+            if (log.find(LOG_FILE_CLOSING_MAP) != std::string::npos) {
                 isMapCurrentlyLoaded = false;
             }
 
@@ -314,7 +359,7 @@ DWORD WINAPI MainThread(LPVOID param) {
             else p = ifs.tellg();
         }
         ifs.clear();
-    
+
 
         /* If a map just loaded, calculate a pointer to the FoV of the
         *  F4 camera based off the address we grabbed in the f4Addy variable */
@@ -323,7 +368,7 @@ DWORD WINAPI MainThread(LPVOID param) {
             if (CalculateFovOffset()) {
                 isFovWritingEnabled = true;
             }
-        }     
+        }
 
 
         // If a map is currently loaded, write to the F4 Camera's FOV value
@@ -351,12 +396,14 @@ DWORD WINAPI MainThread(LPVOID param) {
 
 
 
+// Initialises the main GUI
+
 void InitForm() {
 
     System::Windows::Forms::Application::EnableVisualStyles();
     System::Windows::Forms::Application::SetCompatibleTextRenderingDefault(false);
-    OMSIPresToolsCLR::MyForm form;  // Initialise the form
-    form.MaximizeBox = false;   // Prevent maximising
+    OMSIPresToolsCLR::MyForm form;  // Initialise the form object
+    form.MaximizeBox = false;       // Prevent maximising
     form.AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
     System::Windows::Forms::Application::Run(% form);   // Run the form
 
@@ -364,22 +411,28 @@ void InitForm() {
 
 
 
+// Gets the initialisation values from the.ini file.
+
 int InitConfigValues() {
 
     int funcStatus = 0;
     ini.SetUnicode();
-    rc = ini.LoadFile(".\\plugins\\OMSIPresentationTools.ini");
+    rc = ini.LoadFile(INI_FILE_RELATIVE_PATH);
 
+    // If the .ini file was loaded sucessfully
     if (rc >= 0) {
 
-        isFirstLaunchOPL = atoi(ini.GetValue("Settings", "isFirstLaunch"));
+        // Get the isFirstLaunch as a char and 
+        isFirstLaunchOPL = atoi(ini.GetValue(INI_FIELD_NAME, INI_FIRST_LAUNCH_ENTRY_NAME));
 
         switch (isFirstLaunchOPL) {
 
+            // Not the first launch
         case 0:
             funcStatus = 1;
             break;
 
+            // Confirmed to be the first launch
         case 1:
             funcStatus = 2;
             break;
@@ -390,13 +443,21 @@ int InitConfigValues() {
         }
     }
     else {
-        MessageBoxA(0, "Failed to read from ini file.", "OMSI Presentation Tools", MB_OK | MB_ICONERROR);
+
+        // If the .ini file could not be loaded, display an error message
+        MessageBoxA(0, MSG_INI_LOAD_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
+
+        // This condition still has a unique return value above 0
         funcStatus = 3;
+
     }
 
     return funcStatus;
 }
 
+
+
+// Determines the game version
 
 int GetGameVersion() {
 
@@ -404,14 +465,15 @@ int GetGameVersion() {
     bool scanStatus23032 = false;
     bool scanStatus23004 = false;
 
-    scanStatus23032 = ScanForGameVersion(OMSI_22032_ANSI);
+    // If we already determined game version v2.2.032, skip scanning for v2.3.004
+    if (ScanForGameVersion(OMSI_22032_ANSI)) {
 
-    if (scanStatus23032) {
         result = 1;
+
     }
     else {
-        scanStatus23004 = ScanForGameVersion(OMSI_23004_ANSI);
-        if (scanStatus23004) {
+
+        if (ScanForGameVersion(OMSI_23004_ANSI)) {
             result = 2;
         }
     }
@@ -422,23 +484,58 @@ int GetGameVersion() {
 
 
 
+/* Scans for searchString in a specific region of memory.
+*  The region of memory used here contains OMSI's program version indication
+*  strings that are written to the top of map timetable files (.ttp, .ttl, .ttr) */
+
+bool ScanForGameVersion(const char* searchString)
+{
+
+    bool scanSuccess = false;
+    uintptr_t scanStart = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_START_RELADDR;
+    uintptr_t scanEnd = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_END_RELADDR;
+    BYTE* foundAddress;
+
+    // External Array of Byte memory scanner by rev_eng_e
+    AOBScanner scanner(scanStart, scanEnd);
+    foundAddress = scanner.Scan(searchString);
+
+    if (foundAddress)
+    {
+        scanSuccess = true;
+    }
+
+    return scanSuccess;
+
+}
+
+
+
+/* Calculates the offset of the 4 byte FoV float from the base address
+*  of the TCamera struct and stores it in the globally defined f4FovPtr. */
 
 bool CalculateFovOffset() {
 
+    // Cast the pointer to a char pointer to allow for single byte pointer arithmetic
     (char*)f4FovPtrChar = (char*)f4Addy + 0x38;
 
+    // Cast it back to a float pointer (4 bytes)
     f4FovPtr = (float*)f4FovPtrChar;
 
-    // Set memory permissions
+    // Set memory permissions on the FoV value
     VirtualProtect((void*)f4FovPtr, floatLength, PAGE_EXECUTE_READWRITE, &oldProtection);
-
-    addy = true;
 
     return true;
 
 }
 
 
+
+/* Mechanism to detour / trampoline hook into OMSI 2.
+*  Takes the memory address (of an instruction) to hook at,
+*  the memory address of a our function to jump to,
+*  and the length of the instruction to be written to for the hook.
+* */
 
 bool Hook(void* toHook, void* localFunc, int length) {
 
@@ -481,24 +578,7 @@ void ToggleF4FovEnabled() {
 
 
 
-bool ScanForGameVersion(const char* searchString)
-{
 
-    bool scanSuccess = false;
-    uintptr_t scanStart = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_START_RELADDR;
-    uintptr_t scanEnd = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_END_RELADDR;
-    BYTE* foundAddress;
-    AOBScanner scanner(scanStart, scanEnd);
-    foundAddress = scanner.Scan(searchString);
-
-    if (foundAddress)
-    {
-        scanSuccess = true;
-    }
-
-    return scanSuccess;
-
-}
 
 
 
@@ -509,7 +589,7 @@ bool ScanForGameVersion(const char* searchString)
 // Called on OMSI startup (just before main menu appears)
 
 void __stdcall PluginStart(void* aOwner)
-{    
+{
 }
 
 
@@ -517,7 +597,10 @@ void __stdcall PluginStart(void* aOwner)
 
 void __stdcall PluginFinalize()
 {
+    // Stop the main program loop
     isProcessActive = false;
+
+    // Restore original memory permissions on the F4 FoV value
     DWORD tmp;
     VirtualProtect((void*)f4FovAddress, floatLength, oldProtection, &tmp);
 }
