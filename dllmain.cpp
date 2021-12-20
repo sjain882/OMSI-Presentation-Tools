@@ -7,15 +7,14 @@
 
 
 /* Imports */
+#include <fstream>
 #include <iostream>
+#include <thread>
 #include "MyForm.h"
 #include "OMSIPresToolsCLR.h"
 #include "lib/AOBScanner.h"
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
-#include <thread>
-#include <iostream>
-#include <fstream>
 
 
 /* Pragma lib includes */
@@ -85,15 +84,14 @@ DWORD hookAddress;
 DWORD jumpBackAddress;
 DWORD versionSearchStart;
 DWORD* f4Addy;
-bool hookStatus;
 char* versionSearchStartChar;
 
 // .ini File
 CSimpleIniA ini;
 SI_Error rc;
 
-// Console output (disabled)
-/* FILE* fDummy;
+/* Console output (disabled)
+FILE* fDummy;
 HANDLE mhStdOutput; */
 
 
@@ -120,7 +118,9 @@ const char* INI_FIRST_LAUNCH_FALSE_VAL = "0";
 
 const char* INI_FIRST_LAUNCH_TRUE_VAL = "1";
 
-const char* MSG_INI_LOAD_FAILED = "Failed to load from the ini file.";
+const char* MSG_INI_LOAD_FAILED = "Failed to load the ini file.";
+
+const char* MSG_LOGFILE_OPEN_FAILED = "Failed to open OMSI 2's logfile.\nThis is critical to OPT's functionality, the tool will now exit.";
 
 const char* MSG_FIRST_LAUNCH_TITLE = "First Launch";
 
@@ -177,7 +177,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 *  Line 3: The instruction right after the patched instruction is repeated here
 *          as the jmp instruction to this detour had to overwrite it due to it's byte length.
 *
-*  Line 4: Jump back to where we detoured / trampoline hooked from to continue execution. 
+*  Line 4: Jump back to where we detoured / trampoline hooked from to continue execution.
 *
 *  __declspec(naked): Do not add function prologue or epilogue when compiling.
 *  This preserves the register states from the function we are hooking. */
@@ -199,6 +199,8 @@ void __declspec(naked) localFunc() {
 
 DWORD WINAPI MainThread(LPVOID param) {
 
+    // Initialisation
+
     f4FovActValue = DEFAULT_F4_FOV_VALUE;
     f4FovHoldValue = DEFAULT_F4_FOV_VALUE;
     f4FovUI = GUI_F4_FOV_INIT_VAL;
@@ -209,12 +211,12 @@ DWORD WINAPI MainThread(LPVOID param) {
     justEnabledFOVApplication = false;
     justScrolled = false;
     mapJustLoaded = false;
-    std::ifstream inputFileStream(LOG_FILE_FILENAME.c_str());
+    std::ifstream inputFileStream;
     std::streamoff logFileCursorPos = 0;
     std::string logFileCurrentLine;
 
 
-    /* Console output (disabled)
+    /* Console output(disabled)
 
     // Initialise the console
     AllocConsole();
@@ -225,10 +227,22 @@ DWORD WINAPI MainThread(LPVOID param) {
     // Re-assign handles to this window
     freopen_s(&fDummy, "CONIN$", "r", stdin);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
-    freopen_s(&fDummy, "CONOUT$", "w", stdout);
+    freopen_s(&fDummy, "CONOUT$", "w", stdout); */
 
     // Set the console window title
-    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); */
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); 
+
+
+    // Attempt to open OMSI 2's logfile
+    inputFileStream.open(LOG_FILE_FILENAME.c_str());
+
+    // If opening the file failed for some reason, display an error message
+    if (!inputFileStream) {
+        MessageBoxA(0, MSG_LOGFILE_OPEN_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
+        isProcessActive = false;
+        Sleep(5000);
+        FreeLibraryAndExitThread((HMODULE)param, 0);
+    }
 
     // Start the GUI in a new thread
     std::thread initFormThread(InitForm);
@@ -244,7 +258,8 @@ DWORD WINAPI MainThread(LPVOID param) {
      * this tool, or if the ini file could not be read... */
     if (configStatus > 1) {
 
-        // ...display the first launch message and set it to "Always on top" so it can't get hidden behind OMSI
+        /* ...display the first launch messageand set it to "Always on top" so it can't get hidden behind OMSI
+         * We will always create message boxes on the same thread as the main program, so it pauses until the user acknowledges */
         MessageBoxA(0, MSG_FIRST_LAUNCH, MSG_FIRST_LAUNCH_TITLE, MB_OK | MB_ICONWARNING | MB_TOPMOST);
 
         // Save the fact that the first launch has passed to the .ini
@@ -300,7 +315,6 @@ DWORD WINAPI MainThread(LPVOID param) {
     // If the game version check was successful, continue with the hook
     if (gameVersionStatus > 0) {
 
-
         /* The length of the jmp instruction is 5.
         *  Thus, we must overwite the instructions at 0x006E6392 and 0x006E6395 (v2.3.004 reference) */
         int hookLength = 5;
@@ -310,7 +324,7 @@ DWORD WINAPI MainThread(LPVOID param) {
         jumpBackAddress = hookAddress + hookLength;
 
         // Perform the hook
-        hookStatus = Hook((void*)hookAddress, localFunc, hookLength);
+        Hook((void*)hookAddress, localFunc, hookLength);
 
         // Not terminating the thread here as this destroys the code to be jumped to
         // FreeLibraryAndExitThread((HMODULE)param, 0);
@@ -322,7 +336,6 @@ DWORD WINAPI MainThread(LPVOID param) {
     while (isProcessActive) {
 
         // OMSI 2 Logfile watcher - to determine if a map is currently loaded
-
         inputFileStream.seekg(logFileCursorPos);
         while (getline(inputFileStream, logFileCurrentLine)) {
 
@@ -337,43 +350,39 @@ DWORD WINAPI MainThread(LPVOID param) {
                 isMapCurrentlyLoaded = false;
             }
 
-            if (inputFileStream.tellg() == -1) {
-                logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
+            if (inputFileStream.tellg() == -1) logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
+            else logFileCursorPos = inputFileStream.tellg();
+        }
+        
+        inputFileStream.clear();
+
+
+        /* If a map just loaded, calculate a pointer to the FoV of the
+         *  F4 camera based off the address we grabbed in the f4Addy variable */
+        if (mapJustLoaded && isMapCurrentlyLoaded) {
+            mapJustLoaded = false;
+            CalculateFovOffset();
+        }
+
+
+        // If a map is currently loaded, write to the F4 Camera's FOV value
+        if (isMapCurrentlyLoaded) {
+
+            // If FOV application is currently enabled in the GUI
+            if (isF4FovEnabled) {
+
+                newf4FovValue = (float)f4FovActValue;
+                *(float*)f4FovPtr = newf4FovValue;      // cast the f4FovPtr to a float pointer (4 bytes) then dereference it
+
+            // If FOV application is currently disabled in the GUI
             } else {
-                logFileCursorPos = inputFileStream.tellg();
-            }
-            inputFileStream.clear();
-
-
-            /* If a map just loaded, calculate a pointer to the FoV of the
-            *  F4 camera based off the address we grabbed in the f4Addy variable */
-            if (mapJustLoaded && isMapCurrentlyLoaded) {
-                mapJustLoaded = false;
-                CalculateFovOffset();
-            }
-
-
-            // If a map is currently loaded, write to the F4 Camera's FOV value
-            if (isMapCurrentlyLoaded) {
-
-                // If FOV application is currently enabled in the GUI
-                if (isF4FovEnabled) {
-
-                    newf4FovValue = (float)f4FovActValue;
-                    *(float*)f4FovPtr = newf4FovValue;
-
-                    // *(float*)f4FovPtr: cast the f4FovPtr to a float pointer (4 bytes) then dereference it
-
-                // If FOV application is currently disabled in the GUI
-                } else {
-                    *(float*)f4FovPtr = DEFAULT_F4_FOV_VALUE;
-                }
-
+                *(float*)f4FovPtr = DEFAULT_F4_FOV_VALUE;
             }
 
         }
 
     }
+
 }
 
 
@@ -454,7 +463,7 @@ int GetGameVersion() {
 
         result = 1;
 
-    }  else {
+    } else {
 
         // Only scan for v2.3.004 if we haven't determined v2.3.032 already
         if (ScanForGameVersion(OMSI_23004_ANSI)) {
@@ -470,11 +479,10 @@ int GetGameVersion() {
 
 /* Scans for char* searchString in a specific region of memory with an AOBScanner instance.
 *  The region of memory used here contains OMSI's program version indication
-*  strings that are written to the top of map timetable files (.ttp, .ttl, .ttr) 
+*  strings that are written to the top of map timetable files (.ttp, .ttl, .ttr)
 *  Returns true if successful, false if unsuccessful. */
 
-bool ScanForGameVersion(const char* searchString)
-{
+bool ScanForGameVersion(const char* searchString) {
 
     bool scanSuccess = false;
     uintptr_t scanStart = (uintptr_t)moduleBaseAddress + (uintptr_t)OMSI_VERSIONCHECK_START_RELADDR;

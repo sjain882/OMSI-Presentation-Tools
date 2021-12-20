@@ -266,7 +266,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutThanksTo2->AutoSize = true;
 			this->labelAboutThanksTo2->LinkArea = System::Windows::Forms::LinkArea(0, 19);
 			this->labelAboutThanksTo2->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
-			this->labelAboutThanksTo2->Location = System::Drawing::Point(271, 405);
+			this->labelAboutThanksTo2->Location = System::Drawing::Point(284, 405);
 			this->labelAboutThanksTo2->Name = L"labelAboutThanksTo2";
 			this->labelAboutThanksTo2->Size = System::Drawing::Size(102, 13);
 			this->labelAboutThanksTo2->TabIndex = 9;
