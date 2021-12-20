@@ -258,7 +258,7 @@ DWORD WINAPI MainThread(LPVOID param) {
      * this tool, or if the ini file could not be read... */
     if (configStatus > 1) {
 
-        /* ...display the first launch messageand set it to "Always on top" so it can't get hidden behind OMSI
+        /* ...display the first launch message and set it to "Always on top" so it can't get hidden behind OMSI
          * We will always create message boxes on the same thread as the main program, so it pauses until the user acknowledges */
         MessageBoxA(0, MSG_FIRST_LAUNCH, MSG_FIRST_LAUNCH_TITLE, MB_OK | MB_ICONWARNING | MB_TOPMOST);
 
@@ -372,7 +372,8 @@ DWORD WINAPI MainThread(LPVOID param) {
             if (isF4FovEnabled) {
 
                 newf4FovValue = (float)f4FovActValue;
-                *(float*)f4FovPtr = newf4FovValue;      // cast the f4FovPtr to a float pointer (4 bytes) then dereference it
+                *(float*)f4FovPtr = newf4FovValue;
+                // *(float*): cast the f4FovPtr to a float pointer (4 bytes) then dereference it
 
             // If FOV application is currently disabled in the GUI
             } else {
@@ -425,7 +426,7 @@ int InitConfigValues() {
                 funcStatus = 1;
                 break;
 
-                // Confirmed to be the first launch
+            // Confirmed to be the first launch
             case 1:
                 funcStatus = 2;
                 break;
@@ -455,8 +456,6 @@ int InitConfigValues() {
 int GetGameVersion() {
 
     int result = 0;
-    bool scanStatus23032 = false;
-    bool scanStatus23004 = false;
 
     // If we already determined game version v2.2.032, skip scanning for v2.3.004
     if (ScanForGameVersion(OMSI_22032_ANSI)) {
@@ -581,7 +580,7 @@ void DisableF4FovApplication() {
 
 
 /* Called on OMSI startup (just before main menu appears).
-*  Unused in this program, but still defined and exported to prevent Zugriffs. */
+*  Unused in this program, but still defined and exported to prevent Zugriffverletzung errors in OMSI 2. */
 
 void __stdcall PluginStart(void* aOwner) {}
 
