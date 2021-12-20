@@ -11,4 +11,5 @@ bool justScrolled;
 bool hasFoundAddress;
 bool isProcessActive;
 bool isMapCurrentlyLoaded;
-void ToggleF4FovEnabled();
+void ToggleF4FovApplication();
+void DisableF4FovApplication();

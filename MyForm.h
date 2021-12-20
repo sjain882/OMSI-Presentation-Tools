@@ -450,7 +450,7 @@ namespace OMSIPresToolsCLR {
 		if (isMapCurrentlyLoaded) {
 
 			// Communicate this change to dllmain.cpp
-			ToggleF4FovEnabled();
+			ToggleF4FovApplication();
 
 			// Invert all relevant enabled status booleans
 			this->f4FovTrackbar->Enabled = !this->f4FovTrackbar->Enabled;
@@ -488,7 +488,11 @@ namespace OMSIPresToolsCLR {
 
 		} else {
 			this->f4FovToggle->Checked = false;
+			this->f4FovTrackbar->Enabled = false;
+			this->f4FovNumericUpDown->Enabled = false;
+			DisableF4FovApplication();
 		}
+
 	}
 	
 

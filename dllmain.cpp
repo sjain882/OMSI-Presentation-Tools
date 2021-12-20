@@ -563,8 +563,16 @@ bool Hook(void* toHook, void* localFunc, int length) {
 
 // Called by the UI, inverts the enabled status of the FoV application.
 
-void ToggleF4FovEnabled() {
+void ToggleF4FovApplication() {
     isF4FovEnabled = !isF4FovEnabled;
+}
+
+
+
+// Called by the UI, disables the enabled status of the FoV application.
+
+void DisableF4FovApplication() {
+    isF4FovEnabled = false;
 }
 
 
