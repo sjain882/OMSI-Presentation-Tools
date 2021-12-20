@@ -147,20 +147,20 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
     switch (ul_reason_for_call) {
 
-    case DLL_PROCESS_ATTACH:
+        case DLL_PROCESS_ATTACH:
 
-        // Start the MainThread() main function in a new thread
-        CreateThread(0, 0, MainThread, hModule, 0, 0);
+            // Start the MainThread() main function in a new thread
+            CreateThread(0, 0, MainThread, hModule, 0, 0);
 
-        // Detach it from the GUI thread (this does not terminate the thread)
-        CloseHandle(0);
+            // Detach it from the GUI thread (this does not terminate the thread)
+            CloseHandle(0);
 
-        break;
+            break;
 
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
     }
     return TRUE;
 }
@@ -230,7 +230,7 @@ DWORD WINAPI MainThread(LPVOID param) {
     freopen_s(&fDummy, "CONOUT$", "w", stdout); */
 
     // Set the console window title
-    SetConsoleTitleA("OMSI Presentation Tools Console Debug"); 
+    SetConsoleTitleA("OMSI Presentation Tools Console Debug");
 
 
     // Attempt to open OMSI 2's logfile
@@ -293,22 +293,22 @@ DWORD WINAPI MainThread(LPVOID param) {
     switch (gameVersionStatus) {
 
         // Failed to get the game version
-    case 0:
-        MessageBoxA(0, MSG_GAME_VERSION_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
-        break;
+        case 0:
+            MessageBoxA(0, MSG_GAME_VERSION_FAILED, MSG_DEFAULT_TITLE, MB_OK | MB_ICONERROR);
+            break;
 
-        // Detected OMSI 2 v2.2.032 successfully
-    case 1:
-        hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
-        break;
+            // Detected OMSI 2 v2.2.032 successfully
+        case 1:
+            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
+            break;
 
-        // Detected OMSI 2 v2.3.004 successfully
-    case 2:
-        hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
-        break;
+            // Detected OMSI 2 v2.3.004 successfully
+        case 2:
+            hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
 
@@ -353,7 +353,7 @@ DWORD WINAPI MainThread(LPVOID param) {
             if (inputFileStream.tellg() == -1) logFileCursorPos = logFileCursorPos + logFileCurrentLine.size();
             else logFileCursorPos = inputFileStream.tellg();
         }
-        
+
         inputFileStream.clear();
 
 
@@ -421,17 +421,17 @@ int InitConfigValues() {
         switch (isFirstLaunchOPL) {
 
             // Not the first launch
-        case 0:
-            funcStatus = 1;
-            break;
+            case 0:
+                funcStatus = 1;
+                break;
 
-            // Confirmed to be the first launch
-        case 1:
-            funcStatus = 2;
-            break;
+                // Confirmed to be the first launch
+            case 1:
+                funcStatus = 2;
+                break;
 
-        default:
-            break;
+            default:
+                break;
 
         }
     } else {
