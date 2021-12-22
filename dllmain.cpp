@@ -617,7 +617,9 @@ void DisableF4FovApplication() {
 
 /* Called on OMSI startup (just before main menu appears).
  * Unused in this program, but still defined and exported to prevent
- * Zugriffverletzung errors in OMSI 2. */
+ * Zugriffverletzung errors in OMSI 2.
+ * __stdcall: Conform to standard win32 function calling conventions.
+ * This is so OMSI 2 (Delphi compiled to win32) can interact with this function. */
 
 void __stdcall PluginStart(void* aOwner) {}
 
