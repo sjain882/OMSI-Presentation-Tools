@@ -249,7 +249,6 @@ DWORD WINAPI MainThread(LPVOID param) {
         MessageBoxA(0, MSG_LOGFILE_OPEN_FAILED, MSG_DEFAULT_TITLE,
                     MB_OK | MB_ICONERROR);
         isProcessActive = false;
-        Sleep(5000);
         FreeLibraryAndExitThread((HMODULE)param, 0);
     }
 
