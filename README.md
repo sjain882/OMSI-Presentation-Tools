@@ -85,6 +85,8 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 
 There is no specific build process. Simply install Visual Studio 2019 with C++ Desktop and [CLR Workloads](https://www.youtube.com/watch?v=HcxlYkU8aY0) support, clone this repo, open the solution (`*.sln`) file, set the Configuration to Release x86 and run Build > Build solution.
 
+You might need to remove my post-build event from Solution Properties > Build Events > Post-Build event (Visual Studio 2019).
+
 Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 language standard.
 
 ‎

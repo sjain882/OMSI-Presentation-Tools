@@ -49,7 +49,7 @@ OMSI_VERSION_ANSI_MASK "xxxxxxxxxxxxx" */
 /* Export standard OMSI functions so OMSI can call them.
  * This prevents the linker from obfustucating function names.
  * Also via Project Properties > All Configurations > Linker
- * > Input > type "OMSIDLL.def" for external export list. */
+ * > Input > type "OMSIPresToolsCLR.def" for external export list. */
 
 extern "C" __declspec(dllexport)void __stdcall PluginStart(void* aOwner);
 extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
