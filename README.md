@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Preview.png?raw=true)
+![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Assets/Preview.png?raw=true)
 
 [![ISSUES](https://img.shields.io/github/issues/degeneratehyperbola/NEPS?color=orange&label=Issues&style=plastic)](https://github.com/degeneratehyperbola/NEPS/issues)
 [![VERSION](https://img.shields.io/github/v/release/degeneratehyperbola/NEPS?color=orange&label=Version&style=plastic)](https://github.com/degeneratehyperbola/NEPS/releases/latest)
@@ -19,8 +19,9 @@ Currently in very early stages.
 ‎
 ## Features:
 
-- Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch) and latest version v2.3.004
+- Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
 - Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
+- Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/Assets/Multi-instance.png?raw=true)** :p)
 
 ‎
 ## Planned features (hopefully):
@@ -68,8 +69,6 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 ‎
 ## Known issues:
 
-- Will break if multiple instances of OMSI 2 are running simultaneously.
-- Potential anti-cheat & anti-virus incompatibilities.
 - Entire UI has hardcoded coordinates and doesn't DPI scale properly. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
 - Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. See above point.
 - Closing the thread doesn't fully detach it, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
@@ -91,11 +90,13 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 ‎
 ## Thanks to:
 
+- The **[Interactive Delphi Reconstructor](https://github.com/crypto2011/IDR)** project for making reverse-engineering OMSI 2 much easier
+
 - **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
 
 - **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
 
-- **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner.
+- **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner
 
 - **[win32kbase / Wolfie](https://github.com/win32kbase)** - assistance with reverse engineering of OMSI executable
 

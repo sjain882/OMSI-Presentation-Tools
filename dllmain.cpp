@@ -266,7 +266,7 @@ DWORD WINAPI MainThread(LPVOID param) {
      * this tool, or if the ini file could not be read... */
     if (configStatus > 1) {
 
-        /* ...display the first launch message and set it to 
+        /* ...display the first launch message and set it to
          * "Always on top" so it can't get hidden behind OMSI.
         * We will always create message boxes on the same thread as the
         * main program, so it pauses until the user acknowledges. */
@@ -352,7 +352,8 @@ DWORD WINAPI MainThread(LPVOID param) {
     // If a map is currently loaded, enter the main program loop
     while (isProcessActive) {
 
-        // OMSI 2 Logfile watcher - to determine if a map is currently loaded
+        /* Thread-safe OMSI 2 Logfile watcher
+         * Determines if a map is currently loaded */
         inputFileStream.seekg(logFileCursorPos);
         while (getline(inputFileStream, logFileCurLine)) {
 
@@ -619,10 +620,11 @@ void DisableF4FovApplication() {
 
 
 /* Called on OMSI startup (just before main menu appears).
- * Unused in this program, but still defined and exported to prevent
- * Zugriffverletzung errors in OMSI 2.
+ * Unused in this program, but still defined and exported
+ * in order to prevent Access violation errors in OMSI 2.
+ * 
  * __stdcall: Conform to standard win32 function calling conventions.
- * This is so OMSI 2 (Delphi compiled to win32) can interact with this function. */
+ * This is so OMSI 2 (Delphi win32) can interact with this function. */
 
 void __stdcall PluginStart(void* aOwner) {}
 
@@ -643,3 +645,4 @@ void __stdcall PluginFinalize() {
 
 
 /* --- OMSI Functions End --- */
+
