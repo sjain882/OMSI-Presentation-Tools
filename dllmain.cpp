@@ -357,6 +357,10 @@ DWORD WINAPI MainThread(LPVOID param) {
         inputFileStream.seekg(logFileCursorPos);
         while (getline(inputFileStream, logFileCurLine)) {
 
+            /* Limit speed a bit as this is not a critical function
+             * and we don't want to affect performance or thrash the disk */
+            Sleep(1);
+
             // "Map camera loaded" event
             if (logFileCurLine.find(LOG_FILE_MAP_CAM_LOADED) != std::string::npos) {
                 isMapCurrentlyLoaded = true;
