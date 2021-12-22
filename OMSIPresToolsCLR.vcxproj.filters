@@ -44,9 +44,6 @@
     <ClCompile Include="lib\ConvertUTF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyForm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lib\AOBScanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

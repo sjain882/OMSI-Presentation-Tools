@@ -69,7 +69,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 ‎
 ## Known issues:
 
-- Entire UI has hardcoded coordinates and doesn't DPI scale properly. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
+- Entire UI has hardcoded coordinates and doesn't DPI scale properly (although perfectly usable). For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
 - Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. See above point.
 - Closing the thread doesn't fully detach it, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
 
