@@ -21,7 +21,7 @@ Currently in very early stages.
 
 - Compatbility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
 - Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
-- Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/Assets/Multi-instance.png?raw=true)** :p)
+- Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/Assets/Multi-instance.png?raw=true)**™
 
 ‎
 ## Planned features (hopefully):
