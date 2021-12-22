@@ -57,6 +57,8 @@ This tool requires the **[Visual C++ Redistributable Runtimes](https://www.techp
 
 Also required is uninterrupted access to OMSI 2's log file (`OMSI 2\logfile.txt`). If this is not accessible for any reason (open handle, or `-nolog` OMSI 2 launch option) the tool will exit on launch.
 
+You are not required to run OMSI 2 as administrator for this tool to work.
+
 Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
 
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
@@ -69,7 +71,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
 - Entire UI has hardcoded coordinates and doesn't DPI scale properly. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
-- Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. Entire UI will be replaced soon.
+- Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. See above point.
 - Closing the thread doesn't fully detach it, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
 
 ‎
