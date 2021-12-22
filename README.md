@@ -36,6 +36,8 @@ Currently in very early stages.
 ‎
 ## Important!
 
+###### Anti-cheat warning
+
 - Due to the nature of this tool, it is possible some game anti-cheats will flag this software. 
 
 - Thus, **please ensure you keep all games which have anti-cheats closed while running OMSI 2 with OMSI Presentation Tools.** 
@@ -46,10 +48,14 @@ Currently in very early stages.
 
 - Although all of these cases are extremely unlikely, if not impossible, please note that **I cannot be held personally responsible (directly or indirectly)** if usage of this tool results in an anti-cheat ban in other games, the breaking of your OMSI install or other software, or loss of data.
 
-- Users will be reminded of all this information via a pop-up message box upon first launch of the tool (only).
+- Users will be reminded of this via a pop-up message box upon first launch of the tool (only).
 
 ‎
 ## Installation & usage:
+
+This tool requires the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)**.
+
+Also required is uninterrupted access to OMSI 2's log file (`OMSI 2\logfile.txt`). If this is not accessible for any reason (open handle, or `-nolog` OMSI 2 launch option) the tool will exit on launch.
 
 Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
 
@@ -62,10 +68,9 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 
 - Will break if multiple instances of OMSI 2 are running simultaneously.
 - Potential anti-cheat & anti-virus incompatibilities.
-- Entire UI has hardcoded coordinates and doesn't DPI scale. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
-- v0.1.x alpha: If you set the slider to 1.0 (minimum F4 FOV), then click the down button twice on the raw value box, it will go down to 0.9... I've tried many possible ways of fixing this but none worked, assuming its a WinForms thing. Not going to bother fixing due to (hopefully) moving to new UI soon.
-- v0.1.x alpha: Some features like automatically disabling the UI when a map is unloaded if the user hasn't done it already, updating label text with status isn't possible right now because I can't get the static code to interact with the non-static form in any way. Same reason as above, UI will be replaced soon.
-- v0.1.x alpha: Closing the thread doesn't fully detach the thread, just gets rid of the UI and stops the main program loop. Shouldn't be a massive issue, but not graceful or proper. Can fix this when I learn more about multithreading.
+- Entire UI has hardcoded coordinates and doesn't DPI scale properly. For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to ImGui-Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
+- Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. Entire UI will be replaced soon.
+- Closing the thread doesn't fully detach it, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
 
 ‎
 ## FAQ:
