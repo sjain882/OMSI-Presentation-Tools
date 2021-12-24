@@ -100,7 +100,7 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 
 - **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner
 
-- **[win32kbase / Wolfie](https://github.com/win32kbase)** - assistance with reverse engineering of OMSI executable
+- **[win32kbase / Wolfie](https://github.com/win32kbase)** and **[ficool2](https://github.com/ficool2)** - assistance with reverse engineering & code
 
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
 
