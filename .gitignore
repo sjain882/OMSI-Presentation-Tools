@@ -10,5 +10,5 @@ Other/*
 .zip
 .7z
 .bak
-OMSIPresToolsCLR.vcxproj.filters
-OMSIPresToolsCLR.vcxproj.user
+*.vcxproj.filters
+*.vcxproj.user
