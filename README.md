@@ -25,7 +25,7 @@ Currently in very early stages.
 ‎
 ## Planned features (hopefully):
 
-- Ability to toggle overriding of the FOV, angles, positioning & (probably not) roll of all cameras present in the game scene
+- Ability to toggle overriding of the FOV, angles, positioning & (probably not) roll of all cameras
 - Ability to save modified camera attributes to `*.bus` & `*.ovh` files
 - Ability to use the F4 camera as a free-roam/look camera
 - Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
@@ -83,7 +83,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 ‎
 ## Building:
 
-There is no specific build process. Simply install Visual Studio 2019 with C++ Desktop and [CLR Workloads](https://www.youtube.com/watch?v=HcxlYkU8aY0) support, clone this repo, open the solution (`*.sln`) file, set the Configuration to Release x86 and run Build > Build solution.
+There is no specific build process. Simply install Visual Studio Community (I used 2019) with C++ Desktop and [CLR Workloads](https://www.youtube.com/watch?v=HcxlYkU8aY0) support, clone this repo, open the solution (`*.sln`) file, set the Configuration to Release x86 and run Build > Build solution.
 
 You might need to remove my post-build event from Solution Properties > Build Events > Post-Build event (Visual Studio 2019).
 
