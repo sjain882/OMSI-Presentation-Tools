@@ -25,11 +25,12 @@ Currently in very early stages.
 ‎
 ## Planned features (hopefully):
 
-- Ability to toggle overriding of the FOV, angles, roll & positioning of all cameras present in the game scene
+- Ability to toggle overriding of the FOV, angles, positioning & (probably not) roll of all cameras present in the game scene
 - Ability to save modified camera attributes to `*.bus` & `*.ovh` files
-- Ability to use the F4 camera as a free-roam/look camera via D3D9 Matrix manipulation
+- Ability to use the F4 camera as a free-roam/look camera
 - Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
 - Ability to toggle overriding of bus presentation variables such as dirt, wetness, physics/roll etc
+- Ability to properly speedhack (slow/fast) the game - Cheat Engine's speedhack does not work properly with OMSI 2 
 - Ability to spawn several morphable & movable chromakeys & toggle between red, blue & green colours
 - (Likely never) TrackIR integration for any free roam camera, if achieved
 
