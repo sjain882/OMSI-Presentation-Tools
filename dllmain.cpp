@@ -325,12 +325,12 @@ DWORD WINAPI MainThread(LPVOID param) {
                         MB_OK | MB_ICONERROR);
             break;
 
-            // Detected OMSI 2 v2.2.032 successfully
+        // Detected OMSI 2 v2.2.032 successfully
         case 1:
             hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_22032_HOOK_RELADDR;
             break;
 
-            // Detected OMSI 2 v2.3.004 successfully
+        // Detected OMSI 2 v2.3.004 successfully
         case 2:
             hookAddress = (DWORD)moduleBaseAddress + (DWORD)OMSI_23004_HOOK_RELADDR;
             break;
@@ -415,7 +415,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 
                 newf4FovValue = (float)f4FovActValue;
                 *(float*)f4FovPtr = newf4FovValue;
-                // *(float*): 
 
             // If FOV application is currently disabled in the GUI
             } else {
