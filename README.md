@@ -4,11 +4,11 @@
 
 ![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Assets/Preview.png?raw=true)
 
-[![ISSUES](https://img.shields.io/github/issues/sjain882/OMSI-Presentation-Tools?color=orange&style=plastic)](https://github.com/sjain882/OMSI-Presentation-Tools/issues)
-[![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=orange&style=plastic)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
-[![YOUTUBE TUTORIAL](https://img.shields.io/badge/%20-YouTube%20Tutorial-orange?style=plastic)](https://www.youtube.com/watch?v=pvU8gO66mTs)
-[![STEAM GUIDE](https://img.shields.io/badge/%20-Steam%20Guide-orange?style=plastic)](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)
-[![DOWNLOAD](https://img.shields.io/badge/%20-Download-orange?style=plastic)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
+[![ISSUES](https://img.shields.io/github/issues/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/issues)
+[![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
+[![YOUTUBE TUTORIAL](https://img.shields.io/badge/-YouTube%20Tutorial-%23DD2C00?style=flat)](https://www.youtube.com/watch?v=pvU8gO66mTs)
+[![STEAM GUIDE](https://img.shields.io/badge/-Steam%20Guide-%2301579B?style=flat)](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)
+[![DOWNLOAD](https://img.shields.io/badge/-Download-%232E7D32?style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
 
 Assorted tools to aid the creation of high-quality screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
 
