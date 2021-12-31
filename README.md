@@ -5,7 +5,7 @@
 ![SCREENSHOT](https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/Assets/Preview.png?raw=true)
 
 [![ISSUES](https://img.shields.io/github/issues/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/issues)
-[![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
+[![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat&label=version)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
 [![YOUTUBE TUTORIAL](https://img.shields.io/badge/-YouTube%20Tutorial-%23BF360C)](https://www.youtube.com/watch?v=pvU8gO66mTs)
 [![STEAM GUIDE](https://img.shields.io/badge/-Steam%20Guide-%2301579B?style=flat)](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)
 [![DOWNLOAD](https://img.shields.io/badge/-Download-%232E7D32?style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
