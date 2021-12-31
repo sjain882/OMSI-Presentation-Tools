@@ -456,7 +456,7 @@ int InitConfigValues() {
                 funcStatus = 1;
                 break;
 
-                // Confirmed to be the first launch
+            // Confirmed to be the first launch
             case 1:
                 funcStatus = 2;
                 break;
