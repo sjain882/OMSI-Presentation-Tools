@@ -1,7 +1,9 @@
 #include "AOBScanner.h"
 
-//AOB Scanning Class
-// WOOT! :D
+/* External Array of Byte Memory Scanner code file
+ * Created by rev_eng_e (https://github.com/rev-eng-e)
+ */
+
 
 AOB::AOB()
 {

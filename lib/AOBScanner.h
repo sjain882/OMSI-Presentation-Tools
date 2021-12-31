@@ -2,8 +2,10 @@
 #define AOBSCANNER_H
 #include <Windows.h>
 #include <stdio.h>
-//AOB Scanning Class
-// WOOT! :D
+
+/* External Array of Byte Memory Scanner header file
+ * Created by rev_eng_e (https://github.com/rev-eng-e)
+ */
 
 class AOB
 {
