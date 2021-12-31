@@ -24,7 +24,7 @@
 #include <iostream>
 #include <thread>
 #include "MyForm.h"
-#include "OMSIPresToolsCLR.h"
+#include "lib/OMSIPresToolsCLR.h"
 #include "lib/AOBScanner.h"
 #include "lib/SimpleIni.h"
 #include "lib/ConvertUTF.h"
