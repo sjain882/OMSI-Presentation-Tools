@@ -29,7 +29,7 @@ AOB::~AOB()
 		delete Mask;
 }
 
-AOBScanner::AOBScanner(uintptr_t beginScan=0x00401000,uintptr_t endScan=0xFFFFFFFF)
+AOBScanner::AOBScanner(uintptr_t beginScan, uintptr_t endScan)
 {
 	RegionBegin=(BYTE*)beginScan;
 	RegionEnd=(BYTE*)endScan;
