@@ -19,7 +19,7 @@ Currently in very early stages.
 ## Features:
 
 - Compatibility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
-- Ability to toggle overriding of the FOV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
+- Toggle overriding of the FoV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 - Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works™](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/Assets/Multi-instance.png?raw=true)**)
 
 ‎
@@ -30,7 +30,7 @@ Currently in very early stages.
 - Ability to use the F4 camera as a free-roam/look camera
 - Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
 - Ability to toggle overriding of bus presentation variables such as dirt, wetness, physics/roll etc
-- Ability to properly speedhack (slow/fast) the game - Cheat Engine's speedhack does not work properly with OMSI 2 
+- Ability to speedhack (slow/fast) the game - Cheat Engine's speedhack does not work properly with OMSI 2 
 - Ability to spawn several morphable & movable chromakeys & toggle between red, blue & green colours
 - (Likely never) TrackIR integration for any free roam camera, if achieved
 
@@ -105,3 +105,5 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
 
 - The **[SimpleINI](https://github.com/brofield/simpleini)** project for a simple initialisation file library
+
+- **[Icons8](https://icons8.com/)** for allowing free usage of their icons with attribution

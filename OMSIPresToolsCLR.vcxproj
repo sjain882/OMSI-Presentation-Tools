@@ -87,6 +87,7 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>OMSIPresToolsCLR.def</ModuleDefinitionFile>
+      <AdditionalOptions>/pdbaltpath:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll"</Command>
@@ -116,6 +117,7 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>OMSIPresToolsCLR.def</ModuleDefinitionFile>
+      <AdditionalOptions>/pdbaltpath:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll"</Command>
