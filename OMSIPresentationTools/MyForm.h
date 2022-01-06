@@ -181,6 +181,7 @@ namespace OMSIPresToolsCLR {
 			// 
 			// pictureYouTubeIcon
 			// 
+			this->pictureYouTubeIcon->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->pictureYouTubeIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureYouTubeIcon.Image")));
 			this->pictureYouTubeIcon->Location = System::Drawing::Point(45, 212);
 			this->pictureYouTubeIcon->Name = L"pictureYouTubeIcon";
@@ -192,6 +193,7 @@ namespace OMSIPresToolsCLR {
 			// 
 			// pictureSteamIcon
 			// 
+			this->pictureSteamIcon->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->pictureSteamIcon->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureSteamIcon.Image")));
 			this->pictureSteamIcon->Location = System::Drawing::Point(285, 210);
 			this->pictureSteamIcon->Name = L"pictureSteamIcon";
