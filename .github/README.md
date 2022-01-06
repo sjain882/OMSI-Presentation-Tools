@@ -92,22 +92,22 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 ‎
 ## Thanks to:
 
-- The **[Interactive Delphi Reconstructor](https://github.com/crypto2011/IDR)** project for making reverse-engineering OMSI 2 much easier
-
-- **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
-
-- **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
-
 - **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner
-
-- **[Ixe1](https://github.com/Ixe1)** - Testing, UI inspiration, suggestions
-
-- **[MrChips](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[volvorider](https://reboot.omsi-webdisk.de/community/user/9681-volvorider/)** - Testing
 
 - **[win32kbase / Wolfie](https://github.com/win32kbase)** and **[ficool2](https://github.com/ficool2)** - assistance with reverse engineering & code
 
+- **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
+
+- **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
+
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
 
+- **[Ixe1](https://github.com/Ixe1)** - Alpha testing, UI inspiration, suggestions
+
+- **[MrChips](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[Zeldieralt](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[volvorider](https://reboot.omsi-webdisk.de/community/user/9681-volvorider/)**, yacho - Alpha testing
+
 - The **[SimpleINI](https://github.com/brofield/simpleini)** project for a simple initialisation file library
+
+- The **[Interactive Delphi Reconstructor](https://github.com/crypto2011/IDR)** project for making reverse-engineering OMSI 2 much easier
 
 - **[Icons8](https://icons8.com/)** for allowing free usage of their icons with attribution
