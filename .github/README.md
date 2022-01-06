@@ -98,7 +98,7 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 
 - **[Anonim17PL](https://github.com/Anonim17PL)** - author of several free and open-source OMSI plugins which were helpful for this project
 
-- **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original barebones C++ plugin base to extract variable values out of OMSI: [Source](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) • [Archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009)
+- **[value1](https://forum.omnibussimulator.de/index.php?user/18150-value1/)** - Original [barebones C++ plugin base](https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009) to extract variable values out of OMSI ([archive](https://web.archive.org/web/20200526071900/https://forum.omnibussimulator.de/forum/index.php?thread/11008-programming-of-the-plugin-interface/&postID=286009#post286009))
 
 - **[M&R Software](http://www.m-r-software.de/)** - Original developers of OMSI 2 & plugin system, [plugin system wiki page](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=Plug-in-Schnittstelle) and [plugin system C++ tutorial](http://wiki.omnibussimulator.de/omsiwikineu.de/index.php?title=OMSI_Plugin_Framework)
 
