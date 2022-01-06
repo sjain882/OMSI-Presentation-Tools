@@ -232,9 +232,9 @@ namespace OMSIPresToolsCLR {
 			this->f4FovToggle->AutoSize = true;
 			this->f4FovToggle->Location = System::Drawing::Point(108, 72);
 			this->f4FovToggle->Name = L"f4FovToggle";
-			this->f4FovToggle->Size = System::Drawing::Size(66, 17);
+			this->f4FovToggle->Size = System::Drawing::Size(65, 17);
 			this->f4FovToggle->TabIndex = 1;
-			this->f4FovToggle->Text = L"Override";
+			this->f4FovToggle->Text = L"Enabled";
 			this->f4FovToggle->UseVisualStyleBackColor = true;
 			this->f4FovToggle->CheckedChanged += gcnew System::EventHandler(this, &MyForm::f4FovToggle_CheckedChanged);
 			// 
