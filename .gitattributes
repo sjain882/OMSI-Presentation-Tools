@@ -1,1 +1,57 @@
 * eol=crlf working-tree-encoding=UTF-8 encoding=UTF-8
+
+#
+## These files are text and should be normalized (Convert crlf => lf)
+#  From: https://stackoverflow.com/a/32278635
+
+# source code
+*.cpp text
+*.h text
+*.resx text
+*.def text
+*.json text
+*.htm text
+*.html text
+*.xml text
+*.svg text
+*.txt text
+*.ini text
+
+# git config
+.gitattributes text
+.gitignore text
+.gitconfig text
+
+# Documentation
+*.md text
+LICENSE text
+AUTHORS text
+
+
+#
+## These files are binary and should be left untouched
+#
+
+# (binary is a macro for -text -diff)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.pyc binary
+*.pdf binary
+
+# Visual Studio
+*.sln binary
