@@ -135,20 +135,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="lib\AOBScanner.h" />
-    <ClInclude Include="lib\ConvertUTF.h" />
-    <ClInclude Include="lib\OMSIPresToolsCLR.h" />
-    <ClInclude Include="lib\SimpleIni.h" />
+    <ClInclude Include="Libraries\AOBScanner.h" />
+    <ClInclude Include="Libraries\ConvertUTF.h" />
+    <ClInclude Include="Libraries\SimpleIni.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="OMSIPresentationTools.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="lib\AOBScanner.cpp" />
-    <ClCompile Include="lib\ConvertUTF.cpp" />
-    <ClCompile Include="OMSIPresToolsCLR.cpp" />
+    <ClCompile Include="Libraries\AOBScanner.cpp" />
+    <ClCompile Include="Libraries\ConvertUTF.cpp" />
+    <ClCompile Include="OMSIPresentationToolsMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />

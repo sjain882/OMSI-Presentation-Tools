@@ -24,10 +24,10 @@
 #include <iostream>
 #include <thread>
 #include "MyForm.h"
-#include "lib/OMSIPresToolsCLR.h"
-#include "lib/AOBScanner.h"
-#include "lib/SimpleIni.h"
-#include "lib/ConvertUTF.h"
+#include "OMSIPresentationTools.h"
+#include "Libraries/AOBScanner.h"
+#include "Libraries/SimpleIni.h"
+#include "Libraries/ConvertUTF.h"
 
 
 /* Pragma lib includes */

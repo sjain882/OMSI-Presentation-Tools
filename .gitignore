@@ -12,3 +12,17 @@ Other/*
 .bak
 *.vcxproj.filters
 *.vcxproj.user
+OMSIPresentationTools/Debug
+OMSIPresentationTools/Debug/*
+OMSIPresentationTools/Release
+OMSIPresentationTools/Release/*
+OMSIPresentationTools/.vs
+OMSIPresentationTools/.vs/*
+OMSIPresentationTools/Other
+OMSIPresentationTools/Other/*
+OMSIPresentationTools/.rar
+OMSIPresentationTools/.zip
+OMSIPresentationTools/.7z
+OMSIPresentationTools/.bak
+OMSIPresentationTools/*.vcxproj.filters
+OMSIPresentationTools/*.vcxproj.user
