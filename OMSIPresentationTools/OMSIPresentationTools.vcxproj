@@ -86,7 +86,7 @@
     <Link>
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
-      <ModuleDefinitionFile>OMSIPresToolsCLR.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>OMSIPresentationToolsExports.def</ModuleDefinitionFile>
       <AdditionalOptions>/pdbaltpath:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -116,7 +116,7 @@
     <Link>
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
-      <ModuleDefinitionFile>OMSIPresToolsCLR.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>OMSIPresentationToolsExports.def</ModuleDefinitionFile>
       <AdditionalOptions>/pdbaltpath:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>

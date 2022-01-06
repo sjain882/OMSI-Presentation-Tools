@@ -1,4 +1,4 @@
-LIBRARY OMSIPresToolsCLR.dll
+LIBRARY OMSIPresentationTools.dll
 
 EXPORTS
 PluginStart
