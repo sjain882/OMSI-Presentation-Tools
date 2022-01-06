@@ -156,10 +156,10 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->LinkBehavior = System::Windows::Forms::LinkBehavior::HoverUnderline;
 			this->labelAboutVersionGithub->Location = System::Drawing::Point(162, 299);
 			this->labelAboutVersionGithub->Name = L"labelAboutVersionGithub";
-			this->labelAboutVersionGithub->Size = System::Drawing::Size(121, 19);
+			this->labelAboutVersionGithub->Size = System::Drawing::Size(119, 19);
 			this->labelAboutVersionGithub->TabIndex = 6;
 			this->labelAboutVersionGithub->TabStop = true;
-			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • GitHub";
+			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
 			this->labelAboutVersionGithub->UseCompatibleTextRendering = true;
 			this->labelAboutVersionGithub->VisitedLinkColor = System::Drawing::Color::Blue;
 			this->labelAboutVersionGithub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutVersionGithub_LinkClicked);
