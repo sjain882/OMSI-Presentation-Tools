@@ -552,8 +552,8 @@ namespace OMSIPresToolsCLR {
 	private: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 
 		// Prompt them and if they confirm (click Yes):
-		if (MessageBox::Show("Are you sure you want to quit?\n"
-							 "OMSI 2 will remain running and the F4 FOV will be reset to default.\n"
+		if (MessageBox::Show("Are you sure you want to quit?\n\n"
+							 "OMSI 2 will remain running and the F4 FOV will be reset to default.\n\n"
 							 "You will not be able to relaunch OPT until you next launch OMSI.",
 							 "OMSI Presentation Tools", MessageBoxButtons::YesNo,
 							 MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
