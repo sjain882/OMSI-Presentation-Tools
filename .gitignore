@@ -10,7 +10,6 @@ Other/*
 .zip
 .7z
 .bak
-*.vcxproj.filters
 *.vcxproj.user
 OMSIPresentationTools/Debug
 OMSIPresentationTools/Debug/*
@@ -24,5 +23,4 @@ OMSIPresentationTools/.rar
 OMSIPresentationTools/.zip
 OMSIPresentationTools/.7z
 OMSIPresentationTools/.bak
-OMSIPresentationTools/*.vcxproj.filters
 OMSIPresentationTools/*.vcxproj.user
