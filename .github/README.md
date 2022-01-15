@@ -21,6 +21,7 @@ Currently in very early stages.
 - Compatibility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
 - Toggle overriding of the FoV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 - Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works™](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/.github/Multi-instance.png?raw=true)**)
+- Can be injected into Omsi.exe (saves relaunching OMSI if you forgot to install - can take up to 10 mins on larger installs)
 
 ‎
 ## Planned features (hopefully):
@@ -104,7 +105,7 @@ Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 l
 
 - **[Ixe1](https://github.com/Ixe1)** - Alpha testing, UI inspiration, suggestions
 
-- **[MrChips](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[Zeldieralt](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[volvorider](https://reboot.omsi-webdisk.de/community/user/9681-volvorider/)**, yacho - Alpha testing
+- **[MrChips](https://fellowsfilm.com/members/mrchips.3079/#resources)**, **[Zeldieralt](https://fellowsfilm.com/members/zeldier.6616/)**, **[volvorider](https://reboot.omsi-webdisk.de/community/user/9681-volvorider/)**, yacho - Alpha testing
 
 - The **[SimpleINI](https://github.com/brofield/simpleini)** project for a simple initialisation file library
 

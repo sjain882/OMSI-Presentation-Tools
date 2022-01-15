@@ -34,7 +34,7 @@
 #pragma comment(lib,"user32.lib")
 
 
-/* Definitions for TProgMan.NewSituationand game version checks */
+/* Definitions for TProgMan.NewSituation and game version checks */
 
 #define OMSI_22032_HOOK_RELADDR 0x002E62B8
 #define OMSI_23004_HOOK_RELADDR 0x002E6392
@@ -62,7 +62,7 @@ OMSI_VERSION_ANSI_MASK "xxxxxxxxxxxxx" */
 /* Export standard OMSI functions so OMSI can call them.
  * This prevents the linker from obfustucating function names.
  * Also via Project Properties > All Configurations > Linker
- * > Input > type "OMSIPresToolsCLR.def" for external export list. */
+ * > Input > type "OMSIPresentationToolsExports.def" for external export list. */
 
 extern "C" __declspec(dllexport)void __stdcall PluginStart(void* aOwner);
 extern "C" __declspec(dllexport)void __stdcall PluginFinalize();
