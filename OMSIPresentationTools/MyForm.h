@@ -2,13 +2,13 @@
 #include "OMSIPresentationTools.h"
 
 
-/* Copyright 2021 sjain882
- * Licensed under the Apache License, Version 2.0 (the "License");
+/* Copyright 2022 sjain882
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -159,7 +159,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->Size = System::Drawing::Size(119, 19);
 			this->labelAboutVersionGithub->TabIndex = 6;
 			this->labelAboutVersionGithub->TabStop = true;
-			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
+			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha ï¿½ Github";
 			this->labelAboutVersionGithub->UseCompatibleTextRendering = true;
 			this->labelAboutVersionGithub->VisitedLinkColor = System::Drawing::Color::Blue;
 			this->labelAboutVersionGithub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutVersionGithub_LinkClicked);
@@ -263,7 +263,7 @@ namespace OMSIPresToolsCLR {
 			this->f4FovTitle->Name = L"f4FovTitle";
 			this->f4FovTitle->Size = System::Drawing::Size(211, 15);
 			this->f4FovTitle->TabIndex = 7;
-			this->f4FovTitle->Text = L"Free Map (F4) Camera FOV Value (°):";
+			this->f4FovTitle->Text = L"Free Map (F4) Camera FOV Value (ï¿½):";
 			// 
 			// f4FovMinLabel
 			// 
