@@ -395,26 +395,26 @@ namespace OMSIPresToolsCLR {
 
 	private: System::Void labelSteamGuide_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
-		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456");
+		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667");
 
 	}
 
 	private: System::Void pictureGitHubIcon_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456");
+		System::Diagnostics::Process::Start("https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667");
 
 	}
 
 	private: System::Void labelYouTube_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
-		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=pvU8gO66mTs");
+		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=YrbM-jaZYls");
 
 	}
 
 
 	private: System::Void pictureYouTubeIcon_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=pvU8gO66mTs");
+		System::Diagnostics::Process::Start("https://www.youtube.com/watch?v=YrbM-jaZYls");
 
 	}
 

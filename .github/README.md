@@ -6,8 +6,8 @@
 
 [![ISSUES](https://img.shields.io/github/issues/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/issues)
 [![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat&label=version)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
-[![YOUTUBE TUTORIAL](https://img.shields.io/badge/-YouTube%20Tutorial-%23BF360C)](https://www.youtube.com/watch?v=pvU8gO66mTs)
-[![STEAM GUIDE](https://img.shields.io/badge/-Steam%20Guide-%2301579B?style=flat)](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)
+[![YOUTUBE TUTORIAL](https://img.shields.io/badge/-YouTube%20Tutorial-%23BF360C)](https://www.youtube.com/watch?v=YrbM-jaZYls)
+[![STEAM GUIDE](https://img.shields.io/badge/-Steam%20Guide-%2301579B?style=flat)](https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667)
 [![DOWNLOAD](https://img.shields.io/badge/-Download-%232E7D32?style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
 
 Assorted tools to aid the creation of high-quality screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
@@ -55,9 +55,9 @@ Currently in very early stages.
 ‎
 ## Installation & usage:
 
-Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2569510456)**.
+Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667)**.
 
-**[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=pvU8gO66mTs)**
+**[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=YrbM-jaZYls)**
 
 - This tool requires the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)**.
 
