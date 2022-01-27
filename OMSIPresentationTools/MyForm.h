@@ -377,7 +377,7 @@ namespace OMSIPresToolsCLR {
 
 	private: System::Void labelAboutThanksTo_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 
-		System::Diagnostics::Process::Start("https://github.com/sjain882/OMSI-Presentation-Tools#thanks-to");
+		System::Diagnostics::Process::Start("https://github.com/sjain882/OMSI-Presentation-Tools/blob/main/.github/README.md#credits");
 
 	}
 

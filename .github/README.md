@@ -102,7 +102,9 @@ You might need to remove my post-build event from Solution Properties > Build Ev
 Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 language standard.
 
 ‎
-## Thanks to:
+## Credits:
+
+- **[sjain882](https://github.com/sjain882)** - Creator of this tool
 
 - **[rev_eng_e](https://github.com/rev-eng-e)** - Creator of array of Byte (AoB) pattern scanner
 
