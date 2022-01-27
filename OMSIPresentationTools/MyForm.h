@@ -159,7 +159,7 @@ namespace OMSIPresToolsCLR {
 			this->labelAboutVersionGithub->Size = System::Drawing::Size(119, 19);
 			this->labelAboutVersionGithub->TabIndex = 6;
 			this->labelAboutVersionGithub->TabStop = true;
-			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha ï¿½ Github";
+			this->labelAboutVersionGithub->Text = L"v0.1.0 alpha • Github";
 			this->labelAboutVersionGithub->UseCompatibleTextRendering = true;
 			this->labelAboutVersionGithub->VisitedLinkColor = System::Drawing::Color::Blue;
 			this->labelAboutVersionGithub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MyForm::labelAboutVersionGithub_LinkClicked);
@@ -263,7 +263,7 @@ namespace OMSIPresToolsCLR {
 			this->f4FovTitle->Name = L"f4FovTitle";
 			this->f4FovTitle->Size = System::Drawing::Size(211, 15);
 			this->f4FovTitle->TabIndex = 7;
-			this->f4FovTitle->Text = L"Free Map (F4) Camera FOV Value (ï¿½):";
+			this->f4FovTitle->Text = L"Free Map (F4) Camera FOV Value (°):";
 			// 
 			// f4FovMinLabel
 			// 

@@ -92,7 +92,7 @@
       </Version>
     </Link>
     <PostBuildEvent>
-      <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll" &amp;&amp; start "Signing..." "I:\Games\OMSI 2 Full Stock\plugins\sign.bat"</Command>
+      <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +124,7 @@
       </Version>
     </Link>
     <PostBuildEvent>
-      <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll" &amp;&amp; start "Signing..." "I:\Games\OMSI 2 Full Stock\plugins\sign.bat"</Command>
+      <Command>ren "$(SolutionDir)Release\$(ProjectName).dll" "OMSIPresentationTools.dll" &amp;&amp; copy /Y "$(SolutionDir)Release\OMSIPresentationTools.dll" "I:\Games\OMSI 2 Full Stock\plugins" &amp;&amp; del "$(SolutionDir)Release\OMSIPresentationTools.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
