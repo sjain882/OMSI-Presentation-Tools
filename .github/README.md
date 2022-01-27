@@ -21,7 +21,7 @@ Currently in very early stages.
 - Compatibility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
 - Toggle overriding of the FoV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 - Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works™](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/.github/Multi-instance.png?raw=true)**)
-- Can be injected into Omsi.exe (saves relaunching OMSI if you forgot to install - can take up to 10 mins on larger installs)
+- Can be injected into Omsi.exe (in the main menu - saves relaunching OMSI if you forgot to install - can take up to 10 mins on larger installs)
 
 ‎
 ## Planned features (hopefully):
@@ -80,6 +80,17 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 **Q:** Why didn't you put the GUI in an overlay for OMSI 2 instead of having an extra window floating around?
 
 **A:** OMSI 2 is already a pretty unstable game. A host of compatibility issues with game overlays (NVIDIA Share, Discord, Steam) need to be considered when adding your own overlay. As well as this, users may be using either the stock DX9 game, DX12PY (DX12) or DXVK (Vulkan), and may be using SweetFX, ENB or ReShade combined with either of those. This is simply too many combinations to consider and is not a valuable use of my time. No need to add potential instability or unnecessary resource usage for such a simple tool right now.
+
+‎
+## Digital Signing of Release Binaries:
+
+All `*.dll` binary files of this project compiled by me are digitally self-signed. The attached certificate should carry this serial number:
+
+`18f6cc78c0fa778b4545c6d9d135cb52`
+
+If the serial number on your copy does not match this, or the digital certificate is missing the file has potentially been tampered with and should be deleted immediately.
+
+You can check this by right clicking on the `OMSIPresentationTools` .dll / Application extension file > Properties > Digital Signatures > Select the one named "sjain882" > Details > View Certificate > Details > Serial Number.
 
 ‎
 ## Building:
