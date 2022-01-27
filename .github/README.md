@@ -102,6 +102,11 @@ You might need to remove my post-build event from Solution Properties > Build Ev
 Lower versions of Visual Studio should work, but I used VS 2019 with the C++17 language standard.
 
 ‎
+## License:
+
+This software is licensed under the GNU General Public License v3 (GPL-3) licence. Please see https://www.gnu.org/licenses/gpl-3.0.en.html for more information.
+
+‎
 ## Credits:
 
 - **[sjain882](https://github.com/sjain882)** - Creator of this tool
