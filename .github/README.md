@@ -61,6 +61,8 @@ Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sha
 
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=YrbM-jaZYls)**
 
+https://www.youtube.com/watch?v=YrbM-jaZYls
+
 - This tool requires the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)**.
 
 - Also required is uninterrupted access to OMSI 2's log file (`OMSI 2\logfile.txt`). If this is not accessible for any reason (open handle, or `-nolog` OMSI 2 launch option) the tool will exit on launch.
