@@ -61,7 +61,11 @@ Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sha
 
 **[YouTube tutorial & suggested usage](https://www.youtube.com/watch?v=YrbM-jaZYls)**
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/YrbM-jaZYls" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="https://youtu.be/YrbM-jaZYls" title="Music Caster Video Demo">
+  <p align="center">
+    <img width="75%" src="https://img.youtube.com/vi/5xwHkLPgvtQ/maxresdefault.jpg" alt="Music Caster Video Demo Thumbnail"/>
+  </p>
+</a>
 
 - This tool requires the **[Visual C++ Redistributable Runtimes](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)**.
 
