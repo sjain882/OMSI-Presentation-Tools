@@ -63,7 +63,7 @@ Please refer to the **[full in-depth Steam guide](https://steamcommunity.com/sha
 
 <a href="https://youtu.be/YrbM-jaZYls" title="Music Caster Video Demo">
   <p align="center">
-    <img width="75%" src="https://img.youtube.com/vi/5xwHkLPgvtQ/maxresdefault.jpg" alt="Music Caster Video Demo Thumbnail"/>
+    <img width="0%" src="https://img.youtube.com/vi/YrbM-jaZYls/maxresdefault.jpg" alt="Music Caster Video Demo Thumbnail"/>
   </p>
 </a>
 
