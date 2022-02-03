@@ -74,7 +74,7 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 
 - Entire UI has hardcoded coordinates and doesn't DPI scale properly (although perfectly usable). For me, C++/CLI is hell to work with and some methods just aren't recognised in the assembly... will eventually move to Dear ImGui 1.86+ / Docking (or failing that - C++ that calls C# WPF or C# Windows Forms for UI).
 - Some features like automatically disabling the UI when a map is unloaded, updating label text with status aren't possible right now as I can't get the static dllmain code to interact with the non-static Windows Form in any way. See above point.
-- Closing the thread doesn't fully detach it, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
+- Closing the tool doesn't fully detach it from OMSI, it just gets rid of the UI and stops the main program loop. Not a major issue, but not graceful or proper. Can fix this when I learn more about multithreading.
 
 ‎
 ## FAQ:
@@ -82,6 +82,8 @@ Using OMSI Presentation Tools for a YouTube video you're creating? Why not leave
 **Q:** Why didn't you put the GUI in an overlay for OMSI 2 instead of having an extra window floating around?
 
 **A:** OMSI 2 is already a pretty unstable game. A host of compatibility issues with game overlays (NVIDIA Share, Discord, Steam) need to be considered when adding your own overlay. As well as this, users may be using either the stock DX9 game, DX12PY (DX12) or DXVK (Vulkan), and may be using SweetFX, ENB or ReShade combined with either of those. This is simply too many combinations to consider and is not a valuable use of my time. No need to add potential instability or unnecessary resource usage for such a simple tool right now.
+
+For user level FAQs, please refer to the "Frequently Asked Questions" section of the **[Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667)**.
 
 ‎
 ## Digital Signing of Release Binaries:
