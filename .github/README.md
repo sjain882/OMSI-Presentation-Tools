@@ -134,3 +134,5 @@ This software is licensed under the GNU General Public License v3 (GPL-3) licenc
 - The **[Interactive Delphi Reconstructor](https://github.com/crypto2011/IDR)** project for making reverse-engineering OMSI 2 much easier
 
 - **[Icons8](https://icons8.com/)** for allowing free usage of their icons with attribution
+
+- For YouTube Video speciifc acknowledgements, please refer to the description of the **[YouTube video](https://www.youtube.com/watch?v=YrbM-jaZYls)**.
