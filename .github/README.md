@@ -41,8 +41,8 @@ Currently in very early stages.
 
 ###### Not confirmed / for the distant future (possibly never)
 - TrackIR integration for any free roam camera, if achieved
-- Inject toggleable native-like SSAO, DoF and misc filters into the rendering pipeline with customisable parameters
-- Take screenshots at several times the currently set screen reoslution (rendering to frame)
+- Inject toggleable native-like SSAO, DoF and misc filters into the rendering pipeline with customisable parameters with DirectX hooking or **[wrapping](https://github.com/elishacloud/dxwrapper)**
+- Take screenshots at several times the currently set screen reoslution (**[rendering to texture](https://gamedev.net/forums/topic/620712-c-directx9-render-to-texture/4915418/)**)
 
 ‎
 ## Important!
