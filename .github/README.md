@@ -19,23 +19,30 @@ Currently in very early stages.
 ## Features:
 
 - Compatibility with OMSI 2 v2.2.032 ("Tram compatible" patch) and v2.3.004 (latest version)
-- Toggle overriding of the FoV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
+- Override the FoV (Field-of-View) of the Free Map (F4) Camera to a custom value (1.0-150.0°)
 - Works when multiple instances of OMSI 2 are running (don't ask why, it **[just works™](https://github.com/sjain882/OMSI-Presentation-Tools/raw/main/.github/Multi-instance.png?raw=true)**)
 - Can be injected into Omsi.exe (in the main menu - saves relaunching OMSI if you forgot to install - can take up to 10 mins on larger installs)
 
 ‎
 ## Planned features (hopefully):
 
-- Ability to toggle overriding of the FOV, angles, positioning & (probably not) roll of all cameras
-- Ability to save modified camera attributes to `*.bus` & `*.ovh` files
-- Ability to use the F4 camera as a free-roam/look camera
-- Ability to define pre-defined camera movement sequences (**[HLAE](https://github.com/advancedfx/advancedfx)**-like) in text format
-- Ability to toggle overriding of bus presentation variables such as dirt, wetness, physics/roll etc
-- Ability to adjust the Z height of the bus's pseudo shadow (`[isshadow]` mesh in the model configuration file)
-- Ability to toggle overriding of `[viewpoint]` model configuration file tags, to allow meshes to draw in any camera mode (F1/F2/F3/F4) 
-- Ability to speedhack (slow/fast) the game - Cheat Engine's speedhack does not work properly with OMSI 2 
-- Ability to spawn several morphable & movable chromakeys & toggle between red, blue & green colours
-- (Likely never) TrackIR integration for any free roam camera, if achieved
+- Adjust the Z height of the bus's pseudo shadow (`[isshadow]` mesh in the model configuration file)
+- Define pre-defined camera movement sequences / keyframes (**[HLAE](https://github.com/advancedfx/advancedfx)**-like)
+- Free-roam/look camera mode (via F4 camera manipulation) with seamless toggling
+- Override bus presentation variables such as dirt, wetness, functional maintainence levels, per-wheel suspension, etc
+- Override the `Snd_OutsideVol` variable for the current vehicle (controls volume of surroundings)
+- Override the FOV, angles, positioning & (probably not) roll of all cameras
+- Pedestrian mode with view bobbing, footstep sounds that consider texture material configurations (manipulate unfinished F11 camera?)
+- Save modified camera attributes to `*.bus` & `*.ovh` files
+- Spawn several morphable & movable chromakeys & toggle between red, blue & green colours
+- Speedhack (slow/fast) the game - Cheat Engine's speedhack does not work properly with OMSI 2
+- Temporarily override the time of day & weather attributes without affecting schedules
+- Toggle application of `[viewpoint]` model configuration file tags, to allow meshes to draw in any camera mode (F1/F2/F3/F4)
+
+###### Not confirmed / for the distant future (possibly never)
+- TrackIR integration for any free roam camera, if achieved
+- Inject toggleable native-like SSAO, DoF and misc filters into the rendering pipeline with customisable parameters
+- Take screenshots at several times the currently set screen reoslution (rendering to frame)
 
 ‎
 ## Important!
