@@ -8,7 +8,7 @@
 [![VERSION](https://img.shields.io/github/v/release/sjain882/OMSI-Presentation-Tools?color=FF6D00&style=flat&label=version)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
 [![YOUTUBE TUTORIAL](https://img.shields.io/badge/-YouTube%20Tutorial-%23BF360C)](https://www.youtube.com/watch?v=YrbM-jaZYls)
 [![STEAM GUIDE](https://img.shields.io/badge/-Steam%20Guide-%2301579B?style=flat)](https://steamcommunity.com/sharedfiles/filedetails/?id=2722795667)
-[![DOWNLOAD](https://img.shields.io/badge/-Download-%232E7D32?style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
+[![DOWNLOAD](https://img.shields.io/github/downloads/sjain882/OMSI-Presentation-Tools/total?color=2E7D32&label=Download&style=flat)](https://github.com/sjain882/OMSI-Presentation-Tools/releases/latest)
 
 Assorted tools to aid the creation of high-quality screenshots & videos for [OMSI 2](https://store.steampowered.com/app/252530).
 
@@ -42,7 +42,7 @@ Currently in very early stages.
 ###### Not confirmed / for the distant future (possibly never)
 - TrackIR integration for any free roam camera, if achieved
 - Inject toggleable native-like SSAO, DoF and misc filters into the rendering pipeline with customisable parameters with DirectX hooking or **[wrapping](https://github.com/elishacloud/dxwrapper)**
-- Take screenshots at several times the currently set screen reoslution (**[rendering to texture](https://gamedev.net/forums/topic/620712-c-directx9-render-to-texture/4915418/)**)
+- Take screenshots at several times the currently set screen resolution (**[rendering to texture](https://gamedev.net/forums/topic/620712-c-directx9-render-to-texture/4915418/)**)
 
 ‎
 ## Important!
@@ -145,3 +145,8 @@ This software is licensed under the GNU General Public License v3 (GPL-3) licenc
 - **[Icons8](https://icons8.com/)** for allowing free usage of their icons with attribution
 
 - For YouTube Video speciifc acknowledgements, please refer to the description of the **[YouTube video](https://www.youtube.com/watch?v=YrbM-jaZYls)**.
+
+‎
+## Disclaimer:
+
+This software is provided "As is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. **I cannot be held personally responsible if usage of this software results in loss of work or breakage of your OMSI 2 installation**.
